@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">"mPASS"</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_map">"mPASS - Map"</string>
+    <string name="title_activity_test">MainActivity</string>
+    <string name="btn_profilo">Visualizza Profilo</string>
+    <string name="btn_foursquare">Connessione a Foursquare</string>
+    <string name="title">"mPASS"</string>
+    <string name="load_map">Visualizza Mappa</string>
+    <string name="nearby_venues">Visualizza locali vicini</string>
+    <string name="hello">Hello world!</string>
+    <string name="severity">Severity:</string>
+
+    <string-array name="statuses">
+        <item>Minimal</item>
+        <item>Needs attention</item>
+        <item>Will damage my car!</item>
+    </string-array>
+
+    <string-array name="drawer_menu">
+        <item>Home</item>
+        <item>Visualizza mappa</item>
+        <item>Profilo</item>
+    </string-array>
+    
+    <string name="location">Current location:</string>
+    <string name="submit">Submit</string>
+    <string name="title_activity_quiz">Segnalazione</string>
+    <string name="title_activity_profile">mPASS - Profile</string>
+    <string name="Escalators">Escalators</string>
+
+</resources>
