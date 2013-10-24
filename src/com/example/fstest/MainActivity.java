@@ -4,7 +4,10 @@ import com.example.fstest.FoursquareApp.FsqAuthListener;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -49,6 +52,18 @@ private ListView mDrawerList;
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        /*User user=new User(this);
+        if (user.getName()!=null) Log.d("Debug",user.getName());*/
+        
+        if (firstCheck())
+        {
+        	//Toast.makeText(this, "Prima volta!", Toast.LENGTH_LONG).show();
+        	Intent i_newuser=new Intent(MainActivity.this,NewProfileActivity.class);
+        	startActivity(i_newuser);
+        }
+        /*AuthPreferences a = new AuthPreferences(this);
+        Log.d("Debug",a.getUser());*/
         
         initialize_menu();
         
@@ -104,7 +119,8 @@ private ListView mDrawerList;
         
         mProgress.setMessage("Loading data ...");
         
-        if (mFsqApp.hasAccessToken()) nameTv.setText("Utente: " + mFsqApp.getUserName());
+        //if (mFsqApp.hasAccessToken()) nameTv.setText("User: " + mFsqApp.getUserName());
+        nameTv.setText("User: Mario Rossi");
         
         FsqAuthListener listener = new FsqAuthListener() 
         {
@@ -156,6 +172,12 @@ private ListView mDrawerList;
     	MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mainmenu, menu);
     	return true;
+    }
+    
+    @Override
+    public void onBackPressed() 
+    {
+    	
     }
     
     public boolean onOptionsItemSelected(MenuItem item) 
@@ -250,5 +272,13 @@ private ListView mDrawerList;
     		   startActivity(profile_intent);
     	   }   
        }
+   }
+   
+   private boolean firstCheck()
+   {
+	   boolean first=true;
+	   SharedPreferences pref=this.getSharedPreferences("activity", Context.MODE_PRIVATE);
+	   first=pref.getBoolean("firsttime", true);
+	   return first;
    }
 }

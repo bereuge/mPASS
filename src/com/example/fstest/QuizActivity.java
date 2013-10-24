@@ -1,9 +1,14 @@
 package com.example.fstest;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.text.format.DateFormat;
 //import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,6 +31,7 @@ public class QuizActivity extends Activity {
 	private String fsqid;
 	private String geo;
 	private ProgressDialog spinner;
+	private User user;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -33,6 +39,7 @@ public class QuizActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quiz);
 		
+		user=new User(this);
 		spinner=new ProgressDialog(this);
 		ftclient=new FTClient(this);
 		
@@ -49,7 +56,7 @@ public class QuizActivity extends Activity {
 		//Crea interfaccia per il questionario
 		
 		TextView venue_name=new TextView(this);
-		venue_name.setText("Questionario "+venue.name);
+		venue_name.setText("Questionnaire "+venue.name);
 		venue_name.setId(41);
 		venue_name.setPadding(0, 0, 0, 20);
 		rl.addView(venue_name);
@@ -61,8 +68,15 @@ public class QuizActivity extends Activity {
 		createRadioGroup("Ci sono delle scale mobili?","Si","No","", 4, 14);
 		createRadioGroup("C'è un parcheggio per disabili?","Si","No","", 5, 15);
 		
+		/*createRadioGroup("Can rooms be accessed without stairs?","Yes","No","", 1, 11);
+		createRadioGroup("Can a wheelchair easily navigate the space?","Yes","No","", 2, 12);
+		createRadioGroup("If multiple floors, is an elevator or escalator available?","Yes","No","", 3, 13);
+		createRadioGroup("Are tactile navigation maps available??","Yes","No","", 4, 14);
+		createRadioGroup("Is accessible parking available??","Yes","No","", 5, 15);*/
+		
 		TextView head_comment=new TextView(this);
-		head_comment.setText("Inserisci un commento sul luogo!");
+		//head_comment.setText("Inserisci un commento sul luogo!");
+		head_comment.setText("Submit a comment!");
 		head_comment.setId(31);
 		head_comment.setTextSize(20.0f);
 		RelativeLayout.LayoutParams lp=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -159,8 +173,11 @@ public class QuizActivity extends Activity {
 				//String query_txt="INSERT INTO 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ (name, geo, accessLevel, comment, doorways, elevator, escalator, parking) ";
 				//query_txt=query_txt+"VALUES ('"+name+"', '"+geo+"', '"+squiz1+"', '"+comment_txt+"', '"+squiz2+"', '"+squiz3+"', '"+squiz4+"', '"+squiz5+"')";
 				//Log.d("Test", query_txt);
-				String query_txt="INSERT INTO 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ (name, fsqid, geo, accessLevel, comment, doorways, elevator, escalator, parking) ";
-				query_txt=query_txt+"VALUES ('"+name+"', '"+fsqid+"', '"+geo+"', '"+squiz1+"', '"+comment_txt+"', '"+squiz2+"', '"+squiz3+"', '"+squiz4+"', '"+squiz5+"')";
+				Date date=new Date();
+				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String sdate=dateFormat.format(date);
+				String query_txt="INSERT INTO 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ (name, fsqid, geo, accessLevel, comment, doorways, elevator, escalator, parking, user, date) ";
+				query_txt=query_txt+"VALUES ('"+name+"', '"+fsqid+"', '"+geo+"', '"+squiz1+"', '"+comment_txt+"', '"+squiz2+"', '"+squiz3+"', '"+squiz4+"', '"+squiz5+"', '"+user.getName()+"', '"+sdate+"')";
 				ftclient.setQuery(query_txt);
 				new Thread()
 				{
@@ -184,10 +201,13 @@ public class QuizActivity extends Activity {
 		return true;
 	}
 	
-	public void loadResponse(String response)
+	public void loadResponse(String response, Boolean success)
 	{
 		spinner.dismiss();
-		Toast.makeText(QuizActivity.this, "Segnalazione avvenuta con successo!", Toast.LENGTH_LONG).show();
+		if (success)
+			Toast.makeText(QuizActivity.this, "Segnalazione avvenuta con successo!", Toast.LENGTH_LONG).show();
+		else
+			Toast.makeText(QuizActivity.this, "Errore nell'inviare la segnalazione al server. Riprovare più tardi.", Toast.LENGTH_LONG).show();
 		this.finish();
 		//Serve controllare se la segnalazione ha veramente avuto successo
 	}

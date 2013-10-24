@@ -6,30 +6,37 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_map">"mPASS - Map"</string>
     <string name="title_activity_test">MainActivity</string>
-    <string name="btn_profilo">Visualizza Profilo</string>
-    <string name="btn_foursquare">Connessione a Foursquare</string>
+    <string name="btn_profilo">Profile</string>
+    <string name="btn_foursquare">Connect to Foursquare</string>
     <string name="title">"mPASS"</string>
-    <string name="load_map">Visualizza Mappa</string>
-    <string name="nearby_venues">Visualizza locali vicini</string>
+    <string name="load_map">Open Map</string>
+    <string name="nearby_venues">Locate nearby venues</string>
     <string name="hello">Hello world!</string>
     <string name="severity">Severity:</string>
-
+	<string name="welcome">Welcome to mPASS!</string>
+	<string name="create">You can choose to create your profile&#8230;</string>
+	<string name="lbl_user">Username</string>
+	<string name="anon">&#8230;or stay anonymous!</string>
+	<string name="confirm">Save profile</string>
+	<string name="btnanon">Stay anonymous</string>
+	
     <string-array name="statuses">
         <item>Minimal</item>
         <item>Needs attention</item>
         <item>Will damage my car!</item>
     </string-array>
-
     <string-array name="drawer_menu">
         <item>Home</item>
         <item>Visualizza mappa</item>
         <item>Profilo</item>
     </string-array>
-    
+
     <string name="location">Current location:</string>
     <string name="submit">Submit</string>
-    <string name="title_activity_quiz">Segnalazione</string>
+    <string name="title_activity_quiz">Report</string>
     <string name="title_activity_profile">mPASS - Profile</string>
     <string name="Escalators">Escalators</string>
+    <string name="title_activity_new_profile">mPASS</string>
+    <string name="accessibilitylvl">Accessibility Level</string>
 
 </resources>

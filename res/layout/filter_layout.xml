@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<RelativeLayout
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/filter_layout"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical" 
+	    android:gravity="center_horizontal">
+    	
+	    <TextView
+	        android:id="@+id/tv_titlefilter"
+	        android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="@string/accessibilitylvl"
+    		android:textSize="16sp"
+    		android:layout_marginBottom="10dp"
+    		android:layout_marginTop="20dp"/>
+	    
+	    <LinearLayout
+	        android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_below="@id/tv_titlefilter"
+        	android:orientation="vertical"
+        	android:id="@+id/cbgroup">
+	    	<CheckBox 
+	    	android:id="@+id/cb_a"
+	        android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Accessible"
+        	android:textSize="12sp"
+        	android:checked="true"/>
+	    	<CheckBox 
+	    	android:id="@+id/cb_pa"
+	        android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Partially accessible"
+        	android:textSize="12sp"
+        	android:checked="true"/>
+	    	<CheckBox 
+	    	android:id="@+id/cb_n"
+	        android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:text="Not accessible"
+        	android:textSize="12sp"
+        	android:checked="true"/>
+
+	    </LinearLayout>
+
+	    <Button
+	    	    android:id="@+id/btn_setfilter"
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:text="Confirm"
+	    	    android:textSize="14sp" 
+	    	    android:layout_below="@id/cbgroup"
+	    	    android:layout_marginTop="20dp"/>
+
+	</RelativeLayout>

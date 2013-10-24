@@ -300,7 +300,9 @@
         android:layout_marginLeft="63dp"
         android:layout_marginTop="27dp"
         android:scaleType="fitXY"
-        android:src="@drawable/user" />
+        android:src="@drawable/user" 
+        android:background="@drawable/custom_background"
+		android:padding="3dp"/>
 
     <RelativeLayout
         android:id="@+id/rl2"
@@ -333,6 +335,17 @@
         android:layout_alignTop="@+id/imageView1"
         android:text="Marco Rossi"
         android:textSize="24dp" />
+
+    <Button
+        android:id="@+id/btn_image2"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/relativeLayout1"
+        android:layout_alignLeft="@+id/imageView1"
+        android:background="#22000000"
+        android:text="modify"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
 
 </RelativeLayout>
 </ScrollView>

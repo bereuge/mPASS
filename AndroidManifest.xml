@@ -21,6 +21,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -42,8 +43,8 @@
         </activity>
         <activity
             android:name="com.example.fstest.MapActivity"
-            android:label="@string/title_activity_map" 
-            android:parentActivityName="MainActivity">
+            android:label="@string/title_activity_map"
+            android:parentActivityName="MainActivity" >
         </activity>
 
         <meta-data
@@ -60,8 +61,12 @@
         </activity>
         <activity
             android:name="com.example.fstest.ProfileActivity"
-            android:label="@string/title_activity_profile" 
-            android:parentActivityName="MainActivity">
+            android:label="@string/title_activity_profile"
+            android:parentActivityName="MainActivity" >
+        </activity>
+        <activity
+            android:name="com.example.fstest.NewProfileActivity"
+            android:label="@string/title_activity_new_profile" >
         </activity>
     </application>
 

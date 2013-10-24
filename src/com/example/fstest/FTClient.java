@@ -208,7 +208,22 @@ public class FTClient
 			
 			if (code.equals("insertvenue"))
 			{
-				((QuizActivity) activity).loadResponse(output);
+				try 
+				{
+					Boolean success=false;
+					JSONObject insert_result=new JSONObject(output);
+					if (insert_result.getJSONArray("rows")!=null)
+					{
+						success=true;
+					}
+					((QuizActivity) activity).loadResponse(output, success);
+				} 
+				catch (JSONException e) 
+				{
+					((QuizActivity) activity).loadResponse(output, false);
+					e.printStackTrace();
+				}
+				
 			}
 			
 			if (code.equals("loadvenue"))

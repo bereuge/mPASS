@@ -13,9 +13,11 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,34 +27,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class ProfileActivity extends Activity 
+public class NewProfileActivity extends Activity 
 {
-	User user;
+	User new_user;
+	String imagepath=null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_profile);
-		
-		//Setup profilo
-		user=new User(this);
-		TextView tv_name=(TextView)findViewById(R.id.textView1);
-		tv_name.setText(user.getName());
-		TextView tv_type=(TextView)findViewById(R.id.textView2);
-		tv_type.setText(user.getType());
-		TextView tv_nrepo=(TextView)findViewById(R.id.textView7);
-		ImageView iv_image=(ImageView)findViewById(R.id.imageView1);
-		Bitmap image=BitmapFactory.decodeFile(user.getImagePath());
-		iv_image.setImageBitmap(image);
-		
-		//Log.d("Test",user.getName());
-		
-		tv_nrepo.setText("Number of reports: "+String.valueOf(user.getNReports()));
+		setContentView(R.layout.activity_new_profile);
 		
 		final String items[]=new String[] {"Camera","Galleria"};
 		ArrayAdapter<String> adapter=new ArrayAdapter(this, android.R.layout.select_dialog_item, items);
@@ -66,9 +55,6 @@ public class ProfileActivity extends Activity
 				if (which==0)
 				{
 					Intent i=new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-					/*Uri captureUri=Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"temp_avatar.jpg"));
-					i.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, captureUri);
-					i.putExtra("return-data", true);*/
 					startActivityForResult(i, 2);
 				}
 				else
@@ -81,15 +67,51 @@ public class ProfileActivity extends Activity
 		
 		final AlertDialog dialog=builder.create();
 		
-		Button btn=(Button)findViewById(R.id.btn_image2);
-		btn.setOnClickListener(new OnClickListener() 
+		Button btn_image=(Button)findViewById(R.id.btn_image);
+		btn_image.setOnClickListener(new OnClickListener() 
 		{
 			@Override
 			public void onClick(View arg0) 
 			{
-				/*Intent i=new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-				startActivityForResult(i, 1);*/
+				//Toast.makeText(NewProfileActivity.this, "Immagine", Toast.LENGTH_LONG).show();
 				dialog.show();
+			}
+		});
+		
+		Button btn_confirm=(Button)findViewById(R.id.btn_confirmprofile);
+		Button btn_anon=(Button)findViewById(R.id.btn_anon);
+		btn_confirm.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View arg0) 
+			{
+				EditText et_user=(EditText)findViewById(R.id.et_user);
+				String username=et_user.getText().toString();
+				if (!username.isEmpty())
+				{
+					new_user=new User(NewProfileActivity.this);
+					new_user.setName(et_user.getText().toString());
+					new_user.setImagePath(imagepath);
+					new_user.setType("User");
+					NewProfileActivity.this.finish();
+				}
+				else
+				{
+					Toast.makeText(NewProfileActivity.this, "Username non inserito", Toast.LENGTH_LONG).show();
+				}
+			}
+		});
+		
+		btn_anon.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) 
+			{
+				new_user=new User(NewProfileActivity.this);
+				new_user.setName("Anonimo");
+				new_user.setImagePath(null);
+				new_user.setType("User");
+				NewProfileActivity.this.finish();
 			}
 		});
 	}
@@ -110,20 +132,20 @@ public class ProfileActivity extends Activity
 			String picturePath=cursor.getString(columnIndex);
 			cursor.close();
 			
-			ImageView image=(ImageView)findViewById(R.id.imageView1);
+			ImageView image=(ImageView)findViewById(R.id.imageView2);
 			image.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-			user.setImagePath(picturePath);
+			imagepath=picturePath;
 		}
 		else if (requestCode==2 && resultCode==RESULT_OK)
 		{
 			Bitmap photo=(Bitmap)data.getExtras().get("data");
-			ImageView image=(ImageView)findViewById(R.id.imageView1);
+			ImageView image=(ImageView)findViewById(R.id.imageView2);
 			image.setImageBitmap(photo);
 			try 
 			{
 				File imagefile=createImageFile(photo);
 				Log.d("dir",imagefile.getAbsolutePath());
-				user.setImagePath(imagefile.getAbsolutePath());
+				imagepath=imagefile.getAbsolutePath();
 			} 
 			catch (IOException e) 
 			{
@@ -133,11 +155,30 @@ public class ProfileActivity extends Activity
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) 
+	{
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.profile, menu);
+		getMenuInflater().inflate(R.menu.new_profile, menu);
 		return true;
-		
+	}
+
+	@Override
+    public void onBackPressed() 
+    {
+    	
+    }
+	
+	@Override
+	protected void onDestroy() 
+	{
+		super.onDestroy();
+		SharedPreferences pref=this.getSharedPreferences("activity", Context.MODE_PRIVATE);
+		//pref.getBoolean("firsttime", true);
+		Editor editor = pref.edit();
+		editor.putBoolean("firsttime", false);
+		editor.commit();
+		Intent i=new Intent(NewProfileActivity.this,MainActivity.class);
+		startActivity(i);
 	}
 	
 	private File createImageFile(Bitmap image) throws IOException
@@ -160,5 +201,4 @@ public class ProfileActivity extends Activity
 	    }
 		return file;
 	}
-	
 }
