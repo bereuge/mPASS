@@ -7,7 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -79,8 +80,15 @@ private ListView mDrawerList;
 			@Override
 			public void onClick(View v) 
 			{
-				Intent intent=new Intent(MainActivity.this, MapActivity.class);
-				startActivity(intent);
+				if (checkConnection())
+				{
+					Intent intent=new Intent(MainActivity.this, MapActivity.class);
+					startActivity(intent);
+				}
+				else
+				{
+					Toast.makeText(MainActivity.this, "Connessione a Internet assente", Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
         
@@ -90,7 +98,8 @@ private ListView mDrawerList;
 			@Override
 			public void onClick(View arg0) 
 			{
-				Intent profile_intent=new Intent(MainActivity.this, ProfileActivity.class);
+				//Intent profile_intent=new Intent(MainActivity.this, ProfileActivity.class);
+				Intent profile_intent=new Intent(MainActivity.this, LogTest.class);
 				startActivity(profile_intent);
 			}
 		});
@@ -280,5 +289,17 @@ private ListView mDrawerList;
 	   SharedPreferences pref=this.getSharedPreferences("activity", Context.MODE_PRIVATE);
 	   first=pref.getBoolean("firsttime", true);
 	   return first;
+   }
+   
+   private boolean checkConnection()
+   {
+	   boolean online=false;
+	   ConnectivityManager cm=(ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+	   NetworkInfo netInfo=cm.getActiveNetworkInfo();
+	   if (netInfo!=null && netInfo.isConnectedOrConnecting())
+	   {
+		   online=true;
+	   }
+	   return online;
    }
 }

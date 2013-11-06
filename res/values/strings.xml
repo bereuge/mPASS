@@ -13,13 +13,13 @@
     <string name="nearby_venues">Locate nearby venues</string>
     <string name="hello">Hello world!</string>
     <string name="severity">Severity:</string>
-	<string name="welcome">Welcome to mPASS!</string>
-	<string name="create">You can choose to create your profile&#8230;</string>
-	<string name="lbl_user">Username</string>
-	<string name="anon">&#8230;or stay anonymous!</string>
-	<string name="confirm">Save profile</string>
-	<string name="btnanon">Stay anonymous</string>
-	
+    <string name="welcome">Welcome to mPASS!</string>
+    <string name="create">You can choose to create your profile&#8230;</string>
+    <string name="lbl_user">Username</string>
+    <string name="anon">&#8230;or stay anonymous!</string>
+    <string name="confirm">Save profile</string>
+    <string name="btnanon">Stay anonymous</string>
+
     <string-array name="statuses">
         <item>Minimal</item>
         <item>Needs attention</item>
@@ -38,5 +38,6 @@
     <string name="Escalators">Escalators</string>
     <string name="title_activity_new_profile">mPASS</string>
     <string name="accessibilitylvl">Accessibility Level</string>
+    <string name="title_activity_log_test">LogTest</string>
 
 </resources>

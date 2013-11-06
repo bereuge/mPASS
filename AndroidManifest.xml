@@ -68,6 +68,10 @@
             android:name="com.example.fstest.NewProfileActivity"
             android:label="@string/title_activity_new_profile" >
         </activity>
+        <activity
+            android:name="com.example.fstest.LogTest"
+            android:label="@string/title_activity_log_test" >
+        </activity>
     </application>
 
 </manifest>
