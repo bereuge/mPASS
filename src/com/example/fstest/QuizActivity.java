@@ -1,15 +1,14 @@
 package com.example.fstest;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
+
+import com.example.fstest.log.LogDbManager;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.text.format.DateFormat;
-//import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -32,6 +31,9 @@ public class QuizActivity extends Activity {
 	private String geo;
 	private ProgressDialog spinner;
 	private User user;
+	private LogDbManager log;
+	private String action_for_log;
+	private String date_for_log;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -178,6 +180,10 @@ public class QuizActivity extends Activity {
 				String sdate=dateFormat.format(date);
 				String query_txt="INSERT INTO 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ (name, fsqid, geo, accessLevel, comment, doorways, elevator, escalator, parking, user, date) ";
 				query_txt=query_txt+"VALUES ('"+name+"', '"+fsqid+"', '"+geo+"', '"+squiz1+"', '"+comment_txt+"', '"+squiz2+"', '"+squiz3+"', '"+squiz4+"', '"+squiz5+"', '"+user.getName()+"', '"+sdate+"')";
+				//Creo le stringhe per l'azione da mettere nel log, la inserisco dopo solo se l'insert ha avuto successo
+				Log.d("Debug", query_txt);
+				date_for_log=sdate;
+				action_for_log="Submitted a report about "+name+".";
 				ftclient.setQuery(query_txt);
 				new Thread()
 				{
@@ -205,7 +211,13 @@ public class QuizActivity extends Activity {
 	{
 		spinner.dismiss();
 		if (success)
+		{
+			log=new LogDbManager(this);
+			log.openToWrite();
+			log.insertEntry(action_for_log, date_for_log);
+			log.close();
 			Toast.makeText(QuizActivity.this, "Segnalazione avvenuta con successo!", Toast.LENGTH_LONG).show();
+		}
 		else
 			Toast.makeText(QuizActivity.this, "Errore nell'inviare la segnalazione al server. Riprovare più tardi.", Toast.LENGTH_LONG).show();
 		this.finish();

@@ -7,6 +7,8 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.example.fstest.log.LogDbManager;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -35,6 +37,7 @@ import android.widget.Toast;
 public class NewProfileActivity extends Activity 
 {
 	User new_user;
+	LogDbManager log;
 	String imagepath=null;
 	
 	@Override
@@ -42,6 +45,11 @@ public class NewProfileActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_profile);
+		
+		log=new LogDbManager(this);
+		log.openToWrite();
+		log.deleteAll();
+		log.close();
 		
 		final String items[]=new String[] {"Camera","Galleria"};
 		ArrayAdapter<String> adapter=new ArrayAdapter(this, android.R.layout.select_dialog_item, items);
@@ -93,6 +101,12 @@ public class NewProfileActivity extends Activity
 					new_user.setName(et_user.getText().toString());
 					new_user.setImagePath(imagepath);
 					new_user.setType("User");
+					log.openToWrite();
+					Date date=new Date();
+					SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String sdate=dateFormat.format(date);
+					log.insertEntry("User created!", sdate);
+					log.close();
 					NewProfileActivity.this.finish();
 				}
 				else

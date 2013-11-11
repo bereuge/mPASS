@@ -5,7 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+
+import com.example.fstest.log.LogAdapter;
+import com.example.fstest.log.LogDbManager;
+import com.example.fstest.log.LogEntry;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +37,9 @@ import android.widget.TextView;
 public class ProfileActivity extends Activity 
 {
 	User user;
+	private ArrayList<LogEntry> entries;
+	private LogAdapter adapter;
+	private ListView listView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -41,6 +49,10 @@ public class ProfileActivity extends Activity
 		
 		//Setup profilo
 		user=new User(this);
+		listView=(ListView)findViewById(R.id.lv_log);
+		adapter=new LogAdapter(this);
+		entries=new ArrayList<LogEntry>();
+		
 		TextView tv_name=(TextView)findViewById(R.id.textView1);
 		tv_name.setText(user.getName());
 		TextView tv_type=(TextView)findViewById(R.id.textView2);
@@ -49,6 +61,13 @@ public class ProfileActivity extends Activity
 		ImageView iv_image=(ImageView)findViewById(R.id.imageView1);
 		Bitmap image=BitmapFactory.decodeFile(user.getImagePath());
 		iv_image.setImageBitmap(image);
+		
+		//Carica log utente
+		LogDbManager log=new LogDbManager(getApplicationContext());
+		log.openToRead();
+		entries=log.getAllEntries();
+		adapter.setData(entries);
+		listView.setAdapter(adapter);
 		
 		//Log.d("Test",user.getName());
 		

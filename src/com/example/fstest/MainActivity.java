@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -98,8 +99,8 @@ private ListView mDrawerList;
 			@Override
 			public void onClick(View arg0) 
 			{
-				//Intent profile_intent=new Intent(MainActivity.this, ProfileActivity.class);
-				Intent profile_intent=new Intent(MainActivity.this, LogTest.class);
+				Intent profile_intent=new Intent(MainActivity.this, ProfileActivity.class);
+				//Intent profile_intent=new Intent(MainActivity.this, LogTest.class);
 				startActivity(profile_intent);
 			}
 		});
