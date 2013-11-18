@@ -39,5 +39,6 @@
     <string name="title_activity_new_profile">mPASS</string>
     <string name="accessibilitylvl">Accessibility Level</string>
     <string name="title_activity_log_test">LogTest</string>
+    <string name="title_activity_splash">mPASS</string>
 
 </resources>

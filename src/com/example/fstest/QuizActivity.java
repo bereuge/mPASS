@@ -3,6 +3,7 @@ package com.example.fstest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.example.fstest.FoursquareApp.FsqAuthListener;
 import com.example.fstest.log.LogDbManager;
 
 import android.os.Bundle;
@@ -23,8 +24,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class QuizActivity extends Activity {
+public class QuizActivity extends Activity 
+{
 
+	public static final String CLIENT_ID = "WRWWBSHWC1AFXVAB5SZPCWBO1X0QACFX302KRXKRPXRIVVAO";
+	public static final String CLIENT_SECRET = "00Z2J0045OFM0EZVZT43333QZ4PDFXCQCOYD32HAZQJS4LG5";
+	
 	private FTClient ftclient;
 	private String name;
 	private String fsqid;
@@ -34,6 +39,7 @@ public class QuizActivity extends Activity {
 	private LogDbManager log;
 	private String action_for_log;
 	private String date_for_log;
+	private FoursquareApp fsqapp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -44,6 +50,22 @@ public class QuizActivity extends Activity {
 		user=new User(this);
 		spinner=new ProgressDialog(this);
 		ftclient=new FTClient(this);
+		fsqapp = new FoursquareApp(this, CLIENT_ID, CLIENT_SECRET);
+		FsqAuthListener listener=new FsqAuthListener() 
+		{
+			
+			@Override
+			public void onSuccess() 
+			{
+			}
+			
+			@Override
+			public void onFail(String error) 
+			{
+				Toast.makeText(QuizActivity.this, "Foursquare Error", Toast.LENGTH_SHORT).show();
+			}
+		};
+		fsqapp.setListener(listener);
 		
 		Intent i = getIntent();
 		FsqVenue venue=(FsqVenue)i.getSerializableExtra("venue");
@@ -178,13 +200,16 @@ public class QuizActivity extends Activity {
 				Date date=new Date();
 				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String sdate=dateFormat.format(date);
+				name=name.replace("'", "");
 				String query_txt="INSERT INTO 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ (name, fsqid, geo, accessLevel, comment, doorways, elevator, escalator, parking, user, date) ";
 				query_txt=query_txt+"VALUES ('"+name+"', '"+fsqid+"', '"+geo+"', '"+squiz1+"', '"+comment_txt+"', '"+squiz2+"', '"+squiz3+"', '"+squiz4+"', '"+squiz5+"', '"+user.getName()+"', '"+sdate+"')";
 				//Creo le stringhe per l'azione da mettere nel log, la inserisco dopo solo se l'insert ha avuto successo
-				Log.d("Debug", query_txt);
+				//Log.d("Debug", query_txt);
 				date_for_log=sdate;
 				action_for_log="Submitted a report about "+name+".";
 				ftclient.setQuery(query_txt);
+				ftclient.query("insertvenue");
+				//Thread necessario per far vedere il progress dialog
 				new Thread()
 				{
 					@Override
@@ -194,6 +219,27 @@ public class QuizActivity extends Activity {
 						ftclient.query("insertvenue");
 					}
 				}.start();
+				
+				if (fsqapp.hasAccessToken())
+				{
+					Log.d("Debug", "Ok foursquare!");
+					new Thread()
+					{
+						@Override
+						public void run()
+						{
+							try 
+							{
+								//Servirebbe una conferma o qualcosa del genere
+								fsqapp.checkIn(fsqid);
+							} 
+							catch (Exception e) 
+							{
+								e.printStackTrace();
+							}
+						}
+					}.start();
+				}
 			}
 		});
 		rl.addView(btn_submit);
@@ -216,12 +262,12 @@ public class QuizActivity extends Activity {
 			log.openToWrite();
 			log.insertEntry(action_for_log, date_for_log);
 			log.close();
+			user.addReport();
 			Toast.makeText(QuizActivity.this, "Segnalazione avvenuta con successo!", Toast.LENGTH_LONG).show();
 		}
 		else
 			Toast.makeText(QuizActivity.this, "Errore nell'inviare la segnalazione al server. Riprovare più tardi.", Toast.LENGTH_LONG).show();
 		this.finish();
-		//Serve controllare se la segnalazione ha veramente avuto successo
 	}
 	
 	private String getCommentText(int id)

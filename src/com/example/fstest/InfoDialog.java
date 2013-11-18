@@ -52,7 +52,7 @@ public class InfoDialog extends Dialog implements OnClickListener
 
 	private void loadQuizzes()
 	{
-		String name,accesslevel,comment,doorways,elevator,escalator,parking;
+		String name,accesslevel,comment,doorways,elevator,escalator,parking, user, date;
 		int nquiz=venues.length();
 		LinearLayout ll=(LinearLayout)findViewById(R.id.info_layout);
 		for(int i=0; i<nquiz; i++)
@@ -67,6 +67,8 @@ public class InfoDialog extends Dialog implements OnClickListener
 				elevator=row.get(5).toString();
 				escalator=row.get(6).toString();
 				parking=row.get(7).toString();
+				user=row.get(8).toString();
+				date=row.get(9).toString();
 				Log.d("Valori", "Nome:"+name);
 				Log.d("Valori", "AL:"+accesslevel);
 				Log.d("Valori", "Comment:"+comment);
@@ -85,7 +87,8 @@ public class InfoDialog extends Dialog implements OnClickListener
 				    
 				}*/
 				TextView tv_quiztitle=new TextView(activity);
-			    tv_quiztitle.setText("Segnalazione "+Integer.toString(i+1));
+			    //tv_quiztitle.setText("Segnalazione "+Integer.toString(i+1));
+				tv_quiztitle.setText("Segnalazione del "+date.substring(0,10)+" di "+user);
 			    tv_quiztitle.setTextSize(16);
 			    tv_quiztitle.setPadding(0, 10, 0, 10);
 			    ll.addView(tv_quiztitle);
@@ -102,8 +105,8 @@ public class InfoDialog extends Dialog implements OnClickListener
 				ll.addView(tv_accesslvl);
 				
 				TextView tv_comment=new TextView(activity);
-				if (comment.equals(" ")) tv_comment.setText("Commento: Non inserito");
-			    tv_comment.setText("Commento: "+comment);
+				if (comment.equals(" ") || comment.equals("")) tv_comment.setText("Commento: Non inserito");
+				else tv_comment.setText("Commento: "+comment);
 			    tv_comment.setPadding(0, 5, 0, 5);
 			    ll.addView(tv_comment);
 			    

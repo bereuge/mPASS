@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -136,17 +137,24 @@ public class FoursquareApp
 					urlConnection.connect();
 					
 					String response		= streamToString(urlConnection.getInputStream());
+					Log.i(TAG, response);
 					JSONObject jsonObj 	= (JSONObject) new JSONTokener(response).nextValue();
 		       
 					JSONObject resp		= (JSONObject) jsonObj.get("response");
 					JSONObject user		= (JSONObject) resp.get("user");
 					
+					//Ottengo l'url dell'immagine
 					String firstName 	= user.getString("firstName");
 		        	String lastName		= user.getString("lastName");
-		        
+		        	JSONObject photo=(JSONObject)user.get("photo");
+		        	String url_temp=photo.getString("prefix");
+		        	url_temp=url_temp+"100x100";
+		        	String url_photo=photo.getString("suffix");
+		        	url_photo=url_temp+url_photo;
+		        	
 		        	Log.i(TAG, "Got user name: " + firstName + " " + lastName);
 		        	
-		        	mSession.storeAccessToken(mAccessToken, firstName + " " + lastName);
+		        	mSession.storeAccessToken(mAccessToken, firstName + " " + lastName, url_photo);
 				} catch (Exception ex) {
 					what = 1;
 					
@@ -189,8 +197,44 @@ public class FoursquareApp
 		return mSession.getUsername();
 	}
 	
-	public void authorize() {
+	public String getPhoto()
+	{
+		return mSession.getPhotoUrl();
+	}
+	
+	public void authorize() 
+	{
 		mDialog.show();
+	}
+	
+	public boolean checkIn(String venueid) throws Exception
+	{
+		boolean success=false;
+		
+		try 
+		{
+			String v	= timeMilisToString(System.currentTimeMillis()); 
+			URL url 	= new URL(API_URL + "/checkins/add?venueId=" + venueid + "&oauth_token=" + mAccessToken + "&v=" + v);
+			Log.d(TAG, "Opening URL " + url.toString());
+			
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setRequestMethod("POST");
+			urlConnection.setDoInput(true);
+			urlConnection.connect();
+			
+			String response		= streamToString(urlConnection.getInputStream());
+			Log.d(TAG, response);
+			JSONObject jsonObj 	= (JSONObject) new JSONTokener(response).nextValue();
+			JSONObject meta	= (JSONObject) jsonObj.getJSONObject("meta");
+			String code=meta.getString("code");
+			Log.d(TAG,code);
+			if (code.equals("200")) success=true;
+		} 
+		catch (MalformedURLException e) 
+		{
+			e.printStackTrace();
+		}
+		return success;
 	}
 	
 	public ArrayList<FsqVenue> getNearby(double latitude, double longitude) throws Exception {

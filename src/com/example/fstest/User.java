@@ -12,9 +12,11 @@ public class User
 	private static final String nreports="nreports";
 	
 	private SharedPreferences pref;
+	private Context context;
 	
-	public User (Context context)
+	public User (Context _context)
 	{
+		context=_context;
 		pref=context.getSharedPreferences("user", Context.MODE_PRIVATE);
 	}
 	
@@ -65,5 +67,19 @@ public class User
 	public int getNReports()
 	{
 		return pref.getInt(nreports, 0);
+	}
+	
+	public void eraseUser()
+	{
+		Editor editor = pref.edit();
+		editor.putString(name, null);
+		editor.putString(type, null);
+		editor.putString(imagePath, null);
+		editor.putInt(nreports, 0);
+		editor.commit();
+		SharedPreferences pref_ac=context.getSharedPreferences("activity", Context.MODE_PRIVATE);
+		editor=pref_ac.edit();
+		editor.putBoolean("firsttime", true);
+		editor.commit();
 	}
 }

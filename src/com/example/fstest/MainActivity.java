@@ -40,6 +40,8 @@ private ArrayList<FsqVenue> mNearbyList;
 private ProgressDialog mProgress;
 private GPSTracker mGPS;
 
+private boolean test;
+
 //Codici per l'autorizzazione a Foursquare
 public static final String CLIENT_ID = "WRWWBSHWC1AFXVAB5SZPCWBO1X0QACFX302KRXKRPXRIVVAO";
 public static final String CLIENT_SECRET = "00Z2J0045OFM0EZVZT43333QZ4PDFXCQCOYD32HAZQJS4LG5";
@@ -100,7 +102,6 @@ private ListView mDrawerList;
 			public void onClick(View arg0) 
 			{
 				Intent profile_intent=new Intent(MainActivity.this, ProfileActivity.class);
-				//Intent profile_intent=new Intent(MainActivity.this, LogTest.class);
 				startActivity(profile_intent);
 			}
 		});
@@ -129,8 +130,8 @@ private ListView mDrawerList;
         
         mProgress.setMessage("Loading data ...");
         
-        //if (mFsqApp.hasAccessToken()) nameTv.setText("User: " + mFsqApp.getUserName());
-        nameTv.setText("User: Mario Rossi");
+        if (mFsqApp.hasAccessToken()) nameTv.setText("User: " + mFsqApp.getUserName());
+        //nameTv.setText("User: Mario Rossi");
         
         FsqAuthListener listener = new FsqAuthListener() 
         {
@@ -207,6 +208,7 @@ private ListView mDrawerList;
     private void loadNearbyPlaces(final double latitude, final double longitude) 
     {
     	mProgress.show();
+    	mProgress.setCancelable(false);
     	new Thread() 
     	{
     		@Override
@@ -216,6 +218,7 @@ private ListView mDrawerList;
     			try 
     			{
     				mNearbyList = mFsqApp.getNearby(latitude, longitude);
+    				//test=mFsqApp.checkIn("4bf253cf52bda593bc7fb2b7");
     			} 
     			catch (Exception e) 
     			{
@@ -226,7 +229,20 @@ private ListView mDrawerList;
     		}
      }.start();
    }
-    
+    /*
+     try 
+				{
+					if (mFsqApp.checkIn("4bf253cf52bda593bc7fb2b7"))
+						Toast.makeText(MainActivity.this, "OK", Toast.LENGTH_SHORT).show();
+					else
+						Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
+				} 
+				catch (Exception e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+     */
    private Handler mHandler = new Handler() 
    {
      @Override
@@ -236,12 +252,20 @@ private ListView mDrawerList;
     	 if (msg.what == 0) 
     	 {
     		 if (mNearbyList.size() == 0) 
+    			 Toast.makeText(MainActivity.this, "No nearby places available", Toast.LENGTH_SHORT).show();
+    		 /*if (test == false) 
     		 {
     			 Toast.makeText(MainActivity.this, "No nearby places available", Toast.LENGTH_SHORT).show();
     			 return;
+    		 }*/
+    		 else
+    		 {
+    			 NearbyDialog ndialog=new NearbyDialog(MainActivity.this, mNearbyList);
+    			 ndialog.show();
+    			 //Toast.makeText(MainActivity.this, "ok", Toast.LENGTH_SHORT).show();
     		 }
-    		 mAdapter.setData(mNearbyList);
-    		 mListView.setAdapter(mAdapter);
+    		 /*mAdapter.setData(mNearbyList);
+    		 mListView.setAdapter(mAdapter);*/
     	 }
     	 else 
     	 {

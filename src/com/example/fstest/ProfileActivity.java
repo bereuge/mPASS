@@ -55,12 +55,14 @@ public class ProfileActivity extends Activity
 		
 		TextView tv_name=(TextView)findViewById(R.id.textView1);
 		tv_name.setText(user.getName());
+		//tv_name.setText("Mario Rossi");
 		TextView tv_type=(TextView)findViewById(R.id.textView2);
 		tv_type.setText(user.getType());
 		TextView tv_nrepo=(TextView)findViewById(R.id.textView7);
 		ImageView iv_image=(ImageView)findViewById(R.id.imageView1);
 		Bitmap image=BitmapFactory.decodeFile(user.getImagePath());
 		iv_image.setImageBitmap(image);
+		//iv_image.setImageResource(R.drawable.user);
 		
 		//Carica log utente
 		LogDbManager log=new LogDbManager(getApplicationContext());
@@ -72,6 +74,7 @@ public class ProfileActivity extends Activity
 		//Log.d("Test",user.getName());
 		
 		tv_nrepo.setText("Number of reports: "+String.valueOf(user.getNReports()));
+		//tv_nrepo.setText("Number of reports: 13");
 		
 		final String items[]=new String[] {"Camera","Galleria"};
 		ArrayAdapter<String> adapter=new ArrayAdapter(this, android.R.layout.select_dialog_item, items);

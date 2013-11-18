@@ -90,8 +90,9 @@ public class FTClient
 				Intent launch = (Intent) bundle.get(AccountManager.KEY_INTENT);
 				if (launch != null) 
 				{
+					Log.d("Debug","Errore! Non ha preso il token?");
 					((Activity)context).startActivityForResult(launch, AUTHORIZATION_CODE);
-				} 
+				}
 				else 
 				{
 					String token = bundle.getString(AccountManager.KEY_AUTHTOKEN);
@@ -110,16 +111,19 @@ public class FTClient
 	//Metodo che esegue la query, utilizza una querytask per il compito
 	public String query(String code)
 	{
+		//Se si creasse qua il nuovo thread?
 		String result="";
 		QueryTask task=new QueryTask(code, (Activity)context);
 		//Test per vedere se il token non è ancora stato ottenuto
 		if (authPreferences.getToken()==null || authPreferences.getToken()=="token")
 		{
+			//Apparentemente questo blocco è inutile, il token lo ottiene ma non è più valido
 			try 
 			{
 				Log.d("Response","Token non ottenuto");
 				//Non è abbastanza,servirebbe ripeterlo fino a che non si è ottenuto il token, invece che aspettare una volta sola
 				//Usare handler con il metodo postDelayed() ?? Da controllare	
+				//Sembra completamente inutile 18/11/13
 				Thread.sleep(6000);
 				try 
 				{
@@ -167,15 +171,6 @@ public class FTClient
 			activity=_activity;
 		}
 		
-		/*
-		@Override
-		protected void onPreExecute()
-		{
-			progress.setMessage("Caricamento dati...");
-			progress.setCancelable(false);
-			progress.show();
-		}*/
-		
 		@Override
 		protected String doInBackground(String... urls) 
 		{
@@ -184,8 +179,8 @@ public class FTClient
 		}
 		
 		@Override
-		protected void onPostExecute(String result) {
-			// DA METTERE LE VARIE FUNZIONI DA CHIAMARE IN BASE AL CODE RICEVUTO. SOLUZIONE POCO ELEGANTE
+		protected void onPostExecute(String result) 
+		{
 			// Bisogna studiarsi i callback!
 			Log.d("Response", "Finito!");
 			

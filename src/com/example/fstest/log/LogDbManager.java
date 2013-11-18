@@ -60,7 +60,7 @@ public class LogDbManager
 	public Cursor queueAll()
 	{
 		String[] columns=new String[]{"id","action","date"};
-		Cursor cursor=sqlDatabase.query(database_name,columns,null,null,null,null,null);
+		Cursor cursor=sqlDatabase.query(database_name,columns,null,null,null,null,"date DESC");
 		return cursor;
 	}
 	

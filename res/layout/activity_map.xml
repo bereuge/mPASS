@@ -1,12 +1,54 @@
-<FrameLayout 
+<LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent" 
 	android:layout_height="match_parent"
-	android:id="@+id/mapView">
+	android:id="@+id/mapView"
+	android:name="com.example.fstest.MapActivity"
+	android:weightSum="4"
+	android:orientation="vertical">
 
-<fragment android:id="@+id/map"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:name="com.google.android.gms.maps.MapFragment"/>
-</FrameLayout>
+	<fragment
+	    android:id="@+id/map"
+	    android:name="com.google.android.gms.maps.MapFragment"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent" 
+	    android:layout_weight="1"/>
+
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_weight="3" >
+
+		<ImageButton
+		    android:id="@+id/btn_quiz"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:src="@drawable/ic_quiz" 
+		    android:scaleType="fitXY"
+		    android:background="@null"
+		    android:layout_centerInParent="true"/>
+
+		<Button
+		    android:id="@+id/btn_notification"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignBottom="@+id/btn_quiz"
+		    android:layout_alignParentLeft="true"
+		    android:layout_marginBottom="21dp"
+		    android:layout_marginLeft="33dp"
+		    android:visibility="invisible"
+		    android:text="Quiz" />
+
+		<TextView
+		    android:id="@+id/tv_notification"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_above="@+id/button1"
+		    android:layout_alignLeft="@+id/button1"
+		    android:text=""
+		    android:textAppearance="?android:attr/textAppearanceLarge" />
+	    
+	</RelativeLayout>
+
+</LinearLayout>

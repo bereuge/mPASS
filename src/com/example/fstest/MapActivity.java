@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,11 +26,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class MapActivity extends Activity implements Runnable
 {
+	private GPSTracker gps;
 	private GoogleMap mMap;
 	private FTClient ftclient;
 	private ProgressDialog spinner;
@@ -49,6 +56,7 @@ public class MapActivity extends Activity implements Runnable
         context=this;
         setContentView(R.layout.activity_map);
         
+        gps=new GPSTracker(this);
         //Test spinner , in teoria dovrebbe vedersi prima del caricamento della mappa ma non funziona
         spinner=new ProgressDialog(this);
         spinner.setMessage("Caricamento mappa...");
@@ -57,9 +65,52 @@ public class MapActivity extends Activity implements Runnable
         spinner.setProgress(0); 
         spinner.show();
         
-        handler=new Handler();
+        //Caricamento mappa normale
+        spinner.dismiss();  
+        //setContentView(R.layout.activity_map);
+        mMap=((MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
+        ftclient=new FTClient(context);
+        setUpMapIfNeeded();
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.277205,12.191162) , 6.0f));
+        mMap.setMyLocationEnabled(true);
+        ftclient.setQuery(query_all);
+        //ftclient.query("setmarkers");
+        new Thread()
+		{
+			@Override
+			public void run()
+			{
+				ftclient.query("setmarkers");
+			}
+		}.start();
+		
+        
+        ViewGroup mapHost = (ViewGroup) findViewById(R.id.mapView);
+        mapHost.requestTransparentRegion(mapHost);
+        
+        //Caricamento in un altro thread ma rallenta solo di più
+        /*handler=new Handler();
         thread=new Thread(this);
-        thread.run();
+        thread.run();*/
+        
+        /*DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    //Yes button clicked
+                    break;
+
+                case DialogInterface.BUTTON_NEGATIVE:
+                    //No button clicked
+                    break;
+                }
+            }
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("There is a stair close to you. Can you confirm?").setPositiveButton("Yes", dialogClickListener)
+            .setNegativeButton("No", dialogClickListener).show();*/
     }
     
     @Override
@@ -102,8 +153,18 @@ public class MapActivity extends Activity implements Runnable
     //Procedura per settare i marker dei luoghi nella mappa
     public void setMarkers(JSONArray venues)
     {
-    	String name, ll, fsqid;
+    	String name, ll, fsqid, min_fsqid="";
+    	float min_distance=3000; //Ne cerco uno solo se è al massimo distante un tot di metri
     	double lat = 0, lng = 0;
+    	FsqVenue venue=new FsqVenue();
+    	/*Marker tempmarker=mMap.addMarker(new MarkerOptions()
+		.position(new LatLng(44.404356,12.19687))
+		.title("")
+		.snippet("Commento...")
+		.icon(BitmapDescriptorFactory.fromResource(R.drawable.solo_scala))
+		.draggable(false)
+		);*/
+    	
     	markerIdMap=new HashMap<Marker, String>(); //associa ad ogni marker un foursquare id, utilizzato per fare query per i singoli luoghi
     	//Manca la gestione di marker doppi
     	/*
@@ -173,6 +234,19 @@ public class MapActivity extends Activity implements Runnable
 				lat=Double.parseDouble(lls[0]);
 				lng=Double.parseDouble(lls[1]);
 				Log.d("Test",name);
+				
+				float temp_distance=distFrom(lat,lng,gps.getLatitude(),gps.getLongitude());
+				if (temp_distance<=min_distance)
+				{
+					venue.id=fsqid;
+					venue.name=name;
+					venue.distance=String.valueOf(min_distance);
+					venue.latitude=lat;
+					
+					min_fsqid=fsqid;
+					min_distance=temp_distance;
+					Log.d("Debug",name +" "+min_distance+" "+min_fsqid);
+				}
 				//Random r=new Random();
 				/*int j=r.nextInt(3);
 				if (j==0)
@@ -215,6 +289,52 @@ public class MapActivity extends Activity implements Runnable
 				e.printStackTrace();
 			}
     	}
+    	if (venues.length()==0)
+    	{
+    		Log.d("Debug","Errore nella query");
+    		ftclient.setQuery(query_all);
+            ftclient.query("setmarkers");
+            //Non ha senso questa cosa...meglio cavarla! Se il database è vuoto ripete la query all'infinito!
+    	}
+    	else
+    	{
+    		if (!min_fsqid.equals(""))
+    		{
+    			TextView tv=(TextView)findViewById(R.id.tv_notification);
+    			tv.setText("Sei vicino a "+venue.name);
+    			Button btn=(Button)findViewById(R.id.btn_notification);
+    			btn.setVisibility(1);
+    			btn.setText("Fai il quiz!");
+    			btn.setOnClickListener(new OnClickListener() 
+    			{
+					@Override
+					public void onClick(View arg0) 
+					{
+						DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() 
+						{
+				            @Override
+				            public void onClick(DialogInterface dialog, int which) 
+				            {
+				                switch (which)
+				                {
+				                	case DialogInterface.BUTTON_POSITIVE:
+				                    //Yes button clicked
+				                    break;
+	
+				                	case DialogInterface.BUTTON_NEGATIVE:
+				                    //No button clicked
+				                    break;
+				                }
+				            }
+						};
+
+				        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+				        builder.setMessage("Ti va di fare un quiz?").setPositiveButton("Yes", dialogClickListener)
+				            .setNegativeButton("No", dialogClickListener).show();
+					}
+				});
+    		}
+    	}
     	
     	mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() 
     	{
@@ -222,7 +342,7 @@ public class MapActivity extends Activity implements Runnable
 			public void onInfoWindowClick(Marker marker) 
 			{
 				String fsqid=markerIdMap.get(marker);
-				ftclient.setQuery("SELECT ROWID, name, accessLevel, comment, doorways, elevator, escalator, parking FROM 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ WHERE fsqid='"+fsqid+"'");
+				ftclient.setQuery("SELECT ROWID, name, accessLevel, comment, doorways, elevator, escalator, parking, user, date FROM 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ WHERE fsqid='"+fsqid+"'");
 				spinner.setMessage("Caricamento dati...");
 				spinner.show();
 				new Thread()
@@ -262,6 +382,22 @@ public class MapActivity extends Activity implements Runnable
     	fdialog.show();
     }
     
+    public static float distFrom(double lat1, double lng1, double lat2, double lng2) 
+    {
+        double earthRadius = 3958.75;
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                   Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                   Math.sin(dLng/2) * Math.sin(dLng/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double dist = earthRadius * c;
+
+        int meterConversion = 1609;
+
+        return Float.valueOf((float) (dist * meterConversion));
+    }
+    
     public void testCB(boolean a, boolean pa, boolean n)
     {
     	Toast.makeText(this, String.valueOf(a)+" "+String.valueOf(pa)+" "+String.valueOf(n), Toast.LENGTH_LONG).show();
@@ -278,7 +414,7 @@ public class MapActivity extends Activity implements Runnable
             {  
                 while(counter <= 4)  
                 {  
-                    thread.wait(500);  
+                    thread.wait(1);  
                     counter++;  
                     handler.post(new Runnable()  
                     {  
