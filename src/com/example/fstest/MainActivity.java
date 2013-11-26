@@ -35,12 +35,10 @@ import java.util.ArrayList;
 public class MainActivity extends Activity {
 private FoursquareApp mFsqApp;
 private ListView mListView;
-private NearbyAdapter mAdapter;
+//private NearbyAdapter mAdapter;
 private ArrayList<FsqVenue> mNearbyList;
 private ProgressDialog mProgress;
 private GPSTracker mGPS;
-
-private boolean test;
 
 //Codici per l'autorizzazione a Foursquare
 public static final String CLIENT_ID = "WRWWBSHWC1AFXVAB5SZPCWBO1X0QACFX302KRXKRPXRIVVAO";
@@ -105,11 +103,11 @@ private ListView mDrawerList;
 				startActivity(profile_intent);
 			}
 		});
-        
+        /*
         mListView	= (ListView) findViewById(R.id.lv_places);
         
-        mListView.setOnItemClickListener(new OnItemClickListener() {
-
+        mListView.setOnItemClickListener(new OnItemClickListener() 
+        {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int position, long d) 
 			{
@@ -121,10 +119,10 @@ private ListView mDrawerList;
 				startActivity(quiz_intent);
 			}
 		});
-        
+        */
         mFsqApp = new FoursquareApp(this, CLIENT_ID, CLIENT_SECRET);
         mGPS = new GPSTracker(this);
-        mAdapter = new NearbyAdapter(this);
+        //mAdapter = new NearbyAdapter(this);
         mNearbyList	= new ArrayList<FsqVenue>();
         mProgress	= new ProgressDialog(this);
         
@@ -191,6 +189,7 @@ private ListView mDrawerList;
     	
     }
     
+    //Gestione menù
     public boolean onOptionsItemSelected(MenuItem item) 
     {
         switch (item.getItemId()) 
@@ -229,20 +228,7 @@ private ListView mDrawerList;
     		}
      }.start();
    }
-    /*
-     try 
-				{
-					if (mFsqApp.checkIn("4bf253cf52bda593bc7fb2b7"))
-						Toast.makeText(MainActivity.this, "OK", Toast.LENGTH_SHORT).show();
-					else
-						Toast.makeText(MainActivity.this, "NO", Toast.LENGTH_SHORT).show();
-				} 
-				catch (Exception e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-     */
+    
    private Handler mHandler = new Handler() 
    {
      @Override

@@ -38,7 +38,6 @@ public class NearbyDialog extends Dialog implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 	    setContentView(R.layout.nearby_layout);
 	    setTitle("Nearby Venues");
 	    adapter=new NearbyAdapter(activity);
@@ -51,7 +50,6 @@ public class NearbyDialog extends Dialog implements OnClickListener
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View view, int position, long d) 
 			{
-				//Toast.makeText(MainActivity.this, "Hai premuto "+mNearbyList.get(position).name, Toast.LENGTH_SHORT).show();
 				Intent quiz_intent=new Intent(activity, QuizActivity.class);
 				FsqVenue venue=new FsqVenue();
 				venue=nearby_list.get(position);
@@ -60,16 +58,6 @@ public class NearbyDialog extends Dialog implements OnClickListener
 				dismiss();
 			}
 		});
-	    /*try 
-	    {
-			setTitle(venues.getJSONArray(0).get(1).toString());
-		} 
-	    catch (JSONException e) 
-		{
-			e.printStackTrace();
-		}
-	    //Servirebbe una soluzione migliore per la dimensione del dialog
-	    loadQuizzes();*/
 	}
 	
 	@Override

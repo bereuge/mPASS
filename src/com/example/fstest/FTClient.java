@@ -108,6 +108,19 @@ public class FTClient
 		}
 	}
 	
+	//Il problema di questo metodo è che non restituisce tutto il json, ma è poco importante
+	public void queryOnNewThread(final String code)
+	{
+		new Thread()
+		{
+			@Override
+			public void run()
+			{
+				query(code);
+			}
+		}.start();
+	}
+	
 	//Metodo che esegue la query, utilizza una querytask per il compito
 	public String query(String code)
 	{
@@ -196,7 +209,7 @@ public class FTClient
 				} 
 				catch (JSONException e) 
 				{
-					// TODO Auto-generated catch block
+					((MapActivity) activity).setMarkers(null);
 					e.printStackTrace();
 				}
 			}

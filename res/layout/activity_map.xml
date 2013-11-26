@@ -1,6 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:id="@+id/drawer_layout_map"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent" >
+
 <LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+   
 	android:layout_width="match_parent" 
 	android:layout_height="match_parent"
 	android:id="@+id/mapView"
@@ -19,7 +25,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="fill_parent"
 	    android:layout_weight="3" >
-
+	    
 		<ImageButton
 		    android:id="@+id/btn_quiz"
 		    android:layout_width="wrap_content"
@@ -28,6 +34,15 @@
 		    android:scaleType="fitXY"
 		    android:background="@null"
 		    android:layout_centerInParent="true"/>
+		
+	    <!-- <TextView
+		    android:id="@+id/tv_btn"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@+id/btn_quiz"
+		    android:layout_centerHorizontal="true"
+		    android:text="Fai una segnalazione"
+		    android:textAppearance="?android:attr/textAppearanceLarge" /> -->
 
 		<Button
 		    android:id="@+id/btn_notification"
@@ -48,7 +63,19 @@
 		    android:layout_alignLeft="@+id/button1"
 		    android:text=""
 		    android:textAppearance="?android:attr/textAppearanceLarge" />
-	    
+		
 	</RelativeLayout>
 
 </LinearLayout>
+
+<ListView
+       android:id="@+id/drawer_map"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:background="#111"></ListView>
+
+</android.support.v4.widget.DrawerLayout>

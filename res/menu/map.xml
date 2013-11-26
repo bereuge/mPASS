@@ -5,5 +5,13 @@
         android:title="Preferences" 
         android:showAsAction="always">
     </item>
-
+    
+    <item
+        android:id="@+id/item_mapmenu"
+        android:icon="@drawable/ic_menu" 
+        android:title="Menu" 
+        android:showAsAction="always">
+        
+    </item>
+    
 </menu>

@@ -88,7 +88,10 @@ public class InfoDialog extends Dialog implements OnClickListener
 				}*/
 				TextView tv_quiztitle=new TextView(activity);
 			    //tv_quiztitle.setText("Segnalazione "+Integer.toString(i+1));
-				tv_quiztitle.setText("Segnalazione del "+date.substring(0,10)+" di "+user);
+				if (date.equals(""))
+					tv_quiztitle.setText("Segnalazione di "+user);
+				else
+					tv_quiztitle.setText("Segnalazione del "+date.substring(0,10)+" di "+user);
 			    tv_quiztitle.setTextSize(16);
 			    tv_quiztitle.setPadding(0, 10, 0, 10);
 			    ll.addView(tv_quiztitle);
@@ -100,7 +103,7 @@ public class InfoDialog extends Dialog implements OnClickListener
 					tv_accesslvl.setText("Livello accessibilità: Parz. accessibile");
 				else if (accesslevel.equals("N"))
 					tv_accesslvl.setText("Livello accessibilità: Non accessibile");
-				else if (accesslevel.equals(" ")) tv_accesslvl.setText("Livello accessibilità: Ignoto");
+				else if (accesslevel.equals(" ") || accesslevel.equals("")) tv_accesslvl.setText("Livello accessibilità: Ignoto");
 				tv_accesslvl.setPadding(0, 5, 0, 5);
 				ll.addView(tv_accesslvl);
 				
@@ -111,25 +114,25 @@ public class InfoDialog extends Dialog implements OnClickListener
 			    ll.addView(tv_comment);
 			    
 			    TextView tv_door=new TextView(activity);
-			    if (doorways.equals(" ")) tv_door.setText("Porte: Ignoto");
+			    if (doorways.equals(" ") || doorways.equals("")) tv_door.setText("Porte: Ignoto");
 			    else tv_door.setText("Porte: "+doorways);
 			    tv_door.setPadding(0, 5, 0, 5);
 			    ll.addView(tv_door);
 			    
 			    TextView tv_elevator=new TextView(activity);
-			    if (elevator.equals(" ")) tv_elevator.setText("Ascensori: Ignoto");
+			    if (elevator.equals(" ") || elevator.equals("")) tv_elevator.setText("Ascensori: Ignoto");
 			    else tv_elevator.setText("Ascensori: "+elevator);
 			    tv_elevator.setPadding(0, 5, 0, 5);
 			    ll.addView(tv_elevator);
 			    
 			    TextView tv_escalator=new TextView(activity);
-			    if (escalator.equals(" ")) tv_escalator.setText("Scale mobili: Ignoto");
+			    if (escalator.equals(" ") || escalator.equals("")) tv_escalator.setText("Scale mobili: Ignoto");
 			    else tv_escalator.setText("Scale mobili: "+escalator);
 			    tv_escalator.setPadding(0, 5, 0, 5);
 			    ll.addView(tv_escalator);
 			    
 			    TextView tv_parking=new TextView(activity);
-			    if (parking.equals(" ")) tv_parking.setText("Parcheggio: Ignoto");
+			    if (parking.equals(" ") || parking.equals("")) tv_parking.setText("Parcheggio: Ignoto");
 			    else tv_parking.setText("Parcheggio: "+parking);
 			    tv_parking.setPadding(0, 5, 0, 5);
 			    ll.addView(tv_parking);

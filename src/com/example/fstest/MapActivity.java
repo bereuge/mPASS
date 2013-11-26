@@ -1,6 +1,8 @@
 package com.example.fstest;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import org.json.JSONArray;
@@ -19,9 +21,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,13 +33,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class MapActivity extends Activity implements Runnable
 {
+	private FsqVenue venue;
 	private GPSTracker gps;
 	private GoogleMap mMap;
 	private FTClient ftclient;
@@ -44,9 +53,21 @@ public class MapActivity extends Activity implements Runnable
     private Handler handler;
     private int counter=0;
     private Context context;
+    
     private HashMap<Marker, String> markerIdMap;
-    private String query_all="SELECT ROWID, fsqid, name, geo FROM 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ";
-    private String query_acc_a="SELECT ROWID, fsqid, name, geo, accessLevel FROM 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ WHERE accessLevel='A'";
+    private boolean[] preferences;
+    
+    private String tableId="1Ci1BU5uxpIPeAsdYaqqCS4o_Y3SpV-pMJIkfR2g";
+    private String query_all="SELECT ROWID, fsqid, name, geo FROM "+tableId;
+    private String query_acc="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+tableId+" WHERE accessLevel in (@ACL)";
+    
+    private Button btn_notif;
+    private TextView tv_notif;
+    
+    //Menu
+    private String[] menu;
+    private DrawerLayout drawer;
+    private ListView mDrawerList;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -56,6 +77,26 @@ public class MapActivity extends Activity implements Runnable
         context=this;
         setContentView(R.layout.activity_map);
         
+        preferences=new boolean[3];
+        preferences[0]=true; //Accessibile
+        preferences[1]=true; //Parzialmente accessibile
+        preferences[2]=true; //Non accessibile
+        
+        initialize_menu();
+        tv_notif=(TextView)findViewById(R.id.tv_notification);
+		//tv_notif.setText("Sei vicino a "+venue.name);
+		btn_notif=(Button)findViewById(R.id.btn_notification);
+        
+		ImageButton btn_quiz=(ImageButton)findViewById(R.id.btn_quiz);
+		btn_quiz.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View arg0) 
+			{
+				
+			}
+		});
+		
         gps=new GPSTracker(this);
         //Test spinner , in teoria dovrebbe vedersi prima del caricamento della mappa ma non funziona
         spinner=new ProgressDialog(this);
@@ -66,7 +107,7 @@ public class MapActivity extends Activity implements Runnable
         spinner.show();
         
         //Caricamento mappa normale
-        spinner.dismiss();  
+        //spinner.dismiss();  
         //setContentView(R.layout.activity_map);
         mMap=((MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
         ftclient=new FTClient(context);
@@ -75,14 +116,15 @@ public class MapActivity extends Activity implements Runnable
         mMap.setMyLocationEnabled(true);
         ftclient.setQuery(query_all);
         //ftclient.query("setmarkers");
-        new Thread()
+        /*new Thread()
 		{
 			@Override
 			public void run()
 			{
 				ftclient.query("setmarkers");
 			}
-		}.start();
+		}.start();*/
+        ftclient.queryOnNewThread("setmarkers");
 		
         
         ViewGroup mapHost = (ViewGroup) findViewById(R.id.mapView);
@@ -127,9 +169,28 @@ public class MapActivity extends Activity implements Runnable
         {
         	case R.id.item_filter:showFilterDialog();
         					      break;
+        	case R.id.item_mapmenu:if (!drawer.isDrawerOpen(mDrawerList))
+										drawer.openDrawer(mDrawerList);
+									else
+										drawer.closeDrawer(mDrawerList);
+						            break;
         	default:break;
         }
         return true;
+    }
+    
+    private void initialize_menu()
+    {
+ 	   menu=getResources().getStringArray(R.array.drawer_menu);
+ 	   if (menu==null) Log.d("Debug", "menu null");
+ 	   drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
+ 	   if (drawer==null) Log.d("Debug", "drawer null");
+ 	   mDrawerList = (ListView) findViewById(R.id.drawer_map);
+ 	   if (mDrawerList==null) Log.d("Debug", "mdrawerlist null");
+ 	   if (this==null) Log.d("Debug", "this null");
+ 	   //ArrayAdapter adapter=new ArrayAdapter<String>(this, R.layout.drawer_list_item, menu);
+ 	   mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, menu));
+ 	   mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
     
     //Resetta la mappa se c'è bisogno
@@ -156,7 +217,9 @@ public class MapActivity extends Activity implements Runnable
     	String name, ll, fsqid, min_fsqid="";
     	float min_distance=3000; //Ne cerco uno solo se è al massimo distante un tot di metri
     	double lat = 0, lng = 0;
-    	FsqVenue venue=new FsqVenue();
+    	/*FsqVenue */venue=new FsqVenue();
+    	
+    	spinner.dismiss();
     	/*Marker tempmarker=mMap.addMarker(new MarkerOptions()
 		.position(new LatLng(44.404356,12.19687))
 		.title("")
@@ -222,90 +285,89 @@ public class MapActivity extends Activity implements Runnable
 			}
     	}
     	*/
-    	for(int i=0;i<venues.length();i++)
-    	{
-    		try 
-    		{
-				JSONArray row=venues.getJSONArray(i);
-				fsqid=row.get(1).toString();
-				name=row.get(2).toString();
-				ll=row.get(3).toString();
-				String[] lls=ll.split("\\,");
-				lat=Double.parseDouble(lls[0]);
-				lng=Double.parseDouble(lls[1]);
-				Log.d("Test",name);
-				
-				float temp_distance=distFrom(lat,lng,gps.getLatitude(),gps.getLongitude());
-				if (temp_distance<=min_distance)
-				{
-					venue.id=fsqid;
-					venue.name=name;
-					venue.distance=String.valueOf(min_distance);
-					venue.latitude=lat;
-					
-					min_fsqid=fsqid;
-					min_distance=temp_distance;
-					Log.d("Debug",name +" "+min_distance+" "+min_fsqid);
-				}
-				//Random r=new Random();
-				/*int j=r.nextInt(3);
-				if (j==0)
-				{*/
-				Marker marker=mMap.addMarker(new MarkerOptions()
-	    		.position(new LatLng(lat, lng))
-	    		.title(name)
-	    		.snippet("Commento...")
-	    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-	    		.draggable(false)
-	    		);
-				markerIdMap.put(marker, fsqid);
-				//}
-				/*else if (j==1)
-				{
-					Marker marker=mMap.addMarker(new MarkerOptions()
-		    		.position(new LatLng(lat, lng))
-		    		.title(name)
-		    		.snippet("Commento...")
-		    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
-		    		.draggable(false)
-		    		);
-					markerIdMap.put(marker, fsqid);
-				}
-				else
-				{
-					Marker marker=mMap.addMarker(new MarkerOptions()
-		    		.position(new LatLng(lat, lng))
-		    		.title(name)
-		    		.snippet("Commento...")
-		    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-		    		.draggable(false)
-		    		);
-					markerIdMap.put(marker, fsqid);
-				}
-				//markerIdMap.put(marker, fsqid);*/
-			} 
-    		catch (JSONException e) 
-			{
-				e.printStackTrace();
-			}
-    	}
-    	if (venues.length()==0)
+    	if (venues==null)
     	{
     		Log.d("Debug","Errore nella query");
-    		ftclient.setQuery(query_all);
-            ftclient.query("setmarkers");
-            //Non ha senso questa cosa...meglio cavarla! Se il database è vuoto ripete la query all'infinito!
+    		Toast.makeText(this, "Errore nel caricamento della mappa", Toast.LENGTH_LONG).show();
     	}
     	else
     	{
-    		if (!min_fsqid.equals(""))
+	    	for(int i=0;i<venues.length();i++)
+	    	{
+	    		try 
+	    		{
+					JSONArray row=venues.getJSONArray(i);
+					fsqid=row.get(1).toString();
+					name=row.get(2).toString();
+					ll=row.get(3).toString();
+					String[] lls=ll.split("\\,");
+					lat=Double.parseDouble(lls[0]);
+					lng=Double.parseDouble(lls[1]);
+					Log.d("Test",name);
+					
+					float temp_distance=distFrom(lat,lng,gps.getLatitude(),gps.getLongitude());
+					if (temp_distance<=min_distance)
+					{
+						venue.id=fsqid;
+						venue.name=name;
+						venue.distance=String.valueOf(min_distance);
+						venue.latitude=lat;
+						venue.longitude=lng;
+						
+						min_fsqid=fsqid;
+						min_distance=temp_distance;
+						Log.d("Debug",name +" "+min_distance+" "+min_fsqid);
+					}
+					//Random r=new Random();
+					/*int j=r.nextInt(3);
+					if (j==0)
+					{*/
+					Marker marker=mMap.addMarker(new MarkerOptions()
+		    		.position(new LatLng(lat, lng))
+		    		.title(name)
+		    		.snippet("Commento...")
+		    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+		    		.draggable(false)
+		    		);
+					markerIdMap.put(marker, fsqid);
+					//}
+					/*else if (j==1)
+					{
+						Marker marker=mMap.addMarker(new MarkerOptions()
+			    		.position(new LatLng(lat, lng))
+			    		.title(name)
+			    		.snippet("Commento...")
+			    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+			    		.draggable(false)
+			    		);
+						markerIdMap.put(marker, fsqid);
+					}
+					else
+					{
+						Marker marker=mMap.addMarker(new MarkerOptions()
+			    		.position(new LatLng(lat, lng))
+			    		.title(name)
+			    		.snippet("Commento...")
+			    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+			    		.draggable(false)
+			    		);
+						markerIdMap.put(marker, fsqid);
+					}
+					//markerIdMap.put(marker, fsqid);*/
+				} 
+	    		catch (JSONException e) 
+				{
+					e.printStackTrace();
+				}
+	    	}
+	    	if (!min_fsqid.equals(""))
     		{
-    			TextView tv=(TextView)findViewById(R.id.tv_notification);
-    			tv.setText("Sei vicino a "+venue.name);
-    			Button btn=(Button)findViewById(R.id.btn_notification);
-    			btn.setVisibility(1);
-    			btn.setText("Fai il quiz!");
-    			btn.setOnClickListener(new OnClickListener() 
+    			//tv_notif=(TextView)findViewById(R.id.tv_notification);
+    			tv_notif.setText("Sei vicino a "+venue.name);
+    			//Button btn_notif=(Button)findViewById(R.id.btn_notification);
+    			btn_notif.setVisibility(View.VISIBLE);
+    			btn_notif.setText("Fai il quiz!");
+    			btn_notif.setOnClickListener(new OnClickListener() 
     			{
 					@Override
 					public void onClick(View arg0) 
@@ -318,12 +380,23 @@ public class MapActivity extends Activity implements Runnable
 				                switch (which)
 				                {
 				                	case DialogInterface.BUTTON_POSITIVE:
-				                    //Yes button clicked
-				                    break;
+				                		//Yes button clicked
+				                		Intent quiz_intent=new Intent(MapActivity.this, QuizActivity.class);
+				                		quiz_intent.putExtra("venue", venue);
+				        				startActivity(quiz_intent);
+				        				btn_notif.setVisibility(View.GONE);
+				        			    tv_notif.setVisibility(View.GONE);
+				        				btn_notif.setEnabled(false);
+				                		tv_notif.setEnabled(false);
+				                		break;
 	
 				                	case DialogInterface.BUTTON_NEGATIVE:
-				                    //No button clicked
-				                    break;
+				                		//No button clicked
+				                		btn_notif.setVisibility(View.GONE);
+				        			    tv_notif.setVisibility(View.GONE);
+				        				btn_notif.setEnabled(false);
+				                		tv_notif.setEnabled(false);
+				                		break;
 				                }
 				            }
 						};
@@ -335,6 +408,17 @@ public class MapActivity extends Activity implements Runnable
 				});
     		}
     	}
+    	/*if (venues.length()==0)
+    	{
+    		Log.d("Debug","Errore nella query");
+    		ftclient.setQuery(query_all);
+            ftclient.query("setmarkers");
+            //Non ha senso questa cosa...meglio cavarla! Se il database è vuoto ripete la query all'infinito!
+    	}
+    	else
+    	{
+    		
+    	}*/
     	
     	mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() 
     	{
@@ -342,7 +426,7 @@ public class MapActivity extends Activity implements Runnable
 			public void onInfoWindowClick(Marker marker) 
 			{
 				String fsqid=markerIdMap.get(marker);
-				ftclient.setQuery("SELECT ROWID, name, accessLevel, comment, doorways, elevator, escalator, parking, user, date FROM 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ WHERE fsqid='"+fsqid+"'");
+				ftclient.setQuery("SELECT ROWID, name, accessLevel, comment, doorways, elevator, escalator, parking, user, date FROM "+tableId+" WHERE fsqid='"+fsqid+"'");
 				spinner.setMessage("Caricamento dati...");
 				spinner.show();
 				new Thread()
@@ -367,18 +451,8 @@ public class MapActivity extends Activity implements Runnable
     
     private void showFilterDialog()
     {
-    	FilterDialog fdialog=new FilterDialog((Activity)context);
-    	//fdialog.setCancelable(false);
+    	FilterDialog fdialog=new FilterDialog((Activity)context, preferences);
     	fdialog.setCanceledOnTouchOutside(false);
-    	/*fdialog.setOnDismissListener(new OnDismissListener() 
-    	{
-			@Override
-			public void onDismiss(DialogInterface dialog) 
-			{
-				Toast.makeText(this, String.valueOf((FilterDialog)dialog.), Toast.LENGTH_LONG).show();
-			}
-		});*/
-    	//testCB(true,true,true);
     	fdialog.show();
     }
     
@@ -398,10 +472,67 @@ public class MapActivity extends Activity implements Runnable
         return Float.valueOf((float) (dist * meterConversion));
     }
     
-    public void testCB(boolean a, boolean pa, boolean n)
+    private void clearMap()
     {
-    	Toast.makeText(this, String.valueOf(a)+" "+String.valueOf(pa)+" "+String.valueOf(n), Toast.LENGTH_LONG).show();
-    	//Toast.makeText(this, "AAAAA", Toast.LENGTH_LONG).show();
+    	mMap.clear();
+    	markerIdMap.clear();
+    }
+    
+    public void applyFilter(boolean[] new_preferences)
+    {
+    	//Log.d("Debug", temp[0]+" "+temp[1]+" "+temp[2]);
+    	preferences=new_preferences;
+    	//Creazione stringa di access level da inserire nella stringa
+    	String acl="";
+    	if (preferences[0]==true) 
+    	{
+    		acl="'A'";
+    		if (preferences[1]==true || preferences[2]==true) acl=acl+",";
+    	}
+    	if (preferences[1]==true) 
+    	{
+    		acl=acl+"'P'";
+    		if (preferences[2]==true) acl=acl+",";
+    	}
+    	if (preferences[2]==true)
+    	{
+    		acl=acl+"'N'";
+    	}
+    	if (acl.equals("")) acl="''";
+    	
+    	String temp_query_acc=query_acc.replace("@ACL", acl);
+    	/*Log.d("Debug", acl);
+    	Log.d("Debug", temp_query_acc);*/
+    	clearMap();
+    	//Esecuzione query
+    	ftclient.setQuery(temp_query_acc);
+        ftclient.queryOnNewThread("setmarkers");
+    }
+    
+    private class DrawerItemClickListener implements ListView.OnItemClickListener 
+    {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
+        {
+     	   mDrawerList.setItemChecked(position, true);
+     	   //Toast.makeText(MainActivity.this, Long.toString(id) , Toast.LENGTH_LONG).show();
+     	   if (id==0)
+     	   {   
+     		   drawer.closeDrawer(mDrawerList);
+		 	   Intent intent=new Intent(MapActivity.this, MainActivity.class);
+		 	   startActivity(intent);
+     	   }
+     	   else if (id==1)
+     	   {
+     		  drawer.closeDrawer(mDrawerList);
+     	   }
+     	   else if (id==2)
+     	   {
+     		   drawer.closeDrawer(mDrawerList);
+     		   Intent profile_intent=new Intent(MapActivity.this, ProfileActivity.class);
+     		   startActivity(profile_intent);
+     	   }   
+        }
     }
     
     //Test thread per visualizzare lo spinner prima del caricamento della mappa

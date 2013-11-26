@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 public class QuizActivity extends Activity 
 {
-
+	private String tableId="1Ci1BU5uxpIPeAsdYaqqCS4o_Y3SpV-pMJIkfR2g";
 	public static final String CLIENT_ID = "WRWWBSHWC1AFXVAB5SZPCWBO1X0QACFX302KRXKRPXRIVVAO";
 	public static final String CLIENT_SECRET = "00Z2J0045OFM0EZVZT43333QZ4PDFXCQCOYD32HAZQJS4LG5";
 	
@@ -201,16 +201,16 @@ public class QuizActivity extends Activity
 				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String sdate=dateFormat.format(date);
 				name=name.replace("'", "");
-				String query_txt="INSERT INTO 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ (name, fsqid, geo, accessLevel, comment, doorways, elevator, escalator, parking, user, date) ";
+				String query_txt="INSERT INTO "+tableId+" (name, fsqid, geo, accessLevel, comment, doorways, elevator, escalator, parking, user, date) ";
 				query_txt=query_txt+"VALUES ('"+name+"', '"+fsqid+"', '"+geo+"', '"+squiz1+"', '"+comment_txt+"', '"+squiz2+"', '"+squiz3+"', '"+squiz4+"', '"+squiz5+"', '"+user.getName()+"', '"+sdate+"')";
 				//Creo le stringhe per l'azione da mettere nel log, la inserisco dopo solo se l'insert ha avuto successo
 				//Log.d("Debug", query_txt);
 				date_for_log=sdate;
 				action_for_log="Submitted a report about "+name+".";
 				ftclient.setQuery(query_txt);
-				ftclient.query("insertvenue");
+				ftclient.queryOnNewThread("insertvenue");
 				//Thread necessario per far vedere il progress dialog
-				new Thread()
+				/*new Thread()
 				{
 					@Override
 					public void run()
@@ -218,7 +218,7 @@ public class QuizActivity extends Activity
 						//ftclient.query(query_txt, "insertvenue");
 						ftclient.query("insertvenue");
 					}
-				}.start();
+				}.start();*/
 				
 				if (fsqapp.hasAccessToken())
 				{
