@@ -1,4 +1,4 @@
-package com.example.fstest;
+package com.example.fstest.fusiontables;
 
 
 import java.util.concurrent.ExecutionException;
@@ -12,6 +12,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.example.fstest.MapActivity;
+import com.example.fstest.QuizActivity;
 /*import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;*/

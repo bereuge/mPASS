@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import com.example.fstest.foursquare.FsqVenue;
+
 public class NearbyAdapter extends BaseAdapter {
 	private ArrayList<FsqVenue> mVenueList;
 	private LayoutInflater mInflater;

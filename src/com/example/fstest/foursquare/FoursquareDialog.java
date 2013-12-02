@@ -1,4 +1,7 @@
-package com.example.fstest;
+package com.example.fstest.foursquare;
+
+import com.example.fstest.R;
+import com.example.fstest.R.drawable;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;

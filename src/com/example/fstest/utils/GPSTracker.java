@@ -1,4 +1,4 @@
-package com.example.fstest;
+package com.example.fstest.utils;
 
 import android.app.AlertDialog;
 import android.content.Context;

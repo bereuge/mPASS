@@ -1,6 +1,6 @@
-package com.example.fstest;
+package com.example.fstest.foursquare;
 
-import com.example.fstest.FoursquareDialog.FsqDialogListener;
+import com.example.fstest.foursquare.FoursquareDialog.FsqDialogListener;
 
 import java.io.BufferedReader;
 import java.io.IOException;

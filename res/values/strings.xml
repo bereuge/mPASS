@@ -40,5 +40,6 @@
     <string name="accessibilitylvl">Accessibility Level</string>
     <string name="title_activity_log_test">LogTest</string>
     <string name="title_activity_splash">mPASS</string>
+    <string name="title_activity_welcome">mPASS - Welcome!</string>
 
 </resources>

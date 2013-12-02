@@ -1,5 +1,7 @@
 package com.example.fstest;
 
+import com.example.fstest.fusiontables.FTClient;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,8 +9,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
-import android.widget.Spinner;
 
 public class SplashActivity extends Activity 
 {
@@ -72,16 +74,31 @@ public class SplashActivity extends Activity
     			@Override
     			public void run() 
     			{
-    				Intent i=new Intent(SplashActivity.this, MapActivity.class);
-    				startActivity(i);
-    				finish();
+    				if (!firstTime())
+    		        {
+    		        	//Toast.makeText(this, "Prima volta!", Toast.LENGTH_LONG).show();
+    		        	Intent i_newuser=new Intent(SplashActivity.this,MapActivity.class);
+    		        	startActivity(i_newuser);
+    		        }
+    				else
+    				{
+	    				Intent i=new Intent(SplashActivity.this, WelcomeActivity.class);
+	    				startActivity(i);
+	    				//finish(); //Se uso il finish, non si vede nulla fra la newprofileactivity e l'activity principale per
+	    				            //qualche secondo
+    				}
     			}
     			
     		}, 1000);
-            /*Intent i = new Intent(SplashActivity.this, MainActivity.class);
-            startActivity(i);
-            finish();*/
+            //Aumentare il delay
         }
 	}
 	
+    private boolean firstTime()
+    {
+ 	   boolean first=true;
+ 	   SharedPreferences pref=this.getSharedPreferences("activity", Context.MODE_PRIVATE);
+ 	   first=pref.getBoolean("firsttime", true);
+ 	   return first;
+    }
 }

@@ -13,13 +13,12 @@
         android:protectionLevel="signature" />
 
     <supports-screens
-        android:smallScreens="true"
-        android:normalScreens="true"
-        android:largeScreens="true"
-        android:xlargeScreens="true"
         android:anyDensity="true"
-        />
-    
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
     <uses-permission android:name="com.example.fstest.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -47,16 +46,10 @@
         <activity
             android:name="com.example.fstest.MainActivity"
             android:label="@string/app_name" >
-		   <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-           </intent-filter>
         </activity>
         <activity
             android:name="com.example.fstest.MapActivity"
-            android:label="@string/title_activity_map"
-            android:parentActivityName="MainActivity" >
+            android:label="@string/title_activity_map">
         </activity>
 
         <meta-data
@@ -74,7 +67,7 @@
         <activity
             android:name="com.example.fstest.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:parentActivityName="MainActivity" >
+            android:parentActivityName="MapActivity" >
         </activity>
         <activity
             android:name="com.example.fstest.NewProfileActivity"
@@ -87,6 +80,15 @@
         <activity
             android:name="com.example.fstest.SplashActivity"
             android:label="@string/title_activity_splash" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.fstest.WelcomeActivity"
+            android:label="@string/title_activity_welcome" >
         </activity>
     </application>
 

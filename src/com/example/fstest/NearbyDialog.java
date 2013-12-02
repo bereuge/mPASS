@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.example.fstest.foursquare.FsqVenue;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;

@@ -114,6 +114,16 @@ public class ProfileActivity extends Activity
 				dialog.show();
 			}
 		});
+		
+		Button btn_gaps=(Button)findViewById(R.id.btn_gaps);
+		btn_gaps.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View arg0) 
+			{
+				showPrefDialog("Gaps");
+			}
+		});
 	}
 
 	@Override
@@ -183,4 +193,9 @@ public class ProfileActivity extends Activity
 		return file;
 	}
 	
+	private void showPrefDialog(String category)
+	{
+		PrefDialog pdialog=new PrefDialog(this, category, user);
+		pdialog.show();
+	}
 }

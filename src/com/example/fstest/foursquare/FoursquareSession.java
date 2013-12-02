@@ -1,4 +1,4 @@
-package com.example.fstest;
+package com.example.fstest.foursquare;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

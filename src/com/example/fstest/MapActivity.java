@@ -1,13 +1,16 @@
 package com.example.fstest;
 
-import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import com.example.fstest.foursquare.FoursquareApp;
+import com.example.fstest.foursquare.FsqVenue;
+import com.example.fstest.foursquare.FoursquareApp.FsqAuthListener;
+import com.example.fstest.fusiontables.FTClient;
+import com.example.fstest.utils.GPSTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.MapFragment;
@@ -22,9 +25,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -33,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -48,18 +50,20 @@ public class MapActivity extends Activity implements Runnable
 	private GPSTracker gps;
 	private GoogleMap mMap;
 	private FTClient ftclient;
+	private FoursquareApp fsqApp;
+	
 	private ProgressDialog spinner;
 	private Thread thread;  
     private Handler handler;
     private int counter=0;
     private Context context;
     
+    private ArrayList<FsqVenue> nearbyList;
     private HashMap<Marker, String> markerIdMap;
     private boolean[] preferences;
     
-    private String tableId="1Ci1BU5uxpIPeAsdYaqqCS4o_Y3SpV-pMJIkfR2g";
-    private String query_all="SELECT ROWID, fsqid, name, geo FROM "+tableId;
-    private String query_acc="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+tableId+" WHERE accessLevel in (@ACL)";
+    private String query_all="SELECT ROWID, fsqid, name, geo FROM "+Costants.tableId;
+    private String query_acc="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE accessLevel in (@ACL)";
     
     private Button btn_notif;
     private TextView tv_notif;
@@ -77,6 +81,8 @@ public class MapActivity extends Activity implements Runnable
         context=this;
         setContentView(R.layout.activity_map);
         
+        nearbyList=new ArrayList<FsqVenue>();
+        
         preferences=new boolean[3];
         preferences[0]=true; //Accessibile
         preferences[1]=true; //Parzialmente accessibile
@@ -93,14 +99,19 @@ public class MapActivity extends Activity implements Runnable
 			@Override
 			public void onClick(View arg0) 
 			{
-				
+				if (gps.canGetLocation())
+				{
+					double lat=gps.getLatitude();
+					double lon=gps.getLongitude();
+					loadNearbyPlaces(lat, lon);
+				}
 			}
 		});
 		
         gps=new GPSTracker(this);
         //Test spinner , in teoria dovrebbe vedersi prima del caricamento della mappa ma non funziona
         spinner=new ProgressDialog(this);
-        spinner.setMessage("Caricamento mappa...");
+        spinner.setMessage("Caricamento...");
         spinner.setCancelable(false);
         spinner.setMax(100); 
         spinner.setProgress(0); 
@@ -115,17 +126,22 @@ public class MapActivity extends Activity implements Runnable
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.277205,12.191162) , 6.0f));
         mMap.setMyLocationEnabled(true);
         ftclient.setQuery(query_all);
-        //ftclient.query("setmarkers");
-        /*new Thread()
-		{
-			@Override
-			public void run()
-			{
-				ftclient.query("setmarkers");
-			}
-		}.start();*/
         ftclient.queryOnNewThread("setmarkers");
-		
+        
+        fsqApp = new FoursquareApp(this, Costants.CLIENT_ID, Costants.CLIENT_SECRET);
+        FsqAuthListener listener = new FsqAuthListener() 
+        {
+        	@Override
+         	public void onSuccess() 
+        	{
+         	}
+        
+        	@Override
+        	public void onFail(String error) 
+        	{
+        	}
+        };
+        fsqApp.setListener(listener);
         
         ViewGroup mapHost = (ViewGroup) findViewById(R.id.mapView);
         mapHost.requestTransparentRegion(mapHost);
@@ -190,7 +206,7 @@ public class MapActivity extends Activity implements Runnable
  	   if (this==null) Log.d("Debug", "this null");
  	   //ArrayAdapter adapter=new ArrayAdapter<String>(this, R.layout.drawer_list_item, menu);
  	   mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, menu));
- 	   mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+ 	   mDrawerList.setOnItemClickListener(new DrawerItemClickListener(drawer, mDrawerList, MapActivity.this));
     }
     
     //Resetta la mappa se c'è bisogno
@@ -426,7 +442,7 @@ public class MapActivity extends Activity implements Runnable
 			public void onInfoWindowClick(Marker marker) 
 			{
 				String fsqid=markerIdMap.get(marker);
-				ftclient.setQuery("SELECT ROWID, name, accessLevel, comment, doorways, elevator, escalator, parking, user, date FROM "+tableId+" WHERE fsqid='"+fsqid+"'");
+				ftclient.setQuery("SELECT ROWID, name, accessLevel, comment, doorways, elevator, escalator, parking, user, date FROM "+Costants.tableId+" WHERE fsqid='"+fsqid+"'");
 				spinner.setMessage("Caricamento dati...");
 				spinner.show();
 				new Thread()
@@ -441,6 +457,12 @@ public class MapActivity extends Activity implements Runnable
 		});
     }
 
+    @Override
+    public void onBackPressed() 
+    {
+    	
+    }
+    
     //Callback eseguito dopo il completamento della query, mostra le info sul luogo
     public void showInfoDialog (JSONArray venues)
     {
@@ -509,33 +531,58 @@ public class MapActivity extends Activity implements Runnable
         ftclient.queryOnNewThread("setmarkers");
     }
     
-    private class DrawerItemClickListener implements ListView.OnItemClickListener 
+    private void loadNearbyPlaces(final double latitude, final double longitude) 
     {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) 
-        {
-     	   mDrawerList.setItemChecked(position, true);
-     	   //Toast.makeText(MainActivity.this, Long.toString(id) , Toast.LENGTH_LONG).show();
-     	   if (id==0)
-     	   {   
-     		   drawer.closeDrawer(mDrawerList);
-		 	   Intent intent=new Intent(MapActivity.this, MainActivity.class);
-		 	   startActivity(intent);
-     	   }
-     	   else if (id==1)
-     	   {
-     		  drawer.closeDrawer(mDrawerList);
-     	   }
-     	   else if (id==2)
-     	   {
-     		   drawer.closeDrawer(mDrawerList);
-     		   Intent profile_intent=new Intent(MapActivity.this, ProfileActivity.class);
-     		   startActivity(profile_intent);
-     	   }   
-        }
-    }
+    	spinner.show();
+    	new Thread() 
+    	{
+    		@Override
+    		public void run() 
+    		{
+    			int what = 0;
+    			try 
+    			{
+    				nearbyList = fsqApp.getNearby(latitude, longitude);
+    				//test=mFsqApp.checkIn("4bf253cf52bda593bc7fb2b7");
+    			} 
+    			catch (Exception e) 
+    			{
+    				what = 1;
+    				e.printStackTrace();
+    			}
+    			mHandler.sendMessage(mHandler.obtainMessage(what));
+    		}
+     }.start();
+   }
+    
+   private Handler mHandler = new Handler() 
+   {
+     @Override
+     public void handleMessage(Message msg) 
+     {
+    	 spinner.dismiss();
+    	 if (msg.what == 0) 
+    	 {
+    		 if (nearbyList.size() == 0) 
+    			 Toast.makeText(MapActivity.this, "No nearby places available", Toast.LENGTH_SHORT).show();
+    		 else
+    		 {
+    			 NearbyDialog ndialog=new NearbyDialog(MapActivity.this, nearbyList);
+    			 ndialog.show();
+    			 //Toast.makeText(MainActivity.this, "ok", Toast.LENGTH_SHORT).show();
+    		 }
+    		 /*mAdapter.setData(mNearbyList);
+    		 mListView.setAdapter(mAdapter);*/
+    	 }
+    	 else 
+    	 {
+    		 Toast.makeText(MapActivity.this, "Failed to load nearby places", Toast.LENGTH_SHORT).show();
+    	 }
+     }
+   };
     
     //Test thread per visualizzare lo spinner prima del caricamento della mappa
+    //Al momento non utilizzato
 	@Override
 	public void run() 
 	{

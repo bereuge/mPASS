@@ -1,4 +1,4 @@
-package com.example.fstest;
+package com.example.fstest.foursquare;
 
 import java.io.Serializable;
 

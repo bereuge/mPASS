@@ -1,6 +1,9 @@
 package com.example.fstest;
 
-import com.example.fstest.FoursquareApp.FsqAuthListener;
+import com.example.fstest.foursquare.FoursquareApp;
+import com.example.fstest.foursquare.FsqVenue;
+import com.example.fstest.foursquare.FoursquareApp.FsqAuthListener;
+import com.example.fstest.utils.GPSTracker;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -32,7 +35,8 @@ import android.view.View.OnClickListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity 
+{
 private FoursquareApp mFsqApp;
 private ListView mListView;
 //private NearbyAdapter mAdapter;
@@ -165,7 +169,7 @@ private ListView mDrawerList;
         	@Override
         	public void onClick(View v) 
         	{
-        		if (mGPS.canGetLocation)
+        		if (mGPS.canGetLocation())
         		{
         			double lat = mGPS.getLatitude();
         			double lon = mGPS.getLongitude();

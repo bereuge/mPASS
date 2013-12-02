@@ -3,7 +3,10 @@ package com.example.fstest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.example.fstest.FoursquareApp.FsqAuthListener;
+import com.example.fstest.foursquare.FoursquareApp;
+import com.example.fstest.foursquare.FsqVenue;
+import com.example.fstest.foursquare.FoursquareApp.FsqAuthListener;
+import com.example.fstest.fusiontables.FTClient;
 import com.example.fstest.log.LogDbManager;
 
 import android.os.Bundle;
@@ -26,10 +29,6 @@ import android.widget.Toast;
 
 public class QuizActivity extends Activity 
 {
-	private String tableId="1Ci1BU5uxpIPeAsdYaqqCS4o_Y3SpV-pMJIkfR2g";
-	public static final String CLIENT_ID = "WRWWBSHWC1AFXVAB5SZPCWBO1X0QACFX302KRXKRPXRIVVAO";
-	public static final String CLIENT_SECRET = "00Z2J0045OFM0EZVZT43333QZ4PDFXCQCOYD32HAZQJS4LG5";
-	
 	private FTClient ftclient;
 	private String name;
 	private String fsqid;
@@ -50,7 +49,7 @@ public class QuizActivity extends Activity
 		user=new User(this);
 		spinner=new ProgressDialog(this);
 		ftclient=new FTClient(this);
-		fsqapp = new FoursquareApp(this, CLIENT_ID, CLIENT_SECRET);
+		fsqapp = new FoursquareApp(this, Costants.CLIENT_ID, Costants.CLIENT_SECRET);
 		FsqAuthListener listener=new FsqAuthListener() 
 		{
 			
@@ -201,7 +200,7 @@ public class QuizActivity extends Activity
 				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String sdate=dateFormat.format(date);
 				name=name.replace("'", "");
-				String query_txt="INSERT INTO "+tableId+" (name, fsqid, geo, accessLevel, comment, doorways, elevator, escalator, parking, user, date) ";
+				String query_txt="INSERT INTO "+Costants.tableId+" (name, fsqid, geo, accessLevel, comment, doorways, elevator, escalator, parking, user, date) ";
 				query_txt=query_txt+"VALUES ('"+name+"', '"+fsqid+"', '"+geo+"', '"+squiz1+"', '"+comment_txt+"', '"+squiz2+"', '"+squiz3+"', '"+squiz4+"', '"+squiz5+"', '"+user.getName()+"', '"+sdate+"')";
 				//Creo le stringhe per l'azione da mettere nel log, la inserisco dopo solo se l'insert ha avuto successo
 				//Log.d("Debug", query_txt);

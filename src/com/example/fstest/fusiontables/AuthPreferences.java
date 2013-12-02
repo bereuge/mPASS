@@ -1,4 +1,4 @@
-package com.example.fstest;
+package com.example.fstest.fusiontables;
 
 import android.content.Context;
 import android.content.SharedPreferences;

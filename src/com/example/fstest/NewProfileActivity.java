@@ -47,9 +47,19 @@ public class NewProfileActivity extends Activity
 		setContentView(R.layout.activity_new_profile);
 		
 		log=new LogDbManager(this);
-		log.openToWrite();
+		/*log.openToWrite();
 		log.deleteAll();
-		log.close();
+		log.close();*/
+		
+		Button skip=(Button)findViewById(R.id.btn_skip);
+		skip.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View arg0) 
+			{
+				NewProfileActivity.this.finish();
+			}
+		});
 		
 		final String items[]=new String[] {"Camera","Galleria"};
 		ArrayAdapter<String> adapter=new ArrayAdapter(this, android.R.layout.select_dialog_item, items);
@@ -98,10 +108,12 @@ public class NewProfileActivity extends Activity
 				if (!username.isEmpty())
 				{
 					new_user=new User(NewProfileActivity.this);
+					new_user.eraseUser();
 					new_user.setName(et_user.getText().toString());
 					new_user.setImagePath(imagepath);
 					new_user.setType("User");
 					log.openToWrite();
+					log.deleteAll();
 					Date date=new Date();
 					SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					String sdate=dateFormat.format(date);
@@ -122,6 +134,7 @@ public class NewProfileActivity extends Activity
 			public void onClick(View v) 
 			{
 				new_user=new User(NewProfileActivity.this);
+				new_user.eraseUser();
 				new_user.setName("Anonimo");
 				new_user.setImagePath(null);
 				new_user.setType("User");
@@ -191,7 +204,7 @@ public class NewProfileActivity extends Activity
 		Editor editor = pref.edit();
 		editor.putBoolean("firsttime", false);
 		editor.commit();
-		Intent i=new Intent(NewProfileActivity.this,MainActivity.class);
+		Intent i=new Intent(NewProfileActivity.this,MapActivity.class);
 		startActivity(i);
 	}
 	
