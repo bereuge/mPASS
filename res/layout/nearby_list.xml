@@ -48,7 +48,7 @@
 		android:textSize="14sp"
 		android:text="Jl. Cihampelas"/>
 	
-	<TextView
+	<!--  <TextView
 		android:id="@+id/tv_here_now"
 		android:layout_toLeftOf="@id/tv_distance"
 		android:layout_alignParentLeft="true"
@@ -59,6 +59,6 @@
 		android:layout_marginTop="5dp"
 		android:layout_marginLeft="10dp"
 		android:textSize="13sp"
-		android:text="(2 people here)"/>
+		android:text="(2 people here)"/>-->
 		
 </RelativeLayout>

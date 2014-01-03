@@ -38,6 +38,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -62,8 +63,13 @@ public class MapActivity extends Activity implements Runnable
     private HashMap<Marker, String> markerIdMap;
     private boolean[] preferences;
     
-    private String query_all="SELECT ROWID, fsqid, name, geo FROM "+Costants.tableId;
-    private String query_acc="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE accessLevel in (@ACL)";
+    private String query_all="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId;
+    private String query_acc="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE accessLevel in (@VALUES)";
+    private String query_door="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE doorways in (@VALUES)";
+    private String query_elev="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE elevator in (@VALUES)";
+    private String query_esc="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE escalator in (@VALUES)";
+    private String query_park="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE parking in (@VALUES)";
+    private String query_maxid="SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE 'NF%25' ORDER BY fsqid DESC LIMIT 1";
     
     private Button btn_notif;
     private TextView tv_notif;
@@ -190,6 +196,10 @@ public class MapActivity extends Activity implements Runnable
 									else
 										drawer.closeDrawer(mDrawerList);
 						            break;
+        	case R.id.item_refresh:spinner.show();
+        						   ftclient.setQuery(query_all);
+            					   ftclient.queryOnNewThread("setmarkers");
+        						   break;
         	default:break;
         }
         return true;
@@ -198,12 +208,12 @@ public class MapActivity extends Activity implements Runnable
     private void initialize_menu()
     {
  	   menu=getResources().getStringArray(R.array.drawer_menu);
- 	   if (menu==null) Log.d("Debug", "menu null");
+ 	   //if (menu==null) Log.d("Debug", "menu null");
  	   drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
- 	   if (drawer==null) Log.d("Debug", "drawer null");
+ 	   //if (drawer==null) Log.d("Debug", "drawer null");
  	   mDrawerList = (ListView) findViewById(R.id.drawer_map);
- 	   if (mDrawerList==null) Log.d("Debug", "mdrawerlist null");
- 	   if (this==null) Log.d("Debug", "this null");
+ 	   //if (mDrawerList==null) Log.d("Debug", "mdrawerlist null");
+ 	   //if (this==null) Log.d("Debug", "this null");
  	   //ArrayAdapter adapter=new ArrayAdapter<String>(this, R.layout.drawer_list_item, menu);
  	   mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, menu));
  	   mDrawerList.setOnItemClickListener(new DrawerItemClickListener(drawer, mDrawerList, MapActivity.this));
@@ -230,7 +240,7 @@ public class MapActivity extends Activity implements Runnable
     //Procedura per settare i marker dei luoghi nella mappa
     public void setMarkers(JSONArray venues)
     {
-    	String name, ll, fsqid, min_fsqid="";
+    	String name, ll, fsqid, min_fsqid="", accl;
     	float min_distance=3000; //Ne cerco uno solo se è al massimo distante un tot di metri
     	double lat = 0, lng = 0;
     	/*FsqVenue */venue=new FsqVenue();
@@ -316,6 +326,7 @@ public class MapActivity extends Activity implements Runnable
 					fsqid=row.get(1).toString();
 					name=row.get(2).toString();
 					ll=row.get(3).toString();
+					accl=row.get(4).toString();
 					String[] lls=ll.split("\\,");
 					lat=Double.parseDouble(lls[0]);
 					lng=Double.parseDouble(lls[1]);
@@ -338,14 +349,50 @@ public class MapActivity extends Activity implements Runnable
 					/*int j=r.nextInt(3);
 					if (j==0)
 					{*/
-					Marker marker=mMap.addMarker(new MarkerOptions()
-		    		.position(new LatLng(lat, lng))
-		    		.title(name)
-		    		.snippet("Commento...")
-		    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-		    		.draggable(false)
-		    		);
-					markerIdMap.put(marker, fsqid);
+					if (accl.equals("A"))
+					{
+						Marker marker=mMap.addMarker(new MarkerOptions()
+			    		.position(new LatLng(lat, lng))
+			    		.title(name)
+			    		.snippet("Commento...")
+			    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+			    		.draggable(false)
+			    		);
+						markerIdMap.put(marker, fsqid);
+					}
+					else if (accl.equals("P"))
+					{
+						Marker marker=mMap.addMarker(new MarkerOptions()
+			    		.position(new LatLng(lat, lng))
+			    		.title(name)
+			    		.snippet("Commento...")
+			    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+			    		.draggable(false)
+			    		);
+						markerIdMap.put(marker, fsqid);
+					}
+					else if (accl.equals("N"))
+					{
+						Marker marker=mMap.addMarker(new MarkerOptions()
+			    		.position(new LatLng(lat, lng))
+			    		.title(name)
+			    		.snippet("Commento...")
+			    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+			    		.draggable(false)
+			    		);
+						markerIdMap.put(marker, fsqid);
+					}
+					else
+					{
+						Marker marker=mMap.addMarker(new MarkerOptions()
+			    		.position(new LatLng(lat, lng))
+			    		.title(name)
+			    		.snippet("Commento...")
+			    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+			    		.draggable(false)
+			    		);
+						markerIdMap.put(marker, fsqid);
+					}
 					//}
 					/*else if (j==1)
 					{
@@ -500,33 +547,46 @@ public class MapActivity extends Activity implements Runnable
     	markerIdMap.clear();
     }
     
-    public void applyFilter(boolean[] new_preferences)
+    public void applyFilter(boolean[] new_preferences, String category)
     {
+    	//Categorie: aclevel, doorways, elevator, escalator, parking
     	//Log.d("Debug", temp[0]+" "+temp[1]+" "+temp[2]);
     	preferences=new_preferences;
     	//Creazione stringa di access level da inserire nella stringa
-    	String acl="";
+    	String values="";
     	if (preferences[0]==true) 
     	{
-    		acl="'A'";
-    		if (preferences[1]==true || preferences[2]==true) acl=acl+",";
+    		if (category=="aclevel") values="'A'";
+    		else values="'Yes'";
+    		if (preferences[1]==true || preferences[2]==true) values=values+",";
+    		Log.d("Debug", values);
     	}
     	if (preferences[1]==true) 
     	{
-    		acl=acl+"'P'";
-    		if (preferences[2]==true) acl=acl+",";
+    		//values=values+"'P'";
+    		if (category=="aclevel") values=values+"'P'";
+    		else values=values+"'No'";
+    		if (preferences[2]==true && category=="aclevel") values=values+",";
     	}
-    	if (preferences[2]==true)
+    	if (preferences[2]==true && category=="aclevel")
     	{
-    		acl=acl+"'N'";
+    		values=values+"'N'";
     	}
-    	if (acl.equals("")) acl="''";
+    	if (values.equals("")) values="''";
     	
-    	String temp_query_acc=query_acc.replace("@ACL", acl);
-    	/*Log.d("Debug", acl);
-    	Log.d("Debug", temp_query_acc);*/
+    	//Log.d("Debug", values);
+    	//String temp_query_acc=query_acc.replace("@VALUES", values);
+    	String temp_query_acc="";
+    	if (category=="aclevel") temp_query_acc=query_acc.replace("@VALUES", values);
+    	else if (category=="doorways") temp_query_acc=query_door.replace("@VALUES", values);
+    	else if (category=="elevator") temp_query_acc=query_elev.replace("@VALUES", values);
+    	else if (category=="escaltor") temp_query_acc=query_esc.replace("@VALUES", values);
+    	else if (category=="parking") temp_query_acc=query_park.replace("@VALUES", values);
+    	//Log.d("Debug", acl);
+    	Log.d("Debug", temp_query_acc);
     	clearMap();
     	//Esecuzione query
+    	spinner.show();
     	ftclient.setQuery(temp_query_acc);
         ftclient.queryOnNewThread("setmarkers");
     }
@@ -567,7 +627,7 @@ public class MapActivity extends Activity implements Runnable
     			 Toast.makeText(MapActivity.this, "No nearby places available", Toast.LENGTH_SHORT).show();
     		 else
     		 {
-    			 NearbyDialog ndialog=new NearbyDialog(MapActivity.this, nearbyList);
+    			 NearbyDialog ndialog=new NearbyDialog(MapActivity.this, nearbyList, ftclient);
     			 ndialog.show();
     			 //Toast.makeText(MainActivity.this, "ok", Toast.LENGTH_SHORT).show();
     		 }
@@ -581,6 +641,50 @@ public class MapActivity extends Activity implements Runnable
      }
    };
     
+	public void createNewVenue(String _maxid)
+	{
+		//Creazione nuovo id, successivo al maxid ottenuto con la query
+		//Manca la gestione del primo record inserito senza foursquare, con id NF0
+		String maxid=_maxid.substring(4);
+		maxid=maxid.substring(0, maxid.length()-2);
+		int newid=Integer.parseInt(maxid)+1;
+		final String snewid="NF"+Integer.toString(newid);
+		
+		AlertDialog.Builder ad_venue=new AlertDialog.Builder(this);
+		ad_venue.setTitle("Nuovo luogo");
+		ad_venue.setMessage("Inserisci il nome del luogo");
+		final EditText input=new EditText(this);
+		ad_venue.setView(input);
+		ad_venue.setPositiveButton("Ok", new DialogInterface.OnClickListener() 
+		{
+			public void onClick(DialogInterface dialog, int whichButton) 
+			{
+				GPSTracker mGPS = new GPSTracker(MapActivity.this);
+				FsqVenue newvenue=new FsqVenue();
+				newvenue.name=input.getText().toString();
+				newvenue.latitude=mGPS.getLatitude();
+				newvenue.longitude=mGPS.getLongitude();
+				newvenue.direction=0;
+				newvenue.id=snewid;
+				newvenue.distance="";
+				newvenue.type="";
+				Intent quiz_intent=new Intent(MapActivity.this, QuizActivity.class);
+				quiz_intent.putExtra("venue", newvenue);
+				MapActivity.this.startActivity(quiz_intent);
+				//String value = input.getText();
+			}
+		});
+
+		ad_venue.setNegativeButton("Cancel", new DialogInterface.OnClickListener() 
+		{
+			public void onClick(DialogInterface dialog, int whichButton) 
+			{
+			     // Canceled.
+			}
+		});
+		ad_venue.show();
+	}
+   
     //Test thread per visualizzare lo spinner prima del caricamento della mappa
     //Al momento non utilizzato
 	@Override

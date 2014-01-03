@@ -224,19 +224,20 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f020028;
         public static final int ic_profile=0x7f020029;
         public static final int ic_quiz=0x7f02002a;
-        public static final int ic_usergreen=0x7f02002b;
-        public static final int ic_userred=0x7f02002c;
-        public static final int ic_userver=0x7f02002d;
-        public static final int ic_useryellow=0x7f02002e;
-        public static final int icon=0x7f02002f;
-        public static final int logo=0x7f020030;
-        public static final int puntatore_scala=0x7f020031;
-        public static final int rounded_edittext=0x7f020032;
-        public static final int solo_scala=0x7f020033;
-        public static final int user=0x7f020034;
+        public static final int ic_refresh=0x7f02002b;
+        public static final int ic_usergreen=0x7f02002c;
+        public static final int ic_userred=0x7f02002d;
+        public static final int ic_userver=0x7f02002e;
+        public static final int ic_useryellow=0x7f02002f;
+        public static final int icon=0x7f020030;
+        public static final int logo=0x7f020031;
+        public static final int puntatore_scala=0x7f020032;
+        public static final int rounded_edittext=0x7f020033;
+        public static final int solo_scala=0x7f020034;
+        public static final int user=0x7f020035;
     }
     public static final class id {
-        public static final int action_settings=0x7f050055;
+        public static final int action_settings=0x7f050054;
         public static final int b_connect=0x7f05000b;
         public static final int b_go=0x7f05000f;
         public static final int b_map=0x7f05000e;
@@ -278,7 +279,8 @@ containing a value of this type.
         public static final int info_layout=0x7f050049;
         public static final int item_filter=0x7f050057;
         public static final int item_mapmenu=0x7f050058;
-        public static final int item_menu=0x7f050056;
+        public static final int item_menu=0x7f050055;
+        public static final int item_refresh=0x7f050056;
         public static final int iv_ribbon=0x7f05004e;
         public static final int listView1=0x7f050008;
         public static final int ll_rbtn=0x7f05003d;
@@ -288,7 +290,7 @@ containing a value of this type.
         public static final int lv_log=0x7f050032;
         public static final int lv_nearby=0x7f05004d;
         public static final int lv_places=0x7f050010;
-        public static final int lv_pref=0x7f050052;
+        public static final int lv_pref=0x7f050051;
         public static final int main_hello_text_view=0x7f050039;
         public static final int map=0x7f050014;
         public static final int mapView=0x7f050013;
@@ -302,6 +304,7 @@ containing a value of this type.
         public static final int scrollView1=0x7f050036;
         public static final int scrollView2=0x7f050048;
         public static final int scrollView3=0x7f050019;
+        public static final int spinner_filter=0x7f050042;
         public static final int submitform=0x7f05003b;
         public static final int terrain=0x7f050003;
         public static final int textView1=0x7f050033;
@@ -313,16 +316,14 @@ containing a value of this type.
         public static final int tv_create=0x7f05001b;
         public static final int tv_date=0x7f05004a;
         public static final int tv_distance=0x7f05004f;
-        public static final int tv_entry=0x7f050054;
-        public static final int tv_here_now=0x7f050051;
+        public static final int tv_entry=0x7f050053;
         public static final int tv_log=0x7f050031;
         public static final int tv_name=0x7f05000d;
         public static final int tv_notification=0x7f050017;
         public static final int tv_p_preferences=0x7f050028;
         public static final int tv_title=0x7f05000a;
-        public static final int tv_titlefilter=0x7f050042;
         public static final int tv_user=0x7f05001e;
-        public static final int tv_value=0x7f050053;
+        public static final int tv_value=0x7f050052;
         public static final int tv_welcome=0x7f05001a;
         public static final int tv_welcome2=0x7f05003c;
     }

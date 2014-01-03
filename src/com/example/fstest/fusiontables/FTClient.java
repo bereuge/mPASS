@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import com.example.fstest.MapActivity;
 import com.example.fstest.QuizActivity;
+import com.example.fstest.SplashActivity;
 /*import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;*/
@@ -93,11 +94,15 @@ public class FTClient
 				Intent launch = (Intent) bundle.get(AccountManager.KEY_INTENT);
 				if (launch != null) 
 				{
-					Log.d("Debug","Errore! Non ha preso il token?");
+					Log.d("Debug","Errore nell'autorizzazione.");
 					((Activity)context).startActivityForResult(launch, AUTHORIZATION_CODE);
 				}
 				else 
 				{
+					if (context instanceof SplashActivity)
+					{
+						((SplashActivity) context).changeActivity();
+					}
 					String token = bundle.getString(AccountManager.KEY_AUTHTOKEN);
 					//Token ottenuto
 					authPreferences.setToken(token);
@@ -245,6 +250,24 @@ public class FTClient
 					json_result = new JSONObject(output);
 					JSONArray venues=json_result.getJSONArray("rows");
 					((MapActivity) activity).showInfoDialog(venues);
+				} 
+				catch (JSONException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			if (code.equals("lastid"))
+			{
+				try 
+				{
+					//Log.d("Debug", output);
+					JSONObject json_result;
+					json_result = new JSONObject(output);
+					JSONArray j_maxid=json_result.getJSONArray("rows");
+					String maxid=j_maxid.getString(0);
+					((MapActivity) activity).createNewVenue(maxid);
 				} 
 				catch (JSONException e) 
 				{

@@ -219,7 +219,7 @@ public class QuizActivity extends Activity
 					}
 				}.start();*/
 				
-				if (fsqapp.hasAccessToken())
+				if (fsqapp.hasAccessToken() && !fsqid.substring(0, 2).equals("NF"))
 				{
 					Log.d("Debug", "Ok foursquare!");
 					new Thread()

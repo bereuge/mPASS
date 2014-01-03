@@ -1,7 +1,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
+        android:id="@+id/item_refresh"
+        android:icon="@drawable/ic_refresh" 
+        android:title="Refresh" 
+        android:showAsAction="always">
+    </item>
+    
+    <item
         android:id="@+id/item_filter"
+        android:icon="@drawable/ic_filter" 
         android:title="Preferences" 
         android:showAsAction="always">
     </item>

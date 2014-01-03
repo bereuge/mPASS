@@ -49,7 +49,7 @@ public class NearbyAdapter extends BaseAdapter {
 			
 			holder.mNameTxt 		= (TextView) convertView.findViewById(R.id.tv_name);
 			holder.mAddressTxt 		= (TextView) convertView.findViewById(R.id.tv_address);
-			holder.mHereNowTxt 		= (TextView) convertView.findViewById(R.id.tv_here_now);
+			//holder.mHereNowTxt 		= (TextView) convertView.findViewById(R.id.tv_here_now);
 			holder.mDistanceTxt 	= (TextView) convertView.findViewById(R.id.tv_distance);
 			holder.mRibbonImg		= (ImageView) convertView.findViewById(R.id.iv_ribbon);
 			
@@ -62,7 +62,7 @@ public class NearbyAdapter extends BaseAdapter {
 		
 		holder.mNameTxt.setText(venue.name);
 		holder.mAddressTxt.setText(venue.type);
-		holder.mHereNowTxt.setText("(" + String.valueOf(venue.herenow) + " people here)");
+		//holder.mHereNowTxt.setText("(" + String.valueOf(venue.herenow) + " people here)");
 		
 		
 		//holder.mDistanceTxt.setText(formatDistance(venue.distance));
@@ -92,7 +92,7 @@ public class NearbyAdapter extends BaseAdapter {
 	static class ViewHolder {
 		TextView mNameTxt;
 		TextView mAddressTxt;
-		TextView mHereNowTxt;
+		//TextView mHereNowTxt;
 		TextView mDistanceTxt;
 		ImageView mRibbonImg;
 	}

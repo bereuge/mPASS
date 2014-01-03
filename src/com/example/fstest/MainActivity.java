@@ -3,6 +3,7 @@ package com.example.fstest;
 import com.example.fstest.foursquare.FoursquareApp;
 import com.example.fstest.foursquare.FsqVenue;
 import com.example.fstest.foursquare.FoursquareApp.FsqAuthListener;
+import com.example.fstest.fusiontables.FTClient;
 import com.example.fstest.utils.GPSTracker;
 
 import android.app.Activity;
@@ -250,7 +251,7 @@ private ListView mDrawerList;
     		 }*/
     		 else
     		 {
-    			 NearbyDialog ndialog=new NearbyDialog(MainActivity.this, mNearbyList);
+    			 NearbyDialog ndialog=new NearbyDialog(MainActivity.this, mNearbyList, new FTClient(MainActivity.this));
     			 ndialog.show();
     			 //Toast.makeText(MainActivity.this, "ok", Toast.LENGTH_SHORT).show();
     		 }

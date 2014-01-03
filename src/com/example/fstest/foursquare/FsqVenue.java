@@ -17,5 +17,5 @@ public class FsqVenue implements Serializable
 	public int direction;
 	public String distance;
 	//public String distance;
-	public int herenow;
+	//public int herenow;
 }

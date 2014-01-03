@@ -294,7 +294,7 @@ public class FoursquareApp
 						venue.distance	= (String.valueOf( location.getInt("distance")));
 						venue.distance=venue.distance+" m";
 						//venue.distance	= location.getString("distance");
-						venue.herenow	= item.getJSONObject("hereNow").getInt("count");
+						//venue.herenow	= item.getJSONObject("hereNow").getInt("count");
 						//venue.type		= group.getString("type");
 						try
 						{

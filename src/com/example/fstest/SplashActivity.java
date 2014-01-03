@@ -23,10 +23,11 @@ public class SplashActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		context=this;
+		FTClient ft=new FTClient(context);
 		/*spinner=new ProgressDialog(this);
 		spinner.setIndeterminate(true);
 		spinner.show();*/
-		new Prefetcher().execute();
+		//new Prefetcher().execute();
 		/*new Handler().postDelayed(new Runnable()
 		{
 			@Override
@@ -47,7 +48,7 @@ public class SplashActivity extends Activity
 		getMenuInflater().inflate(R.menu.splash, menu);
 		return true;
 	}
-
+	/*
 	private class Prefetcher extends AsyncTask<Void, Void, Void>
 	{
         @Override
@@ -93,12 +94,29 @@ public class SplashActivity extends Activity
             //Aumentare il delay
         }
 	}
-	
+	*/
     private boolean firstTime()
     {
  	   boolean first=true;
  	   SharedPreferences pref=this.getSharedPreferences("activity", Context.MODE_PRIVATE);
  	   first=pref.getBoolean("firsttime", true);
  	   return first;
+    }
+    
+    public void changeActivity()
+    {
+    	if (!firstTime())
+        {
+        	//Toast.makeText(this, "Prima volta!", Toast.LENGTH_LONG).show();
+        	Intent i_newuser=new Intent(SplashActivity.this,MapActivity.class);
+        	startActivity(i_newuser);
+        }
+		else
+		{
+			Intent i=new Intent(SplashActivity.this, WelcomeActivity.class);
+			startActivity(i);
+			//finish(); //Se uso il finish, non si vede nulla fra la newprofileactivity e l'activity principale per
+			            //qualche secondo
+		}
     }
 }
