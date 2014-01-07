@@ -15,7 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="63dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo" 
+        android:contentDescription="@string/logo_descr"/>
 
     <TextView
         android:id="@+id/tv_welcome2"
@@ -42,21 +43,21 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btn_regfsq"
-            android:text="Registrati con Foursquare">
+            android:text="@string/btn_regfsq">
         </Button>
         
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btn_regnew"
-            android:text="Crea un nuovo profilo">
+            android:text="@string/btn_createprofile">
         </Button>
         
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btn_reganon"
-            android:text="Resta anonimo">
+            android:text="@string/btnanon">
         </Button>
         
     </LinearLayout>

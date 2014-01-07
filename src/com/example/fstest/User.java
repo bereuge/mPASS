@@ -13,6 +13,7 @@ public class User
 	private static final String type="user";
 	private static final String imagePath="path";
 	private static final String nreports="nreports";
+	
 	//Preferenze
 	private static final String p_gaps="gaps";
 	private static final String p_cross="cross";
@@ -59,17 +60,17 @@ public class User
 		editor.commit();
 	}
 	
-	public void setPref(String category, int position, char value)
+	/*public void setPref(String category, int position, char value)
 	{
 		Editor editor = pref.edit();
-		if (category.equals("Gaps"))
+		if (category.equals(p_gaps))
 		{
 			String pgaps=pref.getString(p_gaps, null);
 			pgaps.toCharArray()[position]=value;
 			editor.putString(p_gaps, pgaps);
 		}
 		editor.commit();
-	}
+	}*/
 	
 	
 	public String getName()
@@ -95,13 +96,15 @@ public class User
 	public ArrayList<PrefEntry> getPref(String category)
 	{
 		ArrayList<PrefEntry> listpref=new ArrayList<PrefEntry>();
-		if (category.equals("Gaps"))
+		if (category.equals(p_gaps))
 		{
 			String pgaps=pref.getString(p_gaps, null);
+			Log.d("Debug","pgaps="+pgaps);
 			PrefEntry temp;
 			for (int i=0;i<pgaps.length();i++)
 			{
-				temp=new PrefEntry("", null);
+				temp=new PrefEntry("", 0);
+				//Se facessi una lista di stringhe con tutti i campi per ogni categoria, per evitare lo switch?
 				switch (i)
 				{
 					case 0:temp.setEntry("Stairs");
@@ -114,24 +117,53 @@ public class User
 					 		 break;
 					default: break;	
 				}
-
-				switch (pgaps.charAt(i))
-				{
-					case '0':temp.setValue("Neutral");
-							 break;
-					case '1':temp.setValue("Like");
-					 		 break;
-					case '2':temp.setValue("Dislike");
-					 	     break;
-					case '3':temp.setValue("Avoid");
-					 		 break;
-					default: temp.setValue("Neutral");
-							 break;
-				}
+				
+				temp.setValue(Integer.parseInt(String.valueOf(pgaps.charAt(i))));
 				listpref.add(temp);
 			}
 		}
+		else if (category.equals(p_cross))
+		{
+			
+		}
+		else if (category.equals(p_obstruction))
+		{
+			
+		}
+		else if (category.equals(p_parking))
+		{
+			
+		}
+		else if (category.equals(p_surface))
+		{
+			
+		}
+		else if (category.equals(p_pathway))
+		{
+			
+		}
 		return listpref;
+	}
+	
+	public void setPref(ArrayList<PrefEntry> newpref, String category)
+	{
+		String snewpref="";
+		for (int i=0; i<newpref.size();i++)
+		{
+			snewpref=snewpref.concat(String.valueOf(newpref.get(i).getValue()));
+		}
+		Log.d("Debug", "New pref="+snewpref);
+		Editor editor = pref.edit();
+		editor.putString(category, snewpref);
+		editor.commit();
+	}
+	
+	public void resetPref()
+	{
+		Editor editor = pref.edit();
+		editor.putString(p_gaps, "0000");
+		//qui ci vanno tutte le altre categorie
+		editor.commit();
 	}
 	
 	public void eraseUser()
@@ -145,14 +177,6 @@ public class User
 		SharedPreferences pref_ac=context.getSharedPreferences("activity", Context.MODE_PRIVATE);
 		editor=pref_ac.edit();
 		editor.putBoolean("firsttime", true);
-		editor.commit();
-	}
-	
-	public void resetPref()
-	{
-		Editor editor = pref.edit();
-		editor.putString(p_gaps, "0000");
-		//qui ci vanno tutte le altre categorie
 		editor.commit();
 	}
 }

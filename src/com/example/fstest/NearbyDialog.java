@@ -2,29 +2,18 @@ package com.example.fstest;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import com.example.fstest.foursquare.FsqVenue;
 import com.example.fstest.fusiontables.FTClient;
-import com.example.fstest.utils.GPSTracker;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 
 //Classe per il dialog che mostra le segnalazioni per un dato luogo
 public class NearbyDialog extends Dialog implements OnClickListener

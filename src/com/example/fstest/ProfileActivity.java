@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.example.fstest.log.LogAdapter;
 import com.example.fstest.log.LogDbManager;
@@ -18,7 +19,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -68,6 +68,7 @@ public class ProfileActivity extends Activity
 		LogDbManager log=new LogDbManager(getApplicationContext());
 		log.openToRead();
 		entries=log.getAllEntries();
+		log.close();
 		adapter.setData(entries);
 		listView.setAdapter(adapter);
 		
@@ -76,7 +77,10 @@ public class ProfileActivity extends Activity
 		tv_nrepo.setText("Number of reports: "+String.valueOf(user.getNReports()));
 		//tv_nrepo.setText("Number of reports: 13");
 		
-		final String items[]=new String[] {"Camera","Galleria"};
+		//final String items[]=new String[] {"Camera","Galleria"};
+		List<String> items = new ArrayList<String>();
+		items.add("Camera");
+		items.add("Galleria");
 		ArrayAdapter<String> adapter=new ArrayAdapter(this, android.R.layout.select_dialog_item, items);
 		AlertDialog.Builder builder=new AlertDialog.Builder(this);
 		builder.setTitle("Seleziona immagine");
@@ -124,6 +128,7 @@ public class ProfileActivity extends Activity
 				showPrefDialog("Gaps");
 			}
 		});
+		//Servono tutti gli onClickListener per gli altri pulsanti
 	}
 
 	@Override

@@ -199,26 +199,18 @@ public class QuizActivity extends Activity
 				Date date=new Date();
 				SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String sdate=dateFormat.format(date);
+				date_for_log=sdate;
+				action_for_log="Submitted a report about "+name+"."; //Così non vengono sostituiti i caratteri speciali per le richieste http e viene salvato il nome giusto nel log
 				name=name.replace("'", "");
+				name=name.replace("&","%26");
 				String query_txt="INSERT INTO "+Costants.tableId+" (name, fsqid, geo, accessLevel, comment, doorways, elevator, escalator, parking, user, date) ";
 				query_txt=query_txt+"VALUES ('"+name+"', '"+fsqid+"', '"+geo+"', '"+squiz1+"', '"+comment_txt+"', '"+squiz2+"', '"+squiz3+"', '"+squiz4+"', '"+squiz5+"', '"+user.getName()+"', '"+sdate+"')";
 				//Creo le stringhe per l'azione da mettere nel log, la inserisco dopo solo se l'insert ha avuto successo
 				//Log.d("Debug", query_txt);
-				date_for_log=sdate;
-				action_for_log="Submitted a report about "+name+".";
 				ftclient.setQuery(query_txt);
 				ftclient.queryOnNewThread("insertvenue");
-				//Thread necessario per far vedere il progress dialog
-				/*new Thread()
-				{
-					@Override
-					public void run()
-					{
-						//ftclient.query(query_txt, "insertvenue");
-						ftclient.query("insertvenue");
-					}
-				}.start();*/
 				
+				//Quindi se siamo connessi a foursquare e la venue è all'interno del db di foursquare
 				if (fsqapp.hasAccessToken() && !fsqid.substring(0, 2).equals("NF"))
 				{
 					Log.d("Debug", "Ok foursquare!");
@@ -255,6 +247,7 @@ public class QuizActivity extends Activity
 	public void loadResponse(String response, Boolean success)
 	{
 		spinner.dismiss();
+		//Se la segnalazione è stata inviata correttamente alla fusion table, scriviamo il nuovo record nel log
 		if (success)
 		{
 			log=new LogDbManager(this);

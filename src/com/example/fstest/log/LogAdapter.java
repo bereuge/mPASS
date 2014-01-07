@@ -3,7 +3,6 @@ package com.example.fstest.log;
 import java.util.ArrayList;
 
 import com.example.fstest.R;
-import com.example.fstest.log.LogAdapter.ViewHolder;
 
 import android.content.Context;
 import android.view.LayoutInflater;

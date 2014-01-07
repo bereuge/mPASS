@@ -21,7 +21,7 @@
         android:layout_alignBottom="@+id/imageView1"
         android:layout_alignLeft="@+id/imageView1"
         android:background="#22000000"
-        android:text="modify"
+        android:text="@string/btn_modifyimage"
         android:textColor="#ffffff"
         android:textSize="16sp" />
     
@@ -32,7 +32,7 @@
         android:layout_alignLeft="@id/btn_image2"
         android:layout_below="@id/btn_image2"
         android:layout_marginTop="15dp"
-        android:text="Preferences" 
+        android:text="@string/tv_pref" 
         android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <LinearLayout
@@ -50,7 +50,7 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="GAPS" />
+            android:text="@string/btn_gaps" />
 
         <Button
             android:id="@+id/btn_cross"
@@ -59,7 +59,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
-            android:text="CROSS" />
+            android:text="@string/btn_cross" />
 
         <Button
             android:id="@+id/btn_obstruction"
@@ -68,7 +68,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
-            android:text="OBSTRUCTION" />
+            android:text="@string/btn_obstruction" />
     </LinearLayout>
 
     <LinearLayout
@@ -87,7 +87,7 @@
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="PARKING" />
+            android:text="@string/btn_parking" />
 
         <Button
             android:id="@+id/btn_surface"
@@ -96,7 +96,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
-            android:text="SURFACE" />
+            android:text="@string/btn_surface" />
 
         <Button
             android:id="@+id/btn_pathway"
@@ -105,14 +105,14 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
-            android:text="PATHWAY" />
+            android:text="@string/btn_pathway" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_log"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log"
+        android:text="@string/tv_log"
         android:layout_below="@id/ll_row2"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginTop="10dp"/>
@@ -132,8 +132,8 @@
         android:layout_alignTop="@+id/imageView1"
         android:layout_marginLeft="24dp"
         android:layout_toRightOf="@+id/imageView1"
-        android:text="Marco Rossi"
-        android:textSize="24dp" />
+        android:text="@string/tv_unknown"
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textView7"
@@ -141,7 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/tv_p_preferences"
         android:layout_alignLeft="@+id/textView2"
-        android:text="Number of reports: ?"
+        android:text="@string/tv_reports"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -151,7 +151,7 @@
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/textView1"
         android:layout_marginTop="19dp"
-        android:text="User"
+        android:text="@string/tv_user"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageView
@@ -164,7 +164,8 @@
         android:background="@drawable/custom_background"
         android:padding="3dp"
         android:scaleType="fitXY"
-        android:src="@drawable/user" />
+        android:src="@drawable/user" 
+        android:contentDescription="@string/userimg_description"/>
 
 
 

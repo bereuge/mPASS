@@ -73,7 +73,8 @@ public class NearbyAdapter extends BaseAdapter {
         return convertView;
 	}
 	
-	private String formatDistance(double distance) {
+	private String formatDistance(double distance) 
+	{
 		String result = "";
 		
 		DecimalFormat dF = new DecimalFormat("00");
@@ -89,7 +90,9 @@ public class NearbyAdapter extends BaseAdapter {
 		
 		return result;
 	}
-	static class ViewHolder {
+	
+	static class ViewHolder 
+	{
 		TextView mNameTxt;
 		TextView mAddressTxt;
 		//TextView mHereNowTxt;

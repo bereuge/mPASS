@@ -11,7 +11,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.os.Handler;
 import android.os.Message;
 
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,7 +25,6 @@ import android.widget.Toast;
 import android.widget.ListView;
 
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,7 +36,6 @@ import java.util.ArrayList;
 public class MainActivity extends Activity 
 {
 private FoursquareApp mFsqApp;
-private ListView mListView;
 //private NearbyAdapter mAdapter;
 private ArrayList<FsqVenue> mNearbyList;
 private ProgressDialog mProgress;

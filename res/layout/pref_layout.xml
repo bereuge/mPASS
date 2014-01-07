@@ -10,4 +10,11 @@
         android:layout_height="wrap_content">
     </ListView>
 
+    <Button 
+        android:id="@+id/btn_savepref"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/btn_savepref"
+        />
 </LinearLayout>

@@ -5,7 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.example.fstest.log.LogDbManager;
 
@@ -31,7 +33,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewProfileActivity extends Activity 
@@ -61,7 +62,10 @@ public class NewProfileActivity extends Activity
 			}
 		});
 		
-		final String items[]=new String[] {"Camera","Galleria"};
+		//final String items[]=new String[] {"Camera","Galleria"};
+		List<String> items = new ArrayList<String>();
+		items.add("Camera");
+		items.add("Galleria");
 		ArrayAdapter<String> adapter=new ArrayAdapter(this, android.R.layout.select_dialog_item, items);
 		AlertDialog.Builder builder=new AlertDialog.Builder(this);
 		builder.setTitle("Seleziona immagine");

@@ -36,56 +36,51 @@ public class FoursquareApp
 	private String mTokenUrl;
 	private String mAccessToken;
 	
-	/**
-	 * Callback url, as set in 'Manage OAuth Costumers' page (https://developer.foursquare.com/)
-	 */
 	public static final String CALLBACK_URL = "myapp://connect";
 	private static final String AUTH_URL = "https://foursquare.com/oauth2/authenticate?response_type=code";
 	private static final String TOKEN_URL = "https://foursquare.com/oauth2/access_token?grant_type=authorization_code";	
 	private static final String API_URL = "https://api.foursquare.com/v2";
-	
 	private static final String TAG = "FoursquareApi";
 	
-	public FoursquareApp(Context context, String clientId, String clientSecret) {
+	public FoursquareApp(Context context, String clientId, String clientSecret) 
+	{
 		mSession		= new FoursquareSession(context);
-		
 		mAccessToken	= mSession.getAccessToken();
-		
-		mTokenUrl		= TOKEN_URL + "&client_id=" + clientId + "&client_secret=" + clientSecret
-						+ "&redirect_uri=" + CALLBACK_URL;
-		
+		mTokenUrl		= TOKEN_URL+"&client_id="+clientId+"&client_secret="+clientSecret+"&redirect_uri="+CALLBACK_URL;
 		String url		= AUTH_URL + "&client_id=" + clientId + "&redirect_uri=" + CALLBACK_URL;
 		
-		FsqDialogListener listener = new FsqDialogListener() {
+		FsqDialogListener listener = new FsqDialogListener() 
+		{
 			@Override
-			public void onComplete(String code) {
+			public void onComplete(String code) 
+			{
 				getAccessToken(code);
 			}
 			
 			@Override
-			public void onError(String error) {
+			public void onError(String error) 
+			{
 				mListener.onFail("Authorization failed");
 			}
 		};
-		
 		mDialog			= new FoursquareDialog(context, url, listener);
 		mProgress		= new ProgressDialog(context);
-		
 		mProgress.setCancelable(false);
 	}
 	
-	private void getAccessToken(final String code) {
+	private void getAccessToken(final String code) 
+	{
 		mProgress.setMessage("Getting access token ...");
 		mProgress.show();
-		
-		new Thread() {
+		new Thread() 
+		{
 			@Override
-			public void run() {
+			public void run() 
+			{
 				Log.i(TAG, "Getting access token");
-				
 				int what = 0;
-				
-				try {
+				try 
+				{
 					URL url = new URL(mTokenUrl + "&code=" + code);
 					
 					Log.i(TAG, "Opening URL " + url.toString());
@@ -102,27 +97,31 @@ public class FoursquareApp
 		        	mAccessToken 		= jsonObj.getString("access_token");
 		        	
 		        	Log.i(TAG, "Got access token: " + mAccessToken);
-				} catch (Exception ex) {
+				} 
+				catch (Exception ex) 
+				{
 					what = 1;
-					
 					ex.printStackTrace();
 				}
-				
 				mHandler.sendMessage(mHandler.obtainMessage(what, 1, 0));
 			}
 		}.start();
 	}
 	
-	private void fetchUserName() {
+	private void fetchUserName() 
+	{
 		mProgress.setMessage("Finalizing ...");
 		
-		new Thread() {
+		new Thread() 
+		{
 			@Override
-			public void run() {
+			public void run() 
+			{
 				Log.i(TAG, "Fetching user name");
 				int what = 0;
 		
-				try {
+				try 
+				{
 					String v	= timeMilisToString(System.currentTimeMillis()); 
 					URL url 	= new URL(API_URL + "/users/self?oauth_token=" + mAccessToken + "&v=" + v);
 					
@@ -155,7 +154,9 @@ public class FoursquareApp
 		        	Log.i(TAG, "Got user name: " + firstName + " " + lastName);
 		        	
 		        	mSession.storeAccessToken(mAccessToken, firstName + " " + lastName, url_photo);
-				} catch (Exception ex) {
+				} 
+				catch (Exception ex) 
+				{
 					what = 1;
 					
 					ex.printStackTrace();
@@ -166,34 +167,43 @@ public class FoursquareApp
 		}.start();
 	}
 	
-	private Handler mHandler = new Handler() {
+	private Handler mHandler = new Handler() 
+	{
 		@Override
-		public void handleMessage(Message msg) {
-			if (msg.arg1 == 1) {
-				if (msg.what == 0) {
+		public void handleMessage(Message msg) 
+		{
+			if (msg.arg1 == 1) 
+			{
+				if (msg.what == 0) 
+				{
 					fetchUserName();
-				} else {
+				} 
+				else 
+				{
 					mProgress.dismiss();
-					
 					mListener.onFail("Failed to get access token");
 				}
-			} else {
+			} 
+			else 
+			{
 				mProgress.dismiss();
-				
 				mListener.onSuccess();
 			}
 		}
 	};
 	
-	public boolean hasAccessToken() {
+	public boolean hasAccessToken() 
+	{
 		return (mAccessToken == null) ? false : true;
 	}
 	
-	public void setListener(FsqAuthListener listener) {
+	public void setListener(FsqAuthListener listener) 
+	{
 		mListener = listener;
 	}
 	
-	public String getUserName() {
+	public String getUserName() 
+	{
 		return mSession.getUsername();
 	}
 	
@@ -210,7 +220,6 @@ public class FoursquareApp
 	public boolean checkIn(String venueid) throws Exception
 	{
 		boolean success=false;
-		
 		try 
 		{
 			String v	= timeMilisToString(System.currentTimeMillis()); 
@@ -222,10 +231,10 @@ public class FoursquareApp
 			urlConnection.setDoInput(true);
 			urlConnection.connect();
 			
-			String response		= streamToString(urlConnection.getInputStream());
+			String response=streamToString(urlConnection.getInputStream());
 			Log.d(TAG, response);
-			JSONObject jsonObj 	= (JSONObject) new JSONTokener(response).nextValue();
-			JSONObject meta	= (JSONObject) jsonObj.getJSONObject("meta");
+			JSONObject jsonObj=(JSONObject) new JSONTokener(response).nextValue();
+			JSONObject meta=(JSONObject) jsonObj.getJSONObject("meta");
 			String code=meta.getString("code");
 			Log.d(TAG,code);
 			if (code.equals("200")) success=true;
@@ -240,7 +249,8 @@ public class FoursquareApp
 	public ArrayList<FsqVenue> getNearby(double latitude, double longitude) throws Exception {
 		ArrayList<FsqVenue> venueList = new ArrayList<FsqVenue>();
 		
-		try {
+		try 
+		{
 			String v	= timeMilisToString(System.currentTimeMillis()); 
 			String ll 	= String.valueOf(latitude) + "," + String.valueOf(longitude);
 			URL url 	= new URL(API_URL + "/venues/search?ll=" + ll + "&oauth_token=" + mAccessToken + "&v=" + v);
@@ -311,47 +321,50 @@ public class FoursquareApp
 					//}
 				}
 			}
-		} catch (Exception ex) {
+		} 
+		catch (Exception ex) 
+		{
 			throw ex;
 		}
 		
 		return venueList;
 	}
 	
-	private String streamToString(InputStream is) throws IOException {
+	private String streamToString(InputStream is) throws IOException 
+	{
 		String str  = "";
-		
-		if (is != null) {
+		if (is != null) 
+		{
 			StringBuilder sb = new StringBuilder();
 			String line;
-			
-			try {
+			try 
+			{
 				BufferedReader reader 	= new BufferedReader(new InputStreamReader(is));
-				
-				while ((line = reader.readLine()) != null) {
+				while ((line = reader.readLine()) != null) 
+				{
 					sb.append(line);
 				}
-				
 				reader.close();
-			} finally {
+			} 
+			finally 
+			{
 				is.close();
 			}
-			
 			str = sb.toString();
 		}
-		
 		return str;
 	}
 	
-	private String timeMilisToString(long milis) {
+	private String timeMilisToString(long milis) 
+	{
 		SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
 		Calendar calendar   = Calendar.getInstance();
-		
 		calendar.setTimeInMillis(milis);
-		
 		return sd.format(calendar.getTime());
 	}
-	public interface FsqAuthListener {
+	
+	public interface FsqAuthListener 
+	{
 		public abstract void onSuccess();
 		public abstract void onFail(String error);
 	}

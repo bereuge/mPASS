@@ -18,7 +18,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 //Classe per il dialog che mostra le segnalazioni per un dato luogo
 public class FilterDialog extends Dialog implements OnClickListener

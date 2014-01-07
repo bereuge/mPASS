@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.AndroidException;
 
 public class LogDbManager 
 {
@@ -16,7 +15,7 @@ public class LogDbManager
 	
 	private static final String database_name="Log";
 	private static final int database_version=1;
-	private static final String database_table="main";
+	//private static final String database_table="main";
 	
 	public LogDbManager(Context _context)
 	{

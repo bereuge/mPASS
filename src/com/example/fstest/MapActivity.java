@@ -69,7 +69,7 @@ public class MapActivity extends Activity implements Runnable
     private String query_elev="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE elevator in (@VALUES)";
     private String query_esc="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE escalator in (@VALUES)";
     private String query_park="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE parking in (@VALUES)";
-    private String query_maxid="SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE 'NF%25' ORDER BY fsqid DESC LIMIT 1";
+    //private String query_maxid="SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE 'NF%25' ORDER BY fsqid DESC LIMIT 1";
     
     private Button btn_notif;
     private TextView tv_notif;

@@ -3,9 +3,10 @@ package com.example.fstest;
 public class PrefEntry 
 {
 	private String entry;
-	private String value;
+	//private String value;
+	private int value; //0 Neutral 1 Like 2 Dislike 3 Avoid
 	
-	public PrefEntry(String _entry, String _value)
+	public PrefEntry(String _entry, int _value)
 	{
 		entry=_entry;
 		value=_value;
@@ -21,12 +22,12 @@ public class PrefEntry
 		return entry;
 	}
 	
-	public void setValue(String _value)
+	public void setValue(int _value)
 	{
 		value=_value;
 	}
 	
-	public String getValue()
+	public int getValue()
 	{
 		return value;
 	}

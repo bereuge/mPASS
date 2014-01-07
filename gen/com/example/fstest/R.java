@@ -9,8 +9,7 @@ package com.example.fstest;
 
 public final class R {
     public static final class array {
-        public static final int drawer_menu=0x7f090001;
-        public static final int statuses=0x7f090000;
+        public static final int drawer_menu=0x7f090000;
     }
     public static final class attr {
         /** 
@@ -237,117 +236,114 @@ containing a value of this type.
         public static final int user=0x7f020035;
     }
     public static final class id {
-        public static final int action_settings=0x7f050054;
-        public static final int b_connect=0x7f05000b;
-        public static final int b_go=0x7f05000f;
-        public static final int b_map=0x7f05000e;
-        public static final int b_profilo=0x7f05000c;
-        public static final int btn_anon=0x7f050023;
-        public static final int btn_confirmprofile=0x7f050022;
-        public static final int btn_cross=0x7f05002b;
-        public static final int btn_gaps=0x7f05002a;
-        public static final int btn_image=0x7f05001d;
-        public static final int btn_image2=0x7f050026;
-        public static final int btn_notification=0x7f050016;
-        public static final int btn_obstruction=0x7f05002c;
-        public static final int btn_parking=0x7f05002e;
-        public static final int btn_pathway=0x7f050030;
-        public static final int btn_quiz=0x7f050015;
-        public static final int btn_reganon=0x7f050040;
-        public static final int btn_regfsq=0x7f05003e;
-        public static final int btn_regnew=0x7f05003f;
-        public static final int btn_setfilter=0x7f050047;
-        public static final int btn_skip=0x7f050024;
-        public static final int btn_surface=0x7f05002f;
-        public static final int button1=0x7f050006;
-        public static final int button2=0x7f050005;
-        public static final int cb_a=0x7f050044;
-        public static final int cb_n=0x7f050046;
-        public static final int cb_pa=0x7f050045;
-        public static final int cbgroup=0x7f050043;
-        public static final int drawer=0x7f050011;
-        public static final int drawer_layout=0x7f050009;
-        public static final int drawer_layout_map=0x7f050012;
-        public static final int drawer_map=0x7f050018;
-        public static final int editText1=0x7f050007;
-        public static final int et_user=0x7f05001f;
-        public static final int filter_layout=0x7f050041;
-        public static final int gallery1=0x7f050025;
+        public static final int action_settings=0x7f050052;
+        public static final int b_connect=0x7f050007;
+        public static final int b_go=0x7f05000b;
+        public static final int b_map=0x7f05000a;
+        public static final int b_profilo=0x7f050008;
+        public static final int btn_anon=0x7f050020;
+        public static final int btn_confirmprofile=0x7f05001f;
+        public static final int btn_cross=0x7f050028;
+        public static final int btn_gaps=0x7f050027;
+        public static final int btn_image=0x7f05001a;
+        public static final int btn_image2=0x7f050023;
+        public static final int btn_notification=0x7f050012;
+        public static final int btn_obstruction=0x7f050029;
+        public static final int btn_parking=0x7f05002b;
+        public static final int btn_pathway=0x7f05002d;
+        public static final int btn_quiz=0x7f050011;
+        public static final int btn_reganon=0x7f05003d;
+        public static final int btn_regfsq=0x7f05003b;
+        public static final int btn_regnew=0x7f05003c;
+        public static final int btn_savepref=0x7f05004f;
+        public static final int btn_setfilter=0x7f050044;
+        public static final int btn_skip=0x7f050021;
+        public static final int btn_surface=0x7f05002c;
+        public static final int button1=0x7f050014;
+        public static final int cb_a=0x7f050041;
+        public static final int cb_n=0x7f050043;
+        public static final int cb_pa=0x7f050042;
+        public static final int cbgroup=0x7f050040;
+        public static final int drawer=0x7f05000d;
+        public static final int drawer_layout=0x7f050005;
+        public static final int drawer_layout_map=0x7f05000e;
+        public static final int drawer_map=0x7f050015;
+        public static final int et_user=0x7f05001c;
+        public static final int filter_layout=0x7f05003e;
+        public static final int gallery1=0x7f050022;
         public static final int hybrid=0x7f050004;
-        public static final int imageView1=0x7f050027;
-        public static final int imageView2=0x7f05001c;
-        public static final int info_layout=0x7f050049;
-        public static final int item_filter=0x7f050057;
-        public static final int item_mapmenu=0x7f050058;
-        public static final int item_menu=0x7f050055;
-        public static final int item_refresh=0x7f050056;
-        public static final int iv_ribbon=0x7f05004e;
-        public static final int listView1=0x7f050008;
-        public static final int ll_rbtn=0x7f05003d;
-        public static final int ll_row1=0x7f050029;
-        public static final int ll_row2=0x7f05002d;
-        public static final int location=0x7f05003a;
-        public static final int lv_log=0x7f050032;
-        public static final int lv_nearby=0x7f05004d;
-        public static final int lv_places=0x7f050010;
-        public static final int lv_pref=0x7f050051;
-        public static final int main_hello_text_view=0x7f050039;
-        public static final int map=0x7f050014;
-        public static final int mapView=0x7f050013;
-        public static final int neabry_layout=0x7f05004c;
+        public static final int imageView1=0x7f050024;
+        public static final int imageView2=0x7f050019;
+        public static final int info_layout=0x7f050046;
+        public static final int item_filter=0x7f050055;
+        public static final int item_mapmenu=0x7f050056;
+        public static final int item_menu=0x7f050053;
+        public static final int item_refresh=0x7f050054;
+        public static final int iv_ribbon=0x7f05004b;
+        public static final int ll_rbtn=0x7f05003a;
+        public static final int ll_row1=0x7f050026;
+        public static final int ll_row2=0x7f05002a;
+        public static final int location=0x7f050037;
+        public static final int lv_log=0x7f05002f;
+        public static final int lv_nearby=0x7f05004a;
+        public static final int lv_places=0x7f05000c;
+        public static final int lv_pref=0x7f05004e;
+        public static final int main_hello_text_view=0x7f050036;
+        public static final int map=0x7f050010;
+        public static final int mapView=0x7f05000f;
+        public static final int neabry_layout=0x7f050049;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int progressBar1=0x7f050038;
-        public static final int quiz_layout=0x7f050037;
-        public static final int relativeLayout1=0x7f050021;
+        public static final int progressBar1=0x7f050035;
+        public static final int quiz_layout=0x7f050034;
+        public static final int relativeLayout1=0x7f05001e;
         public static final int satellite=0x7f050002;
-        public static final int scrollView1=0x7f050036;
-        public static final int scrollView2=0x7f050048;
-        public static final int scrollView3=0x7f050019;
-        public static final int spinner_filter=0x7f050042;
-        public static final int submitform=0x7f05003b;
+        public static final int scrollView1=0x7f050033;
+        public static final int scrollView2=0x7f050045;
+        public static final int scrollView3=0x7f050016;
+        public static final int sp_value=0x7f050050;
+        public static final int spinner_filter=0x7f05003f;
+        public static final int submitform=0x7f050038;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f050033;
-        public static final int textView2=0x7f050035;
-        public static final int textView7=0x7f050034;
-        public static final int tv_action=0x7f05004b;
-        public static final int tv_address=0x7f050050;
-        public static final int tv_anon=0x7f050020;
-        public static final int tv_create=0x7f05001b;
-        public static final int tv_date=0x7f05004a;
-        public static final int tv_distance=0x7f05004f;
-        public static final int tv_entry=0x7f050053;
-        public static final int tv_log=0x7f050031;
-        public static final int tv_name=0x7f05000d;
-        public static final int tv_notification=0x7f050017;
-        public static final int tv_p_preferences=0x7f050028;
-        public static final int tv_title=0x7f05000a;
-        public static final int tv_user=0x7f05001e;
-        public static final int tv_value=0x7f050052;
-        public static final int tv_welcome=0x7f05001a;
-        public static final int tv_welcome2=0x7f05003c;
+        public static final int textView1=0x7f050030;
+        public static final int textView2=0x7f050032;
+        public static final int textView7=0x7f050031;
+        public static final int tv_action=0x7f050048;
+        public static final int tv_address=0x7f05004d;
+        public static final int tv_anon=0x7f05001d;
+        public static final int tv_create=0x7f050018;
+        public static final int tv_date=0x7f050047;
+        public static final int tv_distance=0x7f05004c;
+        public static final int tv_entry=0x7f050051;
+        public static final int tv_log=0x7f05002e;
+        public static final int tv_name=0x7f050009;
+        public static final int tv_notification=0x7f050013;
+        public static final int tv_p_preferences=0x7f050025;
+        public static final int tv_title=0x7f050006;
+        public static final int tv_user=0x7f05001b;
+        public static final int tv_welcome=0x7f050017;
+        public static final int tv_welcome2=0x7f050039;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f070000;
     }
     public static final class layout {
-        public static final int activity_log_test=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_map=0x7f030002;
-        public static final int activity_new_profile=0x7f030003;
-        public static final int activity_profile=0x7f030004;
-        public static final int activity_quiz=0x7f030005;
-        public static final int activity_splash=0x7f030006;
-        public static final int activity_test=0x7f030007;
-        public static final int activity_welcome=0x7f030008;
-        public static final int drawer_list_item=0x7f030009;
-        public static final int filter_layout=0x7f03000a;
-        public static final int info_layout=0x7f03000b;
-        public static final int logentry_list=0x7f03000c;
-        public static final int nearby_layout=0x7f03000d;
-        public static final int nearby_list=0x7f03000e;
-        public static final int pref_layout=0x7f03000f;
-        public static final int pref_list=0x7f030010;
+        public static final int activity_main=0x7f030000;
+        public static final int activity_map=0x7f030001;
+        public static final int activity_new_profile=0x7f030002;
+        public static final int activity_profile=0x7f030003;
+        public static final int activity_quiz=0x7f030004;
+        public static final int activity_splash=0x7f030005;
+        public static final int activity_test=0x7f030006;
+        public static final int activity_welcome=0x7f030007;
+        public static final int drawer_list_item=0x7f030008;
+        public static final int filter_layout=0x7f030009;
+        public static final int info_layout=0x7f03000a;
+        public static final int logentry_list=0x7f03000b;
+        public static final int nearby_layout=0x7f03000c;
+        public static final int nearby_list=0x7f03000d;
+        public static final int pref_layout=0x7f03000e;
+        public static final int pref_list=0x7f03000f;
     }
     public static final class menu {
         public static final int log_test=0x7f0b0000;
@@ -362,8 +358,8 @@ containing a value of this type.
         public static final int welcome=0x7f0b0009;
     }
     public static final class string {
-        public static final int Escalators=0x7f060030;
-        public static final int accessibilitylvl=0x7f060032;
+        public static final int Escalators=0x7f060040;
+        public static final int accessibilitylvl=0x7f060042;
         public static final int action_settings=0x7f06001b;
         public static final int anon=0x7f060029;
         public static final int app_name=0x7f06001a;
@@ -390,8 +386,18 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f060014;
+        public static final int btn_createprofile=0x7f060030;
+        public static final int btn_cross=0x7f060033;
         public static final int btn_foursquare=0x7f060020;
+        public static final int btn_gaps=0x7f060032;
+        public static final int btn_modifyimage=0x7f06002d;
+        public static final int btn_obstruction=0x7f060034;
+        public static final int btn_parking=0x7f060035;
+        public static final int btn_pathway=0x7f060037;
         public static final int btn_profilo=0x7f06001f;
+        public static final int btn_regfsq=0x7f06002f;
+        public static final int btn_savepref=0x7f060046;
+        public static final int btn_surface=0x7f060036;
         public static final int btnanon=0x7f06002b;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
@@ -470,20 +476,31 @@ containing a value of this type.
         public static final int hello_world=0x7f06001c;
         public static final int lbl_user=0x7f060028;
         public static final int load_map=0x7f060022;
-        public static final int location=0x7f06002c;
+        public static final int location=0x7f06003c;
+        public static final int logo_descr=0x7f060026;
         public static final int nearby_venues=0x7f060023;
-        public static final int severity=0x7f060025;
-        public static final int submit=0x7f06002d;
+        public static final int submit=0x7f06003d;
         public static final int title=0x7f060021;
-        public static final int title_activity_log_test=0x7f060033;
+        public static final int title_activity_log_test=0x7f060043;
         public static final int title_activity_map=0x7f06001d;
-        public static final int title_activity_new_profile=0x7f060031;
-        public static final int title_activity_profile=0x7f06002f;
-        public static final int title_activity_quiz=0x7f06002e;
-        public static final int title_activity_splash=0x7f060034;
+        public static final int title_activity_new_profile=0x7f060041;
+        public static final int title_activity_profile=0x7f06003f;
+        public static final int title_activity_quiz=0x7f06003e;
+        public static final int title_activity_splash=0x7f060044;
         public static final int title_activity_test=0x7f06001e;
-        public static final int title_activity_welcome=0x7f060035;
-        public static final int welcome=0x7f060026;
+        public static final int title_activity_welcome=0x7f060045;
+        public static final int tv_example=0x7f06002e;
+        public static final int tv_log=0x7f060038;
+        /**  Profilo 
+         */
+        public static final int tv_pref=0x7f060031;
+        public static final int tv_reports=0x7f06003a;
+        public static final int tv_unknown=0x7f060039;
+        public static final int tv_user=0x7f06003b;
+        public static final int userimg_description=0x7f06002c;
+        /**  Nuovo Profilo 
+         */
+        public static final int welcome=0x7f060025;
     }
     public static final class style {
         /** 

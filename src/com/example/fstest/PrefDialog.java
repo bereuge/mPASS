@@ -2,16 +2,13 @@ package com.example.fstest;
 
 import java.util.ArrayList;
 
-import com.example.fstest.log.LogAdapter;
-import com.example.fstest.log.LogEntry;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
 
 public class PrefDialog extends Dialog
@@ -21,14 +18,15 @@ public class PrefDialog extends Dialog
 	private User user;
 	
 	private ArrayList<PrefEntry> pref;
+	private PrefAdapter adapter;
 	
 	public PrefDialog(Activity _activity, String _category, User _user) 
 	{
 		super(_activity);
 		activity=_activity;
-		category=_category;
+		category=_category.toLowerCase();
 		user=_user;
-		setTitle(category);
+		setTitle(_category);
 	}
 
 	@Override
@@ -43,13 +41,24 @@ public class PrefDialog extends Dialog
         lp.flags=LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_NOT_TOUCH_MODAL;
         getWindow().setAttributes(lp);   
         ListView listView=(ListView)findViewById(R.id.lv_pref);
-	    if (category.equals("Gaps"))
+        adapter=new PrefAdapter(activity);
+	    if (category.equals("gaps"))
 	    {
-			pref=user.getPref("Gaps");
-			PrefAdapter adapter=new PrefAdapter(activity);
+			pref=user.getPref("gaps");
 			adapter.setData(pref);
 			listView.setAdapter(adapter);
 	    }
+	    Button btn_savepref=(Button)findViewById(R.id.btn_savepref);
+	    btn_savepref.setOnClickListener(new android.view.View.OnClickListener() 
+	    {
+			@Override
+			public void onClick(View v) 
+			{
+				user.setPref(adapter.getNewPrefs(), category);
+				dismiss();
+			}
+		});
+	    /*
 	    listView.setOnItemClickListener(new OnItemClickListener() 
 	    {
 			@Override
@@ -57,6 +66,6 @@ public class PrefDialog extends Dialog
 			{
 				
 			}
-		});
+		});*/
 	}
 }
