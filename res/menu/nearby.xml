@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_filter"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/action_settings"
+        android:actionViewClass="android.widget.SearchView"/>
+    
+    <item
+        android:id="@+id/action_addvenue"
+        android:icon="@drawable/ic_addvenue"
+        android:showAsAction="always"
+        android:title="@string/action_settings"/>
+
+</menu>

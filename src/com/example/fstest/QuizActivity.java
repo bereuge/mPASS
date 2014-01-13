@@ -192,7 +192,7 @@ public class QuizActivity extends Activity
 				   case 1:squiz5="No";
 				   default:break;
 				}
-				String comment_txt=getCommentText(51);
+				final String comment_txt=getCommentText(51);
 				//String query_txt="INSERT INTO 1JvwJIV2DOSiQSXeSCj8PA8uKuSmTXODy3QgikiQ (name, geo, accessLevel, comment, doorways, elevator, escalator, parking) ";
 				//query_txt=query_txt+"VALUES ('"+name+"', '"+geo+"', '"+squiz1+"', '"+comment_txt+"', '"+squiz2+"', '"+squiz3+"', '"+squiz4+"', '"+squiz5+"')";
 				//Log.d("Test", query_txt);
@@ -222,7 +222,7 @@ public class QuizActivity extends Activity
 							try 
 							{
 								//Servirebbe una conferma o qualcosa del genere
-								fsqapp.checkIn(fsqid);
+								fsqapp.checkIn(fsqid, comment_txt);
 							} 
 							catch (Exception e) 
 							{

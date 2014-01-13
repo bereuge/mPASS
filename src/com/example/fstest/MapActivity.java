@@ -94,7 +94,8 @@ public class MapActivity extends Activity implements Runnable
         preferences[1]=true; //Parzialmente accessibile
         preferences[2]=true; //Non accessibile
         
-        initialize_menu();
+        //initialize_menu();
+        
         tv_notif=(TextView)findViewById(R.id.tv_notification);
 		//tv_notif.setText("Sei vicino a "+venue.name);
 		btn_notif=(Button)findViewById(R.id.btn_notification);
@@ -105,12 +106,14 @@ public class MapActivity extends Activity implements Runnable
 			@Override
 			public void onClick(View arg0) 
 			{
-				if (gps.canGetLocation())
+				/*if (gps.canGetLocation())
 				{
 					double lat=gps.getLatitude();
 					double lon=gps.getLongitude();
 					loadNearbyPlaces(lat, lon);
-				}
+				}*/
+				Intent i=new Intent(MapActivity.this, NearbyActivity.class);
+				startActivity(i);
 			}
 		});
 		
@@ -191,11 +194,14 @@ public class MapActivity extends Activity implements Runnable
         {
         	case R.id.item_filter:showFilterDialog();
         					      break;
-        	case R.id.item_mapmenu:if (!drawer.isDrawerOpen(mDrawerList))
+        	case R.id.item_mapmenu:/*if (!drawer.isDrawerOpen(mDrawerList))
 										drawer.openDrawer(mDrawerList);
 									else
 										drawer.closeDrawer(mDrawerList);
-						            break;
+						            break;*/
+        						    Intent profile_intent=new Intent(MapActivity.this, ProfileActivity.class);
+        						    startActivity(profile_intent);
+        						    break;
         	case R.id.item_refresh:spinner.show();
         						   ftclient.setQuery(query_all);
             					   ftclient.queryOnNewThread("setmarkers");
@@ -204,7 +210,7 @@ public class MapActivity extends Activity implements Runnable
         }
         return true;
     }
-    
+    /*
     private void initialize_menu()
     {
  	   menu=getResources().getStringArray(R.array.drawer_menu);
@@ -218,7 +224,7 @@ public class MapActivity extends Activity implements Runnable
  	   mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, menu));
  	   mDrawerList.setOnItemClickListener(new DrawerItemClickListener(drawer, mDrawerList, MapActivity.this));
     }
-    
+    */
     //Resetta la mappa se c'è bisogno
     private Boolean setUpMapIfNeeded()
     {

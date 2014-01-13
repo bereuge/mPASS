@@ -124,7 +124,27 @@ public class User
 		}
 		else if (category.equals(p_cross))
 		{
-			
+			String pcross=pref.getString(p_cross, null);
+			Log.d("Debug","pgaps="+pcross);
+			PrefEntry temp;
+			for (int i=0;i<pcross.length();i++)
+			{
+				temp=new PrefEntry("", 0);
+				//Se facessi una lista di stringhe con tutti i campi per ogni categoria, per evitare lo switch?
+				switch (i)
+				{
+					case 0:temp.setEntry("Traffic Lights");
+					 		 break;
+					case 1:temp.setEntry("Zebra Crossing");
+					 		 break;
+					case 2:temp.setEntry("Audible Traffic Lights");
+					 	     break;
+					default: break;	
+				}
+				
+				temp.setValue(Integer.parseInt(String.valueOf(pcross.charAt(i))));
+				listpref.add(temp);
+			}
 		}
 		else if (category.equals(p_obstruction))
 		{
@@ -162,6 +182,7 @@ public class User
 	{
 		Editor editor = pref.edit();
 		editor.putString(p_gaps, "0000");
+		editor.putString(p_cross, "000");
 		//qui ci vanno tutte le altre categorie
 		editor.commit();
 	}

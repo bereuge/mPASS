@@ -61,7 +61,7 @@ public class NearbyAdapter extends BaseAdapter {
 		FsqVenue venue 	= mVenueList.get(position);
 		
 		holder.mNameTxt.setText(venue.name);
-		holder.mAddressTxt.setText(venue.type);
+		holder.mAddressTxt.setText(venue.address);
 		//holder.mHereNowTxt.setText("(" + String.valueOf(venue.herenow) + " people here)");
 		
 		

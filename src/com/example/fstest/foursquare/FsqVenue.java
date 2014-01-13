@@ -12,7 +12,7 @@ public class FsqVenue implements Serializable
 	private static final long serialVersionUID = -2572320640022444725L;
 	public String id;
 	public String name;
-	//public String address;
+	public String address;
 	public String type;
 	public Double latitude;
 	public Double longitude;

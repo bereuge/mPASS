@@ -12,34 +12,34 @@
     <string name="load_map">Open Map</string>
     <string name="nearby_venues">Locate nearby venues</string>
     <string name="hello">Hello world!</string>
-    
+
     <!-- Nuovo Profilo -->
-	    <string name="welcome">Welcome to mPASS!</string>
-	    <string name="logo_descr">Logo di mPASS</string>
-	    <string name="create">You can choose to create your profile&#8230;</string>
-	    <string name="lbl_user">Username</string>
-	    <string name="anon">&#8230;or stay anonymous!</string>
-	    <string name="confirm">Save profile</string>
-	    <string name="btnanon">Stay anonymous</string>
-	    <string name="userimg_description">Immagine del profilo</string>
-		<string name="btn_modifyimage">modify</string>
-		<string name="tv_example">Ex: Mario Rossi</string>
-		<string name="btn_regfsq">Login with Foursquare</string>
-		<string name="btn_createprofile">Create a new profile</string>
-	    
-	<!-- Profilo -->
-		<string name="tv_pref">Preferences</string>
-		<string name="btn_gaps">GAPS</string>
-		<string name="btn_cross">CROSS</string>
-		<string name="btn_obstruction">OBSTRUCTION</string>
-		<string name="btn_parking">PARKING</string>
-		<string name="btn_surface">SURFACE</string>
-		<string name="btn_pathway">PATHWAY</string>
-		<string name="tv_log">Log</string>
-		<string name="tv_unknown">Unknown</string>
-		<string name="tv_reports">Number of reports: ?</string>
-		<string name="tv_user">User</string>
-	
+    <string name="welcome">Welcome to mPASS!</string>
+    <string name="logo_descr">Logo di mPASS</string>
+    <string name="create">You can choose to create your profile&#8230;</string>
+    <string name="lbl_user">Username</string>
+    <string name="anon">&#8230;or stay anonymous!</string>
+    <string name="confirm">Save profile</string>
+    <string name="btnanon">Stay anonymous</string>
+    <string name="userimg_description">Immagine del profilo</string>
+    <string name="btn_modifyimage">modify</string>
+    <string name="tv_example">Ex: Mario Rossi</string>
+    <string name="btn_regfsq">Login with Foursquare</string>
+    <string name="btn_createprofile">Create a new profile</string>
+
+    <!-- Profilo -->
+    <string name="tv_pref">Preferences</string>
+    <string name="btn_gaps">GAPS</string>
+    <string name="btn_cross">CROSS</string>
+    <string name="btn_obstruction">OBSTRUCTION</string>
+    <string name="btn_parking">PARKING</string>
+    <string name="btn_surface">SURFACE</string>
+    <string name="btn_pathway">PATHWAY</string>
+    <string name="tv_log">Log</string>
+    <string name="tv_unknown">Unknown</string>
+    <string name="tv_reports">Number of reports: 13</string>
+    <string name="tv_user">User</string>
+
     <string-array name="drawer_menu">
         <item>Home</item>
         <item>Visualizza mappa</item>
@@ -56,6 +56,8 @@
     <string name="title_activity_log_test">LogTest</string>
     <string name="title_activity_splash">mPASS</string>
     <string name="title_activity_welcome">mPASS - Welcome!</string>
-	<string name="btn_savepref">Save preferences</string>
-    
+    <string name="btn_savepref">Save preferences</string>
+    <string name="title_activity_nearby">mPASS - Nearby Venues</string>
+    <string name="title_activity_new_venue">mPASS - New Venue</string>
+
 </resources>

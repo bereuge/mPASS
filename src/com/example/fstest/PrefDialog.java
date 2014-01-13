@@ -36,7 +36,7 @@ public class PrefDialog extends Dialog
 	    setContentView(R.layout.pref_layout);
 	    
 	    LayoutParams lp=getWindow().getAttributes(); 
-        lp.width=300;lp.height=340;
+        lp.width=500;lp.height=350;
         lp.dimAmount=0;            
         lp.flags=LayoutParams.FLAG_LAYOUT_NO_LIMITS | LayoutParams.FLAG_NOT_TOUCH_MODAL;
         getWindow().setAttributes(lp);   
@@ -45,6 +45,12 @@ public class PrefDialog extends Dialog
 	    if (category.equals("gaps"))
 	    {
 			pref=user.getPref("gaps");
+			adapter.setData(pref);
+			listView.setAdapter(adapter);
+	    }
+	    else if (category.equals("cross"))
+	    {
+			pref=user.getPref("cross");
 			adapter.setData(pref);
 			listView.setAdapter(adapter);
 	    }

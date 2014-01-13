@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -217,7 +218,7 @@ public class FoursquareApp
 		mDialog.show();
 	}
 	
-	public boolean checkIn(String venueid) throws Exception
+	public boolean checkIn(String venueid, String comment) throws Exception
 	{
 		boolean success=false;
 		try 
@@ -237,6 +238,10 @@ public class FoursquareApp
 			JSONObject meta=(JSONObject) jsonObj.getJSONObject("meta");
 			String code=meta.getString("code");
 			Log.d(TAG,code);
+			if (!comment.isEmpty())
+			{
+				addTip(venueid, comment);
+			}
 			if (code.equals("200")) success=true;
 		} 
 		catch (MalformedURLException e) 
@@ -244,6 +249,39 @@ public class FoursquareApp
 			e.printStackTrace();
 		}
 		return success;
+	}
+	
+	private void addTip(String venueid, String comment) throws Exception
+	{
+		try 
+		{
+			if (comment.length()>150)
+			{
+				comment=comment.substring(0, 150);
+				comment=comment.concat("...");
+			}
+			comment=comment.concat(" - By mPASS Application");
+			comment=comment.replaceAll(" ", "%20");
+			String v	= timeMilisToString(System.currentTimeMillis()); 
+			URL url 	= new URL(API_URL + "/tips/add?venueId=" + venueid + "&text=" + comment + "&oauth_token=" + mAccessToken + "&v=" + v);
+			Log.d(TAG, "Opening URL " + url.toString());
+			
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setRequestMethod("POST");
+			urlConnection.setDoInput(true);
+			urlConnection.connect();
+			
+			String response=streamToString(urlConnection.getInputStream());
+			Log.d(TAG, response);
+			JSONObject jsonObj=(JSONObject) new JSONTokener(response).nextValue();
+			JSONObject meta=(JSONObject) jsonObj.getJSONObject("meta");
+			String code=meta.getString("code");
+			Log.d(TAG,code);
+		} 
+		catch (MalformedURLException e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public ArrayList<FsqVenue> getNearby(double latitude, double longitude) throws Exception {
@@ -300,12 +338,103 @@ public class FoursquareApp
 						venue.latitude=Double.valueOf(location.getString("lat"));
 						venue.longitude=Double.valueOf(location.getString("lng"));
 						//venue.location	= loc;
+						try
+						{
+							venue.address=location.getString("address");
+						}
+						catch (Exception ex)
+						{
+							venue.address=" ";
+						}
+						/*if (location.getString("address").isEmpty())
+						{
+							venue.address=" ";
+						}
+						else venue.address=location.getString("address");*/
 						//venue.address	= location.getString("address");
 						venue.distance	= (String.valueOf( location.getInt("distance")));
 						venue.distance=venue.distance+" m";
 						//venue.distance	= location.getString("distance");
 						//venue.herenow	= item.getJSONObject("hereNow").getInt("count");
 						//venue.type		= group.getString("type");
+						try
+						{
+							JSONArray categories=(JSONArray) item.getJSONArray("categories");
+							JSONObject category=(JSONObject) categories.get(0);
+							venue.type=category.getString("name");
+						}
+						catch (Exception exc)
+						{
+							venue.type="Undefined";
+						}
+						
+						venueList.add(venue);
+					//}
+				}
+			}
+		} 
+		catch (Exception ex) 
+		{
+			throw ex;
+		}
+		
+		return venueList;
+	}
+	
+	public ArrayList<FsqVenue> getNearbyWithQuery(double latitude, double longitude, String query) throws Exception {
+		ArrayList<FsqVenue> venueList = new ArrayList<FsqVenue>();
+		
+		try 
+		{
+			String v	= timeMilisToString(System.currentTimeMillis()); 
+			String ll 	= String.valueOf(latitude) + "," + String.valueOf(longitude);
+			URL url 	= new URL(API_URL + "/venues/search?ll=" + ll +"&query="+ query +"&oauth_token=" + mAccessToken + "&v=" + v);
+			//URL url 	= new URL(API_URL + "/venues/search?query=mirabilandia&ll=44,12"+ "&oauth_token=" + mAccessToken + "&v=" + v);
+			
+			Log.d(TAG, "Opening URL " + url.toString());
+			
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			
+			urlConnection.setRequestMethod("GET");
+			urlConnection.setDoInput(true);
+			//urlConnection.setDoOutput(true);
+			
+			urlConnection.connect();
+			
+			String response		= streamToString(urlConnection.getInputStream());
+			JSONObject jsonObj 	= (JSONObject) new JSONTokener(response).nextValue();
+			
+			JSONArray groups	= (JSONArray) jsonObj.getJSONObject("response").getJSONArray("venues");
+			
+			int length			= groups.length();
+			if (length > 0) {
+				for (int i = 0; i < length; i++) 
+				{
+						JSONObject item = (JSONObject) groups.get(i);
+						
+						FsqVenue venue 	= new FsqVenue();
+						
+						venue.id 		= item.getString("id");
+						venue.name		= item.getString("name");
+						
+						JSONObject location = (JSONObject) item.getJSONObject("location");
+						
+						Location loc 	= new Location(LocationManager.GPS_PROVIDER);
+						try
+						{
+							venue.address=location.getString("address");
+						}
+						catch (Exception ex)
+						{
+							venue.address=" ";
+						}
+						loc.setLatitude(Double.valueOf(location.getString("lat")));
+						loc.setLongitude(Double.valueOf(location.getString("lng")));
+						
+						venue.latitude=Double.valueOf(location.getString("lat"));
+						venue.longitude=Double.valueOf(location.getString("lng"));
+						venue.distance	= (String.valueOf( location.getInt("distance")));
+						venue.distance=venue.distance+" m";
 						try
 						{
 							JSONArray categories=(JSONArray) item.getJSONArray("categories");

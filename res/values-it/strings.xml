@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">"mPASS"</string>
+    <string name="action_settings">Impostazioni</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_map">"mPASS - Mappa"</string>
+    <string name="title_activity_test">MainActivity</string>
+    <string name="btn_profilo">Profilo</string>
+    <string name="btn_foursquare">Connettiti a Foursquare</string>
+    <string name="title">"mPASS"</string>
+    <string name="load_map">Apri mappa</string>
+    <string name="nearby_venues">Visualizza luoghi vicini</string>
+    <string name="hello">Hello world!</string>
+    
+    <!-- Nuovo Profilo -->
+	    <string name="welcome">Benvenuto a mPASS!</string>
+	    <string name="logo_descr">Logo di mPASS</string>
+	    <string name="create">Puoi scegliere di creare il tuo profilo&#8230;</string>
+	    <string name="lbl_user">Username</string>
+	    <string name="anon">&#8230;o restare anonimo!</string>
+	    <string name="confirm">Salva profilo</string>
+	    <string name="btnanon">Resta anonimo</string>
+	    <string name="userimg_description">Immagine del profilo</string>
+		<string name="btn_modifyimage">modifica</string>
+		<string name="tv_example">Es: Mario Rossi</string>
+		<string name="btn_regfsq">Login con Foursquare</string>
+		<string name="btn_createprofile">Crea un nuovo profilo</string>
+	    
+	<!-- Profilo -->
+		<string name="tv_pref">Preferenze</string>
+		<string name="btn_gaps">GAPS</string>
+		<string name="btn_cross">CROSS</string>
+		<string name="btn_obstruction">OBSTRUCTION</string>
+		<string name="btn_parking">PARKING</string>
+		<string name="btn_surface">SURFACE</string>
+		<string name="btn_pathway">PATHWAY</string>
+		<string name="tv_log">Log</string>
+		<string name="tv_unknown">Unknown</string>
+		<string name="tv_reports">Numero di segnalazioni: 13</string>
+		<string name="tv_user">Utente</string>
+	
+    <string-array name="drawer_menu">
+        <item>Home</item>
+        <item>Visualizza mappa</item>
+        <item>Profilo</item>
+    </string-array>
+
+    <string name="location">Current location:</string>
+    <string name="submit">Segnala</string>
+    <string name="title_activity_quiz">mPASS - Segnalazione</string>
+    <string name="title_activity_profile">mPASS - Profilo</string>
+    <string name="Escalators">Scale mobili</string>
+    <string name="title_activity_new_profile">mPASS</string>
+    <string name="accessibilitylvl">Livello di Accessibilità</string>
+    <string name="title_activity_log_test">LogTest</string>
+    <string name="title_activity_splash">mPASS</string>
+    <string name="title_activity_welcome">mPASS - Benvenuto!</string>
+	<string name="btn_savepref">Salva preferenze</string>
+    <string name="title_activity_nearby">mPASS - Luoghi Vicini</string>
+    <string name="title_activity_new_venue">mPASS - Nuovo Luogo</string>
+    
+</resources>

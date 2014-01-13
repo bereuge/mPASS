@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.fstest.MapActivity;
+import com.example.fstest.NearbyActivity;
 import com.example.fstest.QuizActivity;
 import com.example.fstest.SplashActivity;
 /*import org.json.JSONArray;
@@ -267,7 +268,7 @@ public class FTClient
 					json_result = new JSONObject(output);
 					JSONArray j_maxid=json_result.getJSONArray("rows");
 					String maxid=j_maxid.getString(0);
-					((MapActivity) activity).createNewVenue(maxid);
+					((NearbyActivity) activity).createNewVenue(maxid);
 				} 
 				catch (JSONException e) 
 				{

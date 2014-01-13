@@ -49,7 +49,7 @@
         </activity>
         <activity
             android:name="com.example.fstest.MapActivity"
-            android:label="@string/title_activity_map">
+            android:label="@string/title_activity_map" >
         </activity>
 
         <meta-data
@@ -89,6 +89,14 @@
         <activity
             android:name="com.example.fstest.WelcomeActivity"
             android:label="@string/title_activity_welcome" >
+        </activity>
+        <activity
+            android:name="com.example.fstest.NearbyActivity"
+            android:label="@string/title_activity_nearby" >
+        </activity>
+        <activity
+            android:name="com.example.fstest.NewVenueActivity"
+            android:label="@string/title_activity_new_venue" >
         </activity>
     </application>
 

@@ -16,8 +16,8 @@
     
     <item
         android:id="@+id/item_mapmenu"
-        android:icon="@drawable/ic_menu" 
-        android:title="Menu" 
+        android:icon="@drawable/ic_profile" 
+        android:title="Profile" 
         android:showAsAction="always">
         
     </item>

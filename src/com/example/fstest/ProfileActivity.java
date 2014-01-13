@@ -49,9 +49,6 @@ public class ProfileActivity extends Activity
 		
 		//Setup profilo
 		user=new User(this);
-		listView=(ListView)findViewById(R.id.lv_log);
-		adapter=new LogAdapter(this);
-		entries=new ArrayList<LogEntry>();
 		
 		TextView tv_name=(TextView)findViewById(R.id.textView1);
 		tv_name.setText(user.getName());
@@ -65,6 +62,9 @@ public class ProfileActivity extends Activity
 		//iv_image.setImageResource(R.drawable.user);
 		
 		//Carica log utente
+		listView=(ListView)findViewById(R.id.lv_log);
+		adapter=new LogAdapter(this);
+		entries=new ArrayList<LogEntry>();
 		LogDbManager log=new LogDbManager(getApplicationContext());
 		log.openToRead();
 		entries=log.getAllEntries();
@@ -126,6 +126,15 @@ public class ProfileActivity extends Activity
 			public void onClick(View arg0) 
 			{
 				showPrefDialog("Gaps");
+			}
+		});
+		Button btn_cross=(Button)findViewById(R.id.btn_cross);
+		btn_cross.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View arg0) 
+			{
+				showPrefDialog("Cross");
 			}
 		});
 		//Servono tutti gli onClickListener per gli altri pulsanti

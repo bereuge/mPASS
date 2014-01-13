@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mapView2"
+	android:weightSum="4"
+    tools:context=".NewVenueActivity"
+	android:orientation="vertical"
+	android:descendantFocusability="beforeDescendants"
+	android:focusableInTouchMode="true">
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_weight="3"
+	    android:orientation="vertical">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_venuename"
+            android:text="Inserisci il nome del nuovo locale"
+            android:layout_margin="15dp"
+            android:textSize="16sp">
+        </TextView>
+        
+        <EditText
+            android:id="@+id/et_newvenue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:hint="Es: Centro Commerciale Coop"
+            android:layout_margin="15dp"/>
+        
+    </LinearLayout>
+    
+    <fragment
+	    android:id="@+id/map2"
+	    android:name="com.google.android.gms.maps.MapFragment"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent" 
+	    android:layout_weight="1"/>
+
+</LinearLayout>
