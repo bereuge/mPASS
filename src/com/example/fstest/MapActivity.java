@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -64,6 +65,7 @@ public class MapActivity extends Activity implements Runnable
     private boolean[] preferences;
     
     private String query_all="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId;
+    private String query_limit="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" ORDER BY ST_DISTANCE(geo, LATLNG(@LAT,@LNG)) LIMIT 100";
     private String query_acc="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE accessLevel in (@VALUES)";
     private String query_door="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE doorways in (@VALUES)";
     private String query_elev="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE elevator in (@VALUES)";
@@ -75,13 +77,15 @@ public class MapActivity extends Activity implements Runnable
     private TextView tv_notif;
     
     //Menu
-    private String[] menu;
+    /*private String[] menu;
     private DrawerLayout drawer;
-    private ListView mDrawerList;
+    private ListView mDrawerList;*/
     
     @Override
     protected void onCreate(Bundle savedInstanceState) 
     {
+    	String lat,lng, temp_query_limit;
+    	
         super.onCreate(savedInstanceState);
         
         context=this;
@@ -134,7 +138,15 @@ public class MapActivity extends Activity implements Runnable
         setUpMapIfNeeded();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.277205,12.191162) , 6.0f));
         mMap.setMyLocationEnabled(true);
-        ftclient.setQuery(query_all);
+
+        //Questo codice permette di far vedere sulla mappa solo i luoghi vicini presenti nella fusion table
+        lat=String.valueOf(gps.getLatitude());
+        lng=String.valueOf(gps.getLongitude());
+        temp_query_limit=query_limit.replace("@LAT", lat);
+        temp_query_limit=temp_query_limit.replace("@LNG", lng);
+        ftclient.setQuery(temp_query_limit);
+        
+        //ftclient.setQuery(query_all);
         ftclient.queryOnNewThread("setmarkers");
         
         fsqApp = new FoursquareApp(this, Costants.CLIENT_ID, Costants.CLIENT_SECRET);
@@ -517,10 +529,27 @@ public class MapActivity extends Activity implements Runnable
     }
     
     //Callback eseguito dopo il completamento della query, mostra le info sul luogo
-    public void showInfoDialog (JSONArray venues)
+    public void showInfoDialog (JSONArray venues, String acl)
     {
     	spinner.dismiss();
-    	InfoDialog idialog=new InfoDialog((Activity)context, venues);
+    	InfoDialog idialog = null;
+    	//InfoDialog idialog=new InfoDialog((Activity)context, venues, R.style.InfoDialog);
+    	if (acl.equals("A"))
+    	{
+    		idialog=new InfoDialog((Activity)context, venues, R.style.InfoDialogGreen);
+    	}
+    	else if (acl.equals("P"))
+    	{
+    		idialog=new InfoDialog((Activity)context, venues, R.style.InfoDialogYellow);
+    	}
+    	else if (acl.equals("N"))
+    	{
+    		idialog=new InfoDialog((Activity)context, venues, R.style.InfoDialogRed);
+    	}
+    	else
+    	{
+    		idialog=new InfoDialog((Activity)context, venues, R.style.InfoDialogGray);
+    	}
 		idialog.show();
     }
     

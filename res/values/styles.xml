@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -20,13 +20,57 @@
 
     <style name="MyActionBar"
            parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#2aa4cd</item>
+         <item name="android:background">#2aa4cd</item>
         <item name="android:titleTextStyle">@style/Theme.MyAppTheme.ActionBar.TitleTextStyle</item>
     </style>
     
     <style name="Theme.MyAppTheme.ActionBar.TitleTextStyle" 
         parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
-    <item name="android:textColor">#FFFFFF</item>
+    	<item name="android:textColor">#FFFFFF</item>
     </style>  
+    
+    <style name="InfoDialogGreen" parent="@android:style/Theme.Dialog">
+        <item name="android:windowTitleStyle">@style/dialog_title_style_green</item>
+        <item name="android:background">#FFFFFF</item>
+    </style>
+    
+    <style name="dialog_title_style_green" parent="android:Widget.TextView">
+	    <item name="android:background">#66cc00</item>
+	    <item name="android:textColor">#FFFFFF</item>
+	    <item name="android:textSize">20sp</item>
+	</style>
+	
+    <style name="InfoDialogYellow" parent="@android:style/Theme.Dialog">
+        <item name="android:windowTitleStyle">@style/dialog_title_style_yellow</item>
+        <item name="android:background">#FFFFFF</item>
+    </style>
+    
+    <style name="dialog_title_style_yellow" parent="android:Widget.TextView">
+	    <item name="android:background">#fbec5d</item>
+	    <item name="android:textColor">#FFFFFF</item>
+	    <item name="android:textSize">20sp</item>
+	</style>
+	
+    <style name="InfoDialogRed" parent="@android:style/Theme.Dialog">
+        <item name="android:windowTitleStyle">@style/dialog_title_style_red</item>
+        <item name="android:background">#FFFFFF</item>
+    </style>
+    
+    <style name="dialog_title_style_red" parent="android:Widget.TextView">
+	    <item name="android:background">#e32636</item>
+	    <item name="android:textColor">#FFFFFF</item>
+	    <item name="android:textSize">20sp</item>
+	</style>
+	
+    <style name="InfoDialogGray" parent="@android:style/Theme.Dialog">
+        <item name="android:windowTitleStyle">@style/dialog_title_style_gray</item>
+        <item name="android:background">#FFFFFF</item>
+    </style>
+    
+    <style name="dialog_title_style_gray" parent="android:Widget.TextView">
+	    <item name="android:background">#848482</item>
+	    <item name="android:textColor">#FFFFFF</item>
+	    <item name="android:textSize">20sp</item>
+	</style>
     
 </resources>

@@ -11,7 +11,6 @@
     	android:layout_height="wrap_content"
     	android:orientation="vertical" 
     	android:id="@+id/info_layout">
-    
-
+    	
 	</LinearLayout>
 </ScrollView>

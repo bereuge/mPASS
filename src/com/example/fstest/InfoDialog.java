@@ -3,12 +3,16 @@ package com.example.fstest;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import android.R.color;
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,9 +22,9 @@ public class InfoDialog extends Dialog implements OnClickListener
 	private Activity activity;
 	private JSONArray venues;
 	
-	public InfoDialog(Activity _activity, JSONArray _venues)
+	public InfoDialog(Activity _activity, JSONArray _venues, int theme)
 	{
-		super(_activity);
+		super(_activity, theme);
 		
 		activity=_activity;
 		venues=_venues;
@@ -55,6 +59,7 @@ public class InfoDialog extends Dialog implements OnClickListener
 		String name,accesslevel,comment,doorways,elevator,escalator,parking, user, date;
 		int nquiz=venues.length();
 		LinearLayout ll=(LinearLayout)findViewById(R.id.info_layout);
+		ll.setPadding(10, 5, 10, 5);
 		for(int i=0; i<nquiz; i++)
 		{
 			try 
@@ -96,7 +101,7 @@ public class InfoDialog extends Dialog implements OnClickListener
 			    tv_quiztitle.setPadding(0, 10, 0, 10);
 			    ll.addView(tv_quiztitle);
 				
-				TextView tv_accesslvl=new TextView(activity);
+				/*TextView tv_accesslvl=new TextView(activity);
 				if (accesslevel.equals("A"))
 					tv_accesslvl.setText("Livello accessibilità: Accessibile");
 				else if (accesslevel.equals("P"))
@@ -105,14 +110,58 @@ public class InfoDialog extends Dialog implements OnClickListener
 					tv_accesslvl.setText("Livello accessibilità: Non accessibile");
 				else if (accesslevel.equals(" ") || accesslevel.equals("")) tv_accesslvl.setText("Livello accessibilità: Ignoto");
 				tv_accesslvl.setPadding(0, 5, 0, 5);
-				ll.addView(tv_accesslvl);
+				ll.addView(tv_accesslvl);*/
 				
+				TextView tv_titlecomment=new TextView(activity);
+				tv_titlecomment.setText("Commento");
+				ll.addView(tv_titlecomment);
 				TextView tv_comment=new TextView(activity);
-				if (comment.equals(" ") || comment.equals("")) tv_comment.setText("Commento: Non inserito");
-				else tv_comment.setText("Commento: "+comment);
-			    tv_comment.setPadding(0, 5, 0, 5);
+				if (comment.equals(" ") || comment.equals("")) tv_comment.append("Non inserito");
+				else tv_comment.append(comment);
+			    tv_comment.setPadding(10, 5, 10, 5);
+			    tv_comment.setBackgroundResource(R.drawable.rounded_edittext);
+			    tv_comment.setMaxWidth(50);
+			    //tv_comment.setBackgroundColor(0xAAD2D2D2);
+			    //tv_comment.setBackground(R.drawable.rounded_edittext);
 			    ll.addView(tv_comment);
 			    
+			    LinearLayout ll_carat=new LinearLayout(activity);
+			    ll_carat.setPadding(0, 15, 0, 0);
+			    TextView tv_door=new TextView(activity);
+			    if (doorways.equals("Yes")) tv_door.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_green_dot, 0, 0);
+			    else if (doorways.equals("One floor")) tv_door.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_yellow_dot, 0, 0);
+			    else if (doorways.equals("No")) tv_door.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_red_dot, 0, 0);
+			    else tv_door.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_grey_dot, 0, 0);
+			    tv_door.setText("Porte");
+			    tv_door.setPadding(5, 0, 5, 0);
+			    ll_carat.addView(tv_door);
+			    
+			    TextView tv_elevator=new TextView(activity);
+			    if (elevator.equals("Yes")) tv_elevator.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_green_dot, 0, 0);
+			    else if (elevator.equals("No")) tv_elevator.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_red_dot, 0, 0);
+			    else tv_elevator.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_grey_dot, 0, 0);
+			    tv_elevator.setText("Ascensore");
+			    tv_elevator.setPadding(5, 0, 5, 0);
+			    ll_carat.addView(tv_elevator);
+			    
+			    TextView tv_escalator=new TextView(activity);
+			    if (escalator.equals("Yes")) tv_escalator.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_green_dot, 0, 0);
+			    else if (escalator.equals("No")) tv_escalator.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_red_dot, 0, 0);
+			    else tv_escalator.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_grey_dot, 0, 0);
+			    tv_escalator.setText("Scale mobili");
+			    tv_escalator.setPadding(5, 0, 5, 0);
+			    ll_carat.addView(tv_escalator);
+			    
+			    TextView tv_parking=new TextView(activity);
+			    if (parking.equals("Yes")) tv_parking.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_green_dot, 0, 0);
+			    else if (parking.equals("No")) tv_parking.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_red_dot, 0, 0);
+			    else tv_parking.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_grey_dot, 0, 0);
+			    tv_parking.setText("Parcheggio");
+			    tv_parking.setPadding(5, 0, 5, 0);
+			    ll_carat.addView(tv_parking);
+			    
+			    ll.addView(ll_carat);
+			    /*
 			    TextView tv_door=new TextView(activity);
 			    if (doorways.equals(" ") || doorways.equals("")) tv_door.setText("Porte: Ignoto");
 			    else tv_door.setText("Porte: "+doorways);
@@ -136,6 +185,7 @@ public class InfoDialog extends Dialog implements OnClickListener
 			    else tv_parking.setText("Parcheggio: "+parking);
 			    tv_parking.setPadding(0, 5, 0, 5);
 			    ll.addView(tv_parking);
+			    */
 			} 
 			catch (JSONException e) 
 			{

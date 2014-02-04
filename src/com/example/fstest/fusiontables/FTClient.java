@@ -250,7 +250,10 @@ public class FTClient
 					JSONObject json_result;
 					json_result = new JSONObject(output);
 					JSONArray venues=json_result.getJSONArray("rows");
-					((MapActivity) activity).showInfoDialog(venues);
+					JSONArray row=venues.getJSONArray(0);
+					String acl=row.get(2).toString();
+					//Log.d("Debug", acl);
+					((MapActivity) activity).showInfoDialog(venues, acl);
 				} 
 				catch (JSONException e) 
 				{
