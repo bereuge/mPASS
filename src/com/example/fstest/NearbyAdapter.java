@@ -15,31 +15,38 @@ import java.util.ArrayList;
 
 import com.example.fstest.foursquare.FsqVenue;
 
-public class NearbyAdapter extends BaseAdapter {
+public class NearbyAdapter extends BaseAdapter 
+{
 	private ArrayList<FsqVenue> mVenueList;
 	private LayoutInflater mInflater;
 
-	public NearbyAdapter(Context c) {
+	public NearbyAdapter(Context c) 
+	{
         mInflater 			= LayoutInflater.from(c);
     }
 
-	public void setData(ArrayList<FsqVenue> poolList) {
+	public void setData(ArrayList<FsqVenue> poolList) 
+	{
 		mVenueList = poolList;
 	}
 	
-	public int getCount() {
+	public int getCount() 
+	{
 		return mVenueList.size();
 	}
 
-	public Object getItem(int position) {
+	public Object getItem(int position) 
+	{
 		return mVenueList.get(position);
 	}
 
-	public long getItemId(int position) {
+	public long getItemId(int position) 
+	{
 		return position;
 	}
 
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) 
+	{
 		ViewHolder holder;
 		
 		if (convertView == null) {
@@ -54,7 +61,9 @@ public class NearbyAdapter extends BaseAdapter {
 			holder.mRibbonImg		= (ImageView) convertView.findViewById(R.id.iv_ribbon);
 			
 			convertView.setTag(holder);
-		} else {
+		} 
+		else 
+		{
 			holder = (ViewHolder) convertView.getTag();
 		}
 

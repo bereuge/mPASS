@@ -8,7 +8,7 @@ import java.io.Serializable;
 //Implementare dei get/set decentemente?
 public class FsqVenue implements Serializable
 {
-	//???? Cos'è?
+	//???? Cos\è?
 	private static final long serialVersionUID = -2572320640022444725L;
 	public String id;
 	public String name;

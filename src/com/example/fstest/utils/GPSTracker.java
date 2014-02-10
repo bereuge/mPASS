@@ -43,7 +43,7 @@ public GPSTracker(Context context) {
 }
 
 /**
- * Function to get the user's current location
+ * Function to get the user\s current location
  * @return
  */
 public Location getLocation() {

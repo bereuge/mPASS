@@ -20,8 +20,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -118,6 +120,17 @@ public class MapActivity extends Activity implements Runnable
 				}*/
 				Intent i=new Intent(MapActivity.this, NearbyActivity.class);
 				startActivity(i);
+			}
+		});
+		
+		Button btn_listvenue=(Button)findViewById(R.id.btn_list);
+		btn_listvenue.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v) 
+			{
+				Intent intent=new Intent(MapActivity.this, VenueListActivity.class);
+				startActivity(intent);
 			}
 		});
 		
@@ -443,6 +456,11 @@ public class MapActivity extends Activity implements Runnable
 	    	}
 	    	if (!min_fsqid.equals(""))
     		{
+	    		AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+	    		Intent alarmIntent=new Intent(this, NotificationService.class);
+	    		PendingIntent pendingIntent=PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+	    		alarmManager.set(AlarmManager.RTC_WAKEUP, 3000, pendingIntent);
+	    		
     			//tv_notif=(TextView)findViewById(R.id.tv_notification);
     			tv_notif.setText("Sei vicino a "+venue.name);
     			//Button btn_notif=(Button)findViewById(R.id.btn_notification);
@@ -680,6 +698,7 @@ public class MapActivity extends Activity implements Runnable
 	{
 		//Creazione nuovo id, successivo al maxid ottenuto con la query
 		//Manca la gestione del primo record inserito senza foursquare, con id NF0
+		//BUG CON LA QUERY, CONSIDERA NF99 COME MASSIMO
 		String maxid=_maxid.substring(4);
 		maxid=maxid.substring(0, maxid.length()-2);
 		int newid=Integer.parseInt(maxid)+1;

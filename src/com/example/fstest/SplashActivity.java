@@ -43,7 +43,7 @@ public class SplashActivity extends Activity
 			});
 			ad_nonetwork.show();
 		}
-		//E se ci fosse un timeout per la richiesta del token che restituisca un messaggio d'errore?
+		//E se ci fosse un timeout per la richiesta del token che restituisca un messaggio d\errore?
 		
 		/*spinner=new ProgressDialog(this);
 		spinner.setIndeterminate(true);
@@ -106,7 +106,7 @@ public class SplashActivity extends Activity
     				{
 	    				Intent i=new Intent(SplashActivity.this, WelcomeActivity.class);
 	    				startActivity(i);
-	    				//finish(); //Se uso il finish, non si vede nulla fra la newprofileactivity e l'activity principale per
+	    				//finish(); //Se uso il finish, non si vede nulla fra la newprofileactivity e l\activity principale per
 	    				            //qualche secondo
     				}
     			}
@@ -136,7 +136,7 @@ public class SplashActivity extends Activity
 		{
 			Intent i=new Intent(SplashActivity.this, WelcomeActivity.class);
 			startActivity(i);
-			//finish(); //Se uso il finish, non si vede nulla fra la newprofileactivity e l'activity principale per
+			//finish(); //Se uso il finish, non si vede nulla fra la newprofileactivity e l\activity principale per
 			            //qualche secondo
 		}
     }

@@ -41,7 +41,7 @@ private ArrayList<FsqVenue> mNearbyList;
 private ProgressDialog mProgress;
 private GPSTracker mGPS;
 
-//Codici per l'autorizzazione a Foursquare
+//Codici per l\autorizzazione a Foursquare
 public static final String CLIENT_ID = "WRWWBSHWC1AFXVAB5SZPCWBO1X0QACFX302KRXKRPXRIVVAO";
 public static final String CLIENT_SECRET = "00Z2J0045OFM0EZVZT43333QZ4PDFXCQCOYD32HAZQJS4LG5";
 

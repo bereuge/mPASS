@@ -17,6 +17,7 @@ import com.example.fstest.MapActivity;
 import com.example.fstest.NearbyActivity;
 import com.example.fstest.QuizActivity;
 import com.example.fstest.SplashActivity;
+import com.example.fstest.VenueListActivity;
 /*import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;*/
@@ -262,6 +263,25 @@ public class FTClient
 				}
 			}
 			
+			if (code.equals("loadvenuelist"))
+			{
+				try 
+				{
+					JSONObject json_result;
+					json_result = new JSONObject(output);
+					JSONArray venues=json_result.getJSONArray("rows");
+					JSONArray row=venues.getJSONArray(0);
+					String acl=row.get(2).toString();
+					//Log.d("Debug", acl);
+					((VenueListActivity) activity).showInfoDialog(venues, acl);
+				} 
+				catch (JSONException e) 
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 			if (code.equals("lastid"))
 			{
 				try 
@@ -276,6 +296,22 @@ public class FTClient
 				catch (JSONException e) 
 				{
 					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			if (code.equals("venuelist"))
+			{
+				try 
+				{
+					JSONObject json_result;
+					json_result = new JSONObject(output);
+					JSONArray venues=json_result.getJSONArray("rows");
+					((VenueListActivity) activity).loadList(venues);
+				} 
+				catch (JSONException e) 
+				{
+					((MapActivity) activity).setMarkers(null);
 					e.printStackTrace();
 				}
 			}

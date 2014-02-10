@@ -1,5 +1,7 @@
 package com.example.fstest;
 
+import javax.annotation.meta.When;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -7,8 +9,10 @@ import android.R.color;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.renderscript.Font;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -98,7 +102,16 @@ public class InfoDialog extends Dialog implements OnClickListener
 				else
 					tv_quiztitle.setText("Segnalazione del "+date.substring(0,10)+" di "+user);
 			    tv_quiztitle.setTextSize(16);
-			    tv_quiztitle.setPadding(0, 10, 0, 10);
+			    tv_quiztitle.setTextColor(Color.WHITE);
+			    tv_quiztitle.setTypeface(tv_quiztitle.getTypeface(), Typeface.BOLD);
+			    tv_quiztitle.setPadding(0, 15, 0, 15);
+			    if (accesslevel.equals("A"))
+			    	tv_quiztitle.setBackgroundColor(Color.argb(255, 102, 204, 0));
+				else if (accesslevel.equals("P"))
+					tv_quiztitle.setBackgroundColor(Color.argb(255, 251, 236, 93));
+				else if (accesslevel.equals("N"))
+					tv_quiztitle.setBackgroundColor(Color.argb(255, 227, 38, 54));
+				else tv_quiztitle.setBackgroundColor(Color.argb(255, 132, 132, 130));
 			    ll.addView(tv_quiztitle);
 				
 				/*TextView tv_accesslvl=new TextView(activity);

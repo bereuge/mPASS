@@ -84,7 +84,7 @@ public class NearbyActivity extends Activity
 			@Override
 			public boolean onMenuItemClick(MenuItem item) 
 			{
-				ftclient.setQuery("SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE 'NF%25' ORDER BY fsqid DESC LIMIT 1");
+				ftclient.setQuery("SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE \NF%25\ ORDER BY fsqid DESC LIMIT 1");
 				ftclient.queryOnNewThread("lastid");
 				return false;
 			}
@@ -127,8 +127,10 @@ public class NearbyActivity extends Activity
     {
         switch (item.getItemId()) 
         {
-        	case R.id.action_addvenue:ftclient.setQuery("SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE 'NF%25' ORDER BY fsqid DESC LIMIT 1");
-									  ftclient.queryOnNewThread("lastid");
+        	case R.id.action_addvenue://ftclient.setQuery("SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE \NF%25\ ORDER BY fsqid DESC LIMIT 1");
+        	//ftclient.setQuery("SELECT MAXIMUM(CAST(SUBSTRING(fsqid,3,length(fsqid)-2))) FROM "+Costants.tableId);
+        		ftclient.setQuery("SELECT MAXIMUM(fsqid) FROM "+Costants.tableId);
+        							  ftclient.queryOnNewThread("lastid");
         						      break;
         	default:break;				    
         }
