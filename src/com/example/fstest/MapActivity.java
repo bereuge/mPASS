@@ -1,14 +1,9 @@
 package com.example.fstest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import com.example.fstest.foursquare.FoursquareApp;
 import com.example.fstest.foursquare.FsqVenue;
-import com.example.fstest.foursquare.FoursquareApp.FsqAuthListener;
 import com.example.fstest.fusiontables.FTClient;
 import com.example.fstest.utils.GPSTracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,16 +17,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,30 +30,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-public class MapActivity extends Activity implements Runnable
+public class MapActivity extends Activity
 {
 	private FsqVenue venue;
 	private GPSTracker gps;
 	private GoogleMap mMap;
 	private FTClient ftclient;
-	private FoursquareApp fsqApp;
 	
 	private ProgressDialog spinner;
-	private Thread thread;  
-    private Handler handler;
-    private int counter=0;
     private Context context;
     
-    private ArrayList<FsqVenue> nearbyList;
     private HashMap<Marker, String> markerIdMap;
     private boolean[] preferences;
     
@@ -73,15 +56,9 @@ public class MapActivity extends Activity implements Runnable
     private String query_elev="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE elevator in (@VALUES)";
     private String query_esc="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE escalator in (@VALUES)";
     private String query_park="SELECT ROWID, fsqid, name, geo, accessLevel FROM "+Costants.tableId+" WHERE parking in (@VALUES)";
-    //private String query_maxid="SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE 'NF%25' ORDER BY fsqid DESC LIMIT 1";
-    
+
     private Button btn_notif;
     private TextView tv_notif;
-    
-    //Menu
-    /*private String[] menu;
-    private DrawerLayout drawer;
-    private ListView mDrawerList;*/
     
     @Override
     protected void onCreate(Bundle savedInstanceState) 
@@ -93,17 +70,12 @@ public class MapActivity extends Activity implements Runnable
         context=this;
         setContentView(R.layout.activity_map);
         
-        nearbyList=new ArrayList<FsqVenue>();
-        
         preferences=new boolean[3];
         preferences[0]=true; //Accessibile
         preferences[1]=true; //Parzialmente accessibile
         preferences[2]=true; //Non accessibile
         
-        //initialize_menu();
-        
         tv_notif=(TextView)findViewById(R.id.tv_notification);
-		//tv_notif.setText("Sei vicino a "+venue.name);
 		btn_notif=(Button)findViewById(R.id.btn_notification);
         
 		ImageButton btn_quiz=(ImageButton)findViewById(R.id.btn_quiz);
@@ -112,12 +84,6 @@ public class MapActivity extends Activity implements Runnable
 			@Override
 			public void onClick(View arg0) 
 			{
-				/*if (gps.canGetLocation())
-				{
-					double lat=gps.getLatitude();
-					double lon=gps.getLongitude();
-					loadNearbyPlaces(lat, lon);
-				}*/
 				Intent i=new Intent(MapActivity.this, NearbyActivity.class);
 				startActivity(i);
 			}
@@ -135,7 +101,6 @@ public class MapActivity extends Activity implements Runnable
 		});
 		
         gps=new GPSTracker(this);
-        //Test spinner , in teoria dovrebbe vedersi prima del caricamento della mappa ma non funziona
         spinner=new ProgressDialog(this);
         spinner.setMessage("Caricamento...");
         spinner.setCancelable(false);
@@ -144,8 +109,6 @@ public class MapActivity extends Activity implements Runnable
         spinner.show();
         
         //Caricamento mappa normale
-        //spinner.dismiss();  
-        //setContentView(R.layout.activity_map);
         mMap=((MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
         ftclient=new FTClient(context);
         setUpMapIfNeeded();
@@ -158,51 +121,11 @@ public class MapActivity extends Activity implements Runnable
         temp_query_limit=query_limit.replace("@LAT", lat);
         temp_query_limit=temp_query_limit.replace("@LNG", lng);
         ftclient.setQuery(temp_query_limit);
-        
         //ftclient.setQuery(query_all);
         ftclient.queryOnNewThread("setmarkers");
         
-        fsqApp = new FoursquareApp(this, Costants.CLIENT_ID, Costants.CLIENT_SECRET);
-        FsqAuthListener listener = new FsqAuthListener() 
-        {
-        	@Override
-         	public void onSuccess() 
-        	{
-         	}
-        
-        	@Override
-        	public void onFail(String error) 
-        	{
-        	}
-        };
-        fsqApp.setListener(listener);
-        
         ViewGroup mapHost = (ViewGroup) findViewById(R.id.mapView);
         mapHost.requestTransparentRegion(mapHost);
-        
-        //Caricamento in un altro thread ma rallenta solo di più
-        /*handler=new Handler();
-        thread=new Thread(this);
-        thread.run();*/
-        
-        /*DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                case DialogInterface.BUTTON_POSITIVE:
-                    //Yes button clicked
-                    break;
-
-                case DialogInterface.BUTTON_NEGATIVE:
-                    //No button clicked
-                    break;
-                }
-            }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("There is a stair close to you. Can you confirm?").setPositiveButton("Yes", dialogClickListener)
-            .setNegativeButton("No", dialogClickListener).show();*/
     }
     
     @Override
@@ -219,14 +142,9 @@ public class MapActivity extends Activity implements Runnable
         {
         	case R.id.item_filter:showFilterDialog();
         					      break;
-        	case R.id.item_mapmenu:/*if (!drawer.isDrawerOpen(mDrawerList))
-										drawer.openDrawer(mDrawerList);
-									else
-										drawer.closeDrawer(mDrawerList);
-						            break;*/
-        						    Intent profile_intent=new Intent(MapActivity.this, ProfileActivity.class);
-        						    startActivity(profile_intent);
-        						    break;
+        	case R.id.item_mapmenu:Intent profile_intent=new Intent(MapActivity.this, ProfileActivity.class);
+        						   startActivity(profile_intent);
+        						   break;
         	case R.id.item_refresh:spinner.show();
         						   ftclient.setQuery(query_all);
             					   ftclient.queryOnNewThread("setmarkers");
@@ -235,21 +153,7 @@ public class MapActivity extends Activity implements Runnable
         }
         return true;
     }
-    /*
-    private void initialize_menu()
-    {
- 	   menu=getResources().getStringArray(R.array.drawer_menu);
- 	   //if (menu==null) Log.d("Debug", "menu null");
- 	   drawer = (DrawerLayout) findViewById(R.id.drawer_layout_map);
- 	   //if (drawer==null) Log.d("Debug", "drawer null");
- 	   mDrawerList = (ListView) findViewById(R.id.drawer_map);
- 	   //if (mDrawerList==null) Log.d("Debug", "mdrawerlist null");
- 	   //if (this==null) Log.d("Debug", "this null");
- 	   //ArrayAdapter adapter=new ArrayAdapter<String>(this, R.layout.drawer_list_item, menu);
- 	   mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, menu));
- 	   mDrawerList.setOnItemClickListener(new DrawerItemClickListener(drawer, mDrawerList, MapActivity.this));
-    }
-    */
+
     //Resetta la mappa se c'è bisogno
     private Boolean setUpMapIfNeeded()
     {
@@ -272,76 +176,14 @@ public class MapActivity extends Activity implements Runnable
     public void setMarkers(JSONArray venues)
     {
     	String name, ll, fsqid, min_fsqid="", accl;
-    	float min_distance=3000; //Ne cerco uno solo se è al massimo distante un tot di metri
+    	float min_distance=3000; //Ne cerco uno solo se è al massimo distante un tot di metri, in questo caso 3 km
     	double lat = 0, lng = 0;
-    	/*FsqVenue */venue=new FsqVenue();
+    	venue=new FsqVenue();
     	
     	spinner.dismiss();
-    	/*Marker tempmarker=mMap.addMarker(new MarkerOptions()
-		.position(new LatLng(44.404356,12.19687))
-		.title("")
-		.snippet("Commento...")
-		.icon(BitmapDescriptorFactory.fromResource(R.drawable.solo_scala))
-		.draggable(false)
-		);*/
     	
     	markerIdMap=new HashMap<Marker, String>(); //associa ad ogni marker un foursquare id, utilizzato per fare query per i singoli luoghi
     	//Manca la gestione di marker doppi
-    	/*
-    	Random r=new Random();
-    	double x=44.485223;
-    	double y=11.320076;
-    	for (int k=0;k<150;k++)
-    	{
-    		int j=r.nextInt(4)+2;
-			if (j==0)
-			{
-			Marker marker=mMap.addMarker(new MarkerOptions()
-    		.position(new LatLng(r.nextDouble()*0.05+x, r.nextDouble()*0.05+y))
-    		.snippet("Commento...")
-    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-    		.draggable(false)
-    		);
-			}
-			else if (j==1)
-			{
-				Marker marker=mMap.addMarker(new MarkerOptions()
-				.position(new LatLng(r.nextDouble()*0.05+x, r.nextDouble()*0.05+y))
-	    		.snippet("Commento...")
-	    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-	    		.draggable(false)
-	    		);
-			}
-			else if (j==2)
-			{
-				Marker marker=mMap.addMarker(new MarkerOptions()
-				.position(new LatLng(r.nextDouble()*0.05+x, r.nextDouble()*0.05+y))
-	    		.snippet("Commento...")
-	    		//.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-	    		.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_casina))
-	    		.draggable(false)
-	    		);
-			}
-			else if (j==3)
-			{
-				Marker marker=mMap.addMarker(new MarkerOptions()
-				.position(new LatLng(r.nextDouble()*0.05+x, r.nextDouble()*0.05+y))
-	    		.snippet("Commento...")
-	    		.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_usergreen))
-	    		.draggable(false)
-	    		);
-			}
-			else if (j==4)
-			{
-				Marker marker=mMap.addMarker(new MarkerOptions()
-				.position(new LatLng(r.nextDouble()*0.05+x, r.nextDouble()*0.05+y))
-	    		.snippet("Commento...")
-	    		.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_userver))
-	    		.draggable(false)
-	    		);
-			}
-    	}
-    	*/
     	if (venues==null)
     	{
     		Log.d("Debug","Errore nella query");
@@ -376,10 +218,6 @@ public class MapActivity extends Activity implements Runnable
 						min_distance=temp_distance;
 						Log.d("Debug",name +" "+min_distance+" "+min_fsqid);
 					}
-					//Random r=new Random();
-					/*int j=r.nextInt(3);
-					if (j==0)
-					{*/
 					if (accl.equals("A"))
 					{
 						Marker marker=mMap.addMarker(new MarkerOptions()
@@ -424,30 +262,6 @@ public class MapActivity extends Activity implements Runnable
 			    		);
 						markerIdMap.put(marker, fsqid);
 					}
-					//}
-					/*else if (j==1)
-					{
-						Marker marker=mMap.addMarker(new MarkerOptions()
-			    		.position(new LatLng(lat, lng))
-			    		.title(name)
-			    		.snippet("Commento...")
-			    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
-			    		.draggable(false)
-			    		);
-						markerIdMap.put(marker, fsqid);
-					}
-					else
-					{
-						Marker marker=mMap.addMarker(new MarkerOptions()
-			    		.position(new LatLng(lat, lng))
-			    		.title(name)
-			    		.snippet("Commento...")
-			    		.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-			    		.draggable(false)
-			    		);
-						markerIdMap.put(marker, fsqid);
-					}
-					//markerIdMap.put(marker, fsqid);*/
 				} 
 	    		catch (JSONException e) 
 				{
@@ -456,14 +270,13 @@ public class MapActivity extends Activity implements Runnable
 	    	}
 	    	if (!min_fsqid.equals(""))
     		{
-	    		AlarmManager alarmManager = (AlarmManager) this.getSystemService(this.ALARM_SERVICE);
+	    		//Gestione notifica
+	    		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 	    		Intent alarmIntent=new Intent(this, NotificationService.class);
 	    		PendingIntent pendingIntent=PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
 	    		alarmManager.set(AlarmManager.RTC_WAKEUP, 3000, pendingIntent);
 	    		
-    			//tv_notif=(TextView)findViewById(R.id.tv_notification);
     			tv_notif.setText("Sei vicino a "+venue.name);
-    			//Button btn_notif=(Button)findViewById(R.id.btn_notification);
     			btn_notif.setVisibility(View.VISIBLE);
     			btn_notif.setText("Fai il quiz!");
     			btn_notif.setOnClickListener(new OnClickListener() 
@@ -501,23 +314,14 @@ public class MapActivity extends Activity implements Runnable
 						};
 
 				        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-				        builder.setMessage("Ti va di fare un quiz?").setPositiveButton("Yes", dialogClickListener)
-				            .setNegativeButton("No", dialogClickListener).show();
+				        builder.setMessage("Ti va di fare un quiz?")
+				               .setPositiveButton("Yes", dialogClickListener)
+				               .setNegativeButton("No", dialogClickListener)
+				               .show();
 					}
 				});
     		}
     	}
-    	/*if (venues.length()==0)
-    	{
-    		Log.d("Debug","Errore nella query");
-    		ftclient.setQuery(query_all);
-            ftclient.query("setmarkers");
-            //Non ha senso questa cosa...meglio cavarla! Se il database è vuoto ripete la query all'infinito!
-    	}
-    	else
-    	{
-    		
-    	}*/
     	
     	mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() 
     	{
@@ -543,7 +347,8 @@ public class MapActivity extends Activity implements Runnable
     @Override
     public void onBackPressed() 
     {
-    	
+    	//Così la pressione del tasto back non provoca nessun'azione e in caso la MapActivity non ritorna
+    	//all'activity di creazione dell'utente
     }
     
     //Callback eseguito dopo il completamento della query, mostra le info sul luogo
@@ -603,7 +408,6 @@ public class MapActivity extends Activity implements Runnable
     public void applyFilter(boolean[] new_preferences, String category)
     {
     	//Categorie: aclevel, doorways, elevator, escalator, parking
-    	//Log.d("Debug", temp[0]+" "+temp[1]+" "+temp[2]);
     	preferences=new_preferences;
     	//Creazione stringa di access level da inserire nella stringa
     	String values="";
@@ -611,7 +415,7 @@ public class MapActivity extends Activity implements Runnable
     	{
     		if (category=="aclevel") values="'A'";
     		else values="'Yes'";
-    		if (preferences[1]==true || preferences[2]==true) values=values+",";
+    		if (preferences[1]==true) values=values+",";
     		Log.d("Debug", values);
     	}
     	if (preferences[1]==true) 
@@ -627,8 +431,6 @@ public class MapActivity extends Activity implements Runnable
     	}
     	if (values.equals("")) values="''";
     	
-    	//Log.d("Debug", values);
-    	//String temp_query_acc=query_acc.replace("@VALUES", values);
     	String temp_query_acc="";
     	if (category=="aclevel") temp_query_acc=query_acc.replace("@VALUES", values);
     	else if (category=="doorways") temp_query_acc=query_door.replace("@VALUES", values);
@@ -644,61 +446,9 @@ public class MapActivity extends Activity implements Runnable
         ftclient.queryOnNewThread("setmarkers");
     }
     
-    private void loadNearbyPlaces(final double latitude, final double longitude) 
-    {
-    	spinner.show();
-    	new Thread() 
-    	{
-    		@Override
-    		public void run() 
-    		{
-    			int what = 0;
-    			try 
-    			{
-    				nearbyList = fsqApp.getNearby(latitude, longitude);
-    				//test=mFsqApp.checkIn("4bf253cf52bda593bc7fb2b7");
-    			} 
-    			catch (Exception e) 
-    			{
-    				what = 1;
-    				e.printStackTrace();
-    			}
-    			mHandler.sendMessage(mHandler.obtainMessage(what));
-    		}
-     }.start();
-   }
-    
-   private Handler mHandler = new Handler() 
-   {
-     @Override
-     public void handleMessage(Message msg) 
-     {
-    	 spinner.dismiss();
-    	 if (msg.what == 0) 
-    	 {
-    		 if (nearbyList.size() == 0) 
-    			 Toast.makeText(MapActivity.this, "No nearby places available", Toast.LENGTH_SHORT).show();
-    		 else
-    		 {
-    			 NearbyDialog ndialog=new NearbyDialog(MapActivity.this, nearbyList, ftclient);
-    			 ndialog.show();
-    			 //Toast.makeText(MainActivity.this, "ok", Toast.LENGTH_SHORT).show();
-    		 }
-    		 /*mAdapter.setData(mNearbyList);
-    		 mListView.setAdapter(mAdapter);*/
-    	 }
-    	 else 
-    	 {
-    		 Toast.makeText(MapActivity.this, "Failed to load nearby places", Toast.LENGTH_SHORT).show();
-    	 }
-     }
-   };
-    
 	public void createNewVenue(String _maxid)
 	{
 		//Creazione nuovo id, successivo al maxid ottenuto con la query
-		//Manca la gestione del primo record inserito senza foursquare, con id NF0
-		//BUG CON LA QUERY, CONSIDERA NF99 COME MASSIMO
 		String maxid=_maxid.substring(4);
 		maxid=maxid.substring(0, maxid.length()-2);
 		int newid=Integer.parseInt(maxid)+1;
@@ -733,60 +483,9 @@ public class MapActivity extends Activity implements Runnable
 		{
 			public void onClick(DialogInterface dialog, int whichButton) 
 			{
-			     // Canceled.
+			     //Canceled.
 			}
 		});
 		ad_venue.show();
-	}
-   
-    //Test thread per visualizzare lo spinner prima del caricamento della mappa
-    //Al momento non utilizzato
-	@Override
-	public void run() 
-	{
-		try  
-        {  
-            synchronized (thread)  
-            {  
-                while(counter <= 4)  
-                {  
-                    thread.wait(1);  
-                    counter++;  
-                    handler.post(new Runnable()  
-                    {  
-                        @Override  
-                        public void run()  
-                        {   
-                            spinner.setProgress(counter*25);  
-                        }  
-                    });  
-                }  
-            }  
-        }  
-		catch (InterruptedException e)  
-        {  
-            e.printStackTrace();  
-        } 
-		//Dopo lo spinner viene caricata la mappa
-		handler.post(new Runnable()  
-        {  
-            @Override  
-            public void run()  
-            {  
-                spinner.dismiss();  
-                //setContentView(R.layout.activity_map);
-                mMap=((MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
-                ftclient=new FTClient(context);
-                setUpMapIfNeeded();
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.277205,12.191162) , 6.0f));
-                mMap.setMyLocationEnabled(true);
-                ftclient.setQuery(query_all);
-                ftclient.query("setmarkers");
-            }  
-        });
-		synchronized (thread)  
-        {  
-            thread.interrupt();  
-        }
 	}
 }

@@ -1,5 +1,6 @@
 package com.example.fstest.foursquare;
 
+import com.example.fstest.Costants;
 import com.example.fstest.foursquare.FoursquareDialog.FsqDialogListener;
 
 import java.io.BufferedReader;
@@ -9,11 +10,11 @@ import java.io.InputStreamReader;
 
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,12 +44,12 @@ public class FoursquareApp
 	private static final String API_URL = "https://api.foursquare.com/v2";
 	private static final String TAG = "FoursquareApi";
 	
-	public FoursquareApp(Context context, String clientId, String clientSecret) 
+	public FoursquareApp(Context context) 
 	{
 		mSession		= new FoursquareSession(context);
 		mAccessToken	= mSession.getAccessToken();
-		mTokenUrl		= TOKEN_URL+"&client_id="+clientId+"&client_secret="+clientSecret+"&redirect_uri="+CALLBACK_URL;
-		String url		= AUTH_URL + "&client_id=" + clientId + "&redirect_uri=" + CALLBACK_URL;
+		mTokenUrl		= TOKEN_URL+"&client_id="+Costants.CLIENT_ID+"&client_secret="+Costants.CLIENT_SECRET+"&redirect_uri="+CALLBACK_URL;
+		String url		= AUTH_URL + "&client_id=" + Costants.CLIENT_ID + "&redirect_uri=" + CALLBACK_URL;
 		
 		FsqDialogListener listener = new FsqDialogListener() 
 		{
@@ -486,7 +487,7 @@ public class FoursquareApp
 	
 	private String timeMilisToString(long milis) 
 	{
-		SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sd = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
 		Calendar calendar   = Calendar.getInstance();
 		calendar.setTimeInMillis(milis);
 		return sd.format(calendar.getTime());

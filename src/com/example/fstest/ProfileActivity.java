@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,6 +27,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -81,7 +83,7 @@ public class ProfileActivity extends Activity
 		List<String> items = new ArrayList<String>();
 		items.add("Camera");
 		items.add("Galleria");
-		ArrayAdapter<String> adapter=new ArrayAdapter(this, android.R.layout.select_dialog_item, items);
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, items);
 		AlertDialog.Builder builder=new AlertDialog.Builder(this);
 		builder.setTitle("Seleziona immagine");
 		builder.setAdapter(adapter,new DialogInterface.OnClickListener() 
@@ -183,9 +185,21 @@ public class ProfileActivity extends Activity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.profile, menu);
 		return true;
-		
 	}
 	
+	public boolean onOptionsItemSelected(MenuItem item) 
+    {
+        switch (item.getItemId()) 
+        {
+        	case R.id.action_settings:Intent i=new Intent(ProfileActivity.this, UserSettingsActivity.class);
+        						      startActivity(i);
+        					          break;
+        	default:break;
+        }
+        return true;
+    }
+	
+	@SuppressLint("SimpleDateFormat")
 	private File createImageFile(Bitmap image) throws IOException
 	{
 		String dir=Environment.getExternalStorageDirectory().toString();

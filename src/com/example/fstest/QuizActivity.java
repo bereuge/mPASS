@@ -49,7 +49,7 @@ public class QuizActivity extends Activity
 		user=new User(this);
 		spinner=new ProgressDialog(this);
 		ftclient=new FTClient(this);
-		fsqapp = new FoursquareApp(this, Costants.CLIENT_ID, Costants.CLIENT_SECRET);
+		fsqapp = new FoursquareApp(this);
 		FsqAuthListener listener=new FsqAuthListener() 
 		{
 			

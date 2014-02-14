@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -35,6 +36,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+@SuppressLint("SimpleDateFormat")
 public class NewProfileActivity extends Activity 
 {
 	User new_user;
@@ -66,7 +68,7 @@ public class NewProfileActivity extends Activity
 		List<String> items = new ArrayList<String>();
 		items.add("Camera");
 		items.add("Galleria");
-		ArrayAdapter<String> adapter=new ArrayAdapter(this, android.R.layout.select_dialog_item, items);
+		ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, android.R.layout.select_dialog_item, items);
 		AlertDialog.Builder builder=new AlertDialog.Builder(this);
 		builder.setTitle("Seleziona immagine");
 		builder.setAdapter(adapter,new DialogInterface.OnClickListener() 

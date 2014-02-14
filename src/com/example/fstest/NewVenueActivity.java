@@ -10,7 +10,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -71,8 +70,9 @@ public class NewVenueActivity extends Activity
         							  Toast.makeText(NewVenueActivity.this, "Nome del luogo mancante!", Toast.LENGTH_SHORT).show();
         						  else
         						  {
-	        						  maxid=maxid.substring(4);
-						    		  maxid=maxid.substring(0, maxid.length()-2);
+	        						  //maxid=maxid.substring(2);
+						    		  maxid=maxid.substring(2, maxid.length()-2);
+						    		  Log.d("Debug", maxid);
 						    		  int newid=Integer.parseInt(maxid)+1;
 						    		  final String snewid="NF"+Integer.toString(newid);
 	        						  FsqVenue newvenue=new FsqVenue();

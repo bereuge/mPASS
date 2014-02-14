@@ -258,7 +258,6 @@ public class FTClient
 				} 
 				catch (JSONException e) 
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -277,7 +276,6 @@ public class FTClient
 				} 
 				catch (JSONException e) 
 				{
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -295,7 +293,23 @@ public class FTClient
 				} 
 				catch (JSONException e) 
 				{
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			if (code.equals("countvenues"))
+			{
+				try 
+				{
+					//Log.d("Debug", output);
+					JSONObject json_result;
+					json_result = new JSONObject(output);
+					JSONArray j_count=json_result.getJSONArray("rows");
+					String count=j_count.getString(0);
+					((VenueListActivity) activity).loadNumVenues(count);
+				} 
+				catch (JSONException e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -311,7 +325,7 @@ public class FTClient
 				} 
 				catch (JSONException e) 
 				{
-					((MapActivity) activity).setMarkers(null);
+					((VenueListActivity) activity).loadList(null);
 					e.printStackTrace();
 				}
 			}

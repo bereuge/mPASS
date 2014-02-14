@@ -26,6 +26,7 @@ public class SplashActivity extends Activity
 		context=this;
 		if (checkConnection())
 		{
+			@SuppressWarnings("unused")
 			FTClient ft=new FTClient(context);
 		}
 		else
@@ -43,23 +44,6 @@ public class SplashActivity extends Activity
 			});
 			ad_nonetwork.show();
 		}
-		//E se ci fosse un timeout per la richiesta del token che restituisca un messaggio d\errore?
-		
-		/*spinner=new ProgressDialog(this);
-		spinner.setIndeterminate(true);
-		spinner.show();*/
-		//new Prefetcher().execute();
-		/*new Handler().postDelayed(new Runnable()
-		{
-			@Override
-			public void run() 
-			{
-				Intent i=new Intent(SplashActivity.this, MainActivity.class);
-				startActivity(i);
-				finish();
-			}
-			
-		}, 2000);*/
 	}
 
 	@Override
@@ -69,53 +53,7 @@ public class SplashActivity extends Activity
 		getMenuInflater().inflate(R.menu.splash, menu);
 		return true;
 	}
-	/*
-	private class Prefetcher extends AsyncTask<Void, Void, Void>
-	{
-        @Override
-        protected void onPreExecute() 
-        {
-            super.onPreExecute();    
-        }
-        
-		@Override
-		protected Void doInBackground(Void... arg0) 
-		{
-			FTClient ft=new FTClient(context);
-			return null;
-		}
-		
-        @Override
-        protected void onPostExecute(Void result) 
-        {
-            super.onPostExecute(result);
-            // After completing http call
-            // will close this activity and lauch main activity
-            new Handler().postDelayed(new Runnable()
-    		{
-    			@Override
-    			public void run() 
-    			{
-    				if (!firstTime())
-    		        {
-    		        	//Toast.makeText(this, "Prima volta!", Toast.LENGTH_LONG).show();
-    		        	Intent i_newuser=new Intent(SplashActivity.this,MapActivity.class);
-    		        	startActivity(i_newuser);
-    		        }
-    				else
-    				{
-	    				Intent i=new Intent(SplashActivity.this, WelcomeActivity.class);
-	    				startActivity(i);
-	    				//finish(); //Se uso il finish, non si vede nulla fra la newprofileactivity e l\activity principale per
-	    				            //qualche secondo
-    				}
-    			}
-    			
-    		}, 1000);
-            //Aumentare il delay
-        }
-	}
-	*/
+	
     private boolean firstTime()
     {
  	   boolean first=true;
@@ -136,7 +74,7 @@ public class SplashActivity extends Activity
 		{
 			Intent i=new Intent(SplashActivity.this, WelcomeActivity.class);
 			startActivity(i);
-			//finish(); //Se uso il finish, non si vede nulla fra la newprofileactivity e l\activity principale per
+			//finish(); //Se uso il finish, non si vede nulla fra la newprofileactivity e l'activity principale per
 			            //qualche secondo
 		}
     }

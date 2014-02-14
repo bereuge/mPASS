@@ -2,6 +2,7 @@ package com.example.fstest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
 import com.example.fstest.foursquare.FoursquareApp;
@@ -32,7 +33,7 @@ public class WelcomeActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
 		
-		mFsqApp = new FoursquareApp(this, Costants.CLIENT_ID, Costants.CLIENT_SECRET);
+		mFsqApp = new FoursquareApp(this);
 		FsqAuthListener listener = new FsqAuthListener() 
         {
         	@Override
@@ -55,7 +56,7 @@ public class WelcomeActivity extends Activity
 					log.openToWrite();
 					log.deleteAll();
 					Date date=new Date();
-					SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 					String sdate=dateFormat.format(date);
 					log.insertEntry("User created!", sdate);
 					log.close();

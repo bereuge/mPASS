@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserSettingsActivity" >
+    
+    <ImageView
+        android:id="@+id/iv_photo_user"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/custom_background"
+        android:padding="3dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/user" 
+        android:contentDescription="@string/userimg_description"/>
+    
+    
+    
+    <TextView 
+        android:id="@+id/tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username"
+        android:layout_below="@id/iv_photo_user"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="20sp"
+        />
+
+    <Button
+        android:id="@+id/btn_modify_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/tv_username"
+        android:layout_alignBottom="@+id/tv_username"
+        android:layout_alignRight="@+id/btn_modify_photo"
+        android:text="Modifica nome" />
+
+    <Button
+        android:id="@+id/btn_modify_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv_photo_user"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:text="Modifica foto" />
+    
+</RelativeLayout>

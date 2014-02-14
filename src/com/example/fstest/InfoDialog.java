@@ -1,22 +1,16 @@
 package com.example.fstest;
 
-import javax.annotation.meta.When;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import android.R.color;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.renderscript.Font;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 

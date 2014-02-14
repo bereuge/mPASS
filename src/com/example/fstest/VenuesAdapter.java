@@ -2,9 +2,6 @@ package com.example.fstest;
 
 import java.util.ArrayList;
 
-import com.example.fstest.NearbyAdapter.ViewHolder;
-import com.example.fstest.foursquare.FsqVenue;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

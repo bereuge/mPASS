@@ -59,6 +59,7 @@
     <string name="btn_savepref">Save preferences</string>
     <string name="title_activity_nearby">mPASS - Nearby Venues</string>
     <string name="title_activity_new_venue">mPASS - New Venue</string>
-    <string name="title_activity_venue_list">VenueListActivity</string>
+    <string name="title_activity_venue_list">mPASS - Venue List</string>
+    <string name="title_activity_user_settings">mPASS - Modify Profile</string>
 
 </resources>

@@ -11,19 +11,17 @@ import com.example.fstest.utils.GPSTracker;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v4.view.MenuItemCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.SearchView.OnCloseListener;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -35,6 +33,8 @@ public class NearbyActivity extends Activity
 	private GPSTracker gps;
 	private ArrayList<FsqVenue> nearbyList;
 	private FTClient ftclient;
+	
+	private String query_maxid="SELECT COUNT() FROM "+Costants.tableId+" WHERE fsqid LIKE 'NF%25'";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -51,7 +51,7 @@ public class NearbyActivity extends Activity
         spinner.setProgress(0); 
         spinner.show();
 		
-		fsqApp = new FoursquareApp(this, Costants.CLIENT_ID, Costants.CLIENT_SECRET);
+		fsqApp = new FoursquareApp(this);
         FsqAuthListener listener = new FsqAuthListener() 
         {
         	@Override
@@ -127,9 +127,7 @@ public class NearbyActivity extends Activity
     {
         switch (item.getItemId()) 
         {
-        	case R.id.action_addvenue://ftclient.setQuery("SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE \NF%25\ ORDER BY fsqid DESC LIMIT 1");
-        	//ftclient.setQuery("SELECT MAXIMUM(CAST(SUBSTRING(fsqid,3,length(fsqid)-2))) FROM "+Costants.tableId);
-        		ftclient.setQuery("SELECT MAXIMUM(fsqid) FROM "+Costants.tableId);
+        	case R.id.action_addvenue:ftclient.setQuery(query_maxid);
         							  ftclient.queryOnNewThread("lastid");
         						      break;
         	default:break;				    
@@ -170,7 +168,8 @@ public class NearbyActivity extends Activity
     }
      
      
-    private Handler mHandler = new Handler() 
+    @SuppressLint("HandlerLeak")
+	private Handler mHandler = new Handler() 
     {
 	    @Override
 	    public void handleMessage(Message msg) 
@@ -223,7 +222,7 @@ public class NearbyActivity extends Activity
 				venue=nearbyList.get(position);
 				if (venue.id.equals("0"))
 				{
-					ftclient.setQuery("SELECT fsqid FROM "+Costants.tableId+" WHERE fsqid LIKE 'NF%25' ORDER BY fsqid DESC LIMIT 1");
+					ftclient.setQuery(query_maxid);
 					ftclient.queryOnNewThread("lastid");
 					//spinner.show();
 					//NearbyActivity.this.finish();

@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.ImageView;
 
-import java.text.DecimalFormat;
+//import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.example.fstest.foursquare.FsqVenue;
@@ -81,7 +81,7 @@ public class NearbyAdapter extends BaseAdapter
 		
         return convertView;
 	}
-	
+	/*
 	private String formatDistance(double distance) 
 	{
 		String result = "";
@@ -98,7 +98,7 @@ public class NearbyAdapter extends BaseAdapter
 		}
 		
 		return result;
-	}
+	}*/
 	
 	static class ViewHolder 
 	{

@@ -2,13 +2,13 @@ package com.example.fstest;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
-import android.view.View.OnClickListener;
 import android.widget.ListView;
 
 public class PrefDialog extends Dialog
@@ -20,6 +20,7 @@ public class PrefDialog extends Dialog
 	private ArrayList<PrefEntry> pref;
 	private PrefAdapter adapter;
 	
+	@SuppressLint("DefaultLocale")
 	public PrefDialog(Activity _activity, String _category, User _user) 
 	{
 		super(_activity);

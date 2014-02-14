@@ -21,15 +21,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
 	        android:hint="Nome del luogo"
-	        android:layout_weight="2"
-	        android:layout_marginTop="5dp"/>
-	    
-	    <EditText
-	        android:id="@+id/et_querycity"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" 
-	        android:hint="Città"
-	        android:layout_weight="3"
+	        android:layout_weight="5"
 	        android:layout_marginTop="5dp"/>
 	    
 	    <ImageButton 
@@ -43,11 +35,20 @@
 
     </LinearLayout>
     
+    <TextView 
+	        android:id="@+id/tv_num_venues"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:layout_below="@id/ll_query"
+	        android:layout_marginTop="15dp"
+	        android:layout_marginBottom="15dp"
+	        />
+    
     <ListView
         android:id="@+id/lv_venues"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" 
-        android:layout_below="@id/ll_query">
+        android:layout_below="@id/tv_num_venues">
         
     </ListView>
     
