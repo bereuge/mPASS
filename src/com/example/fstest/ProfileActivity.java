@@ -226,4 +226,17 @@ public class ProfileActivity extends Activity
 		PrefDialog pdialog=new PrefDialog(this, category, user);
 		pdialog.show();
 	}
+	
+	@Override
+	protected void onResume() 
+	{
+		super.onResume();
+		TextView tv_name=(TextView)findViewById(R.id.textView1);
+		tv_name.setText(user.getName());
+		TextView tv_type=(TextView)findViewById(R.id.textView2);
+		tv_type.setText(user.getType());
+		ImageView iv_image=(ImageView)findViewById(R.id.imageView1);
+		Bitmap image=BitmapFactory.decodeFile(user.getImagePath());
+		iv_image.setImageBitmap(image);
+	}
 }

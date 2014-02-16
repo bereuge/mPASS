@@ -60,6 +60,7 @@
 	    	    android:text="Confirm"
 	    	    android:textSize="14sp" 
 	    	    android:layout_below="@id/cbgroup"
-	    	    android:layout_marginTop="20dp"/>
+	    	    android:layout_marginTop="20dp"
+	    	    style="@style/customButton"/>
 
 	</RelativeLayout>

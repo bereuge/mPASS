@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="63dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/logo" 
         android:contentDescription="@string/logo_descr"/>
 
@@ -43,22 +43,28 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btn_regfsq"
-            android:text="@string/btn_regfsq">
-        </Button>
+            android:text="@string/btn_regfsq"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            style="@style/customButton"/>
         
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btn_regnew"
-            android:text="@string/btn_createprofile">
-        </Button>
+            android:text="@string/btn_createprofile"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            style="@style/customButton"/>
         
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btn_reganon"
-            android:text="@string/btnanon">
-        </Button>
+            android:text="@string/btnanon"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            style="@style/customButton"/>
         
     </LinearLayout>
 

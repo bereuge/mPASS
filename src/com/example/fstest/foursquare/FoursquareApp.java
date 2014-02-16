@@ -22,6 +22,7 @@ import org.json.JSONTokener;
 
 import android.content.Context;
 import android.util.Log;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 
 import android.location.Location;
@@ -169,6 +170,7 @@ public class FoursquareApp
 		}.start();
 	}
 	
+	@SuppressLint("HandlerLeak")
 	private Handler mHandler = new Handler() 
 	{
 		@Override

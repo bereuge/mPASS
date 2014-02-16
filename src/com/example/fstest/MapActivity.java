@@ -33,6 +33,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,17 +91,6 @@ public class MapActivity extends Activity
 			}
 		});
 		
-		Button btn_listvenue=(Button)findViewById(R.id.btn_list);
-		btn_listvenue.setOnClickListener(new OnClickListener() 
-		{
-			@Override
-			public void onClick(View v) 
-			{
-				Intent intent=new Intent(MapActivity.this, VenueListActivity.class);
-				startActivity(intent);
-			}
-		});
-		
         gps=new GPSTracker(this);
         spinner=new ProgressDialog(this);
         spinner.setMessage("Caricamento...");
@@ -112,7 +103,7 @@ public class MapActivity extends Activity
         mMap=((MapFragment)getFragmentManager().findFragmentById(R.id.map)).getMap();
         ftclient=new FTClient(context);
         setUpMapIfNeeded();
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.277205,12.191162) , 6.0f));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(),gps.getLongitude()) , 14.0f));
         mMap.setMyLocationEnabled(true);
 
         //Questo codice permette di far vedere sulla mappa solo i luoghi vicini presenti nella fusion table
@@ -145,10 +136,40 @@ public class MapActivity extends Activity
         	case R.id.item_mapmenu:Intent profile_intent=new Intent(MapActivity.this, ProfileActivity.class);
         						   startActivity(profile_intent);
         						   break;
-        	case R.id.item_refresh:spinner.show();
+        	case R.id.item_refresh:/*spinner.show();
         						   ftclient.setQuery(query_all);
-            					   ftclient.queryOnNewThread("setmarkers");
+            					   ftclient.queryOnNewThread("setmarkers");*/
+        						   PopupMenu popup=new PopupMenu(MapActivity.this, findViewById(item.getItemId()));
+        						   MenuInflater inflater=popup.getMenuInflater();
+        						   inflater.inflate(R.menu.refresh, popup.getMenu());
+        						   popup.setOnMenuItemClickListener(new OnMenuItemClickListener() 
+        						   {
+									@Override
+									public boolean onMenuItemClick(MenuItem item) 
+									{
+										switch (item.getItemId()) 
+										{
+											case R.id.item_all:clearMap();
+															   spinner.show();
+			        						   				   ftclient.setQuery(query_all);
+			        						   				   ftclient.queryOnNewThread("setmarkers");
+															   break;
+											case R.id.item_limit:clearMap();
+																 spinner.show();
+																 String temp_query_limit=query_limit.replace("@LAT", String.valueOf(gps.getLatitude()));
+																 temp_query_limit=temp_query_limit.replace("@LNG", String.valueOf(gps.getLongitude()));
+																 ftclient.setQuery(temp_query_limit);
+																 ftclient.queryOnNewThread("setmarkers");
+													break;
+										}
+										return false;
+									}
+        						   });
+        						   popup.show();
         						   break;
+        	case R.id.item_list:Intent list_intent=new Intent(MapActivity.this, VenueListActivity.class);
+			   					startActivity(list_intent);
+			   					break;
         	default:break;
         }
         return true;
@@ -276,9 +297,8 @@ public class MapActivity extends Activity
 	    		PendingIntent pendingIntent=PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
 	    		alarmManager.set(AlarmManager.RTC_WAKEUP, 3000, pendingIntent);
 	    		
-    			tv_notif.setText("Sei vicino a "+venue.name);
     			btn_notif.setVisibility(View.VISIBLE);
-    			btn_notif.setText("Fai il quiz!");
+    			btn_notif.setText("Sei vicino a "+venue.name+".\nClicca qui per fare il quiz!");
     			btn_notif.setOnClickListener(new OnClickListener() 
     			{
 					@Override
@@ -356,7 +376,6 @@ public class MapActivity extends Activity
     {
     	spinner.dismiss();
     	InfoDialog idialog = null;
-    	//InfoDialog idialog=new InfoDialog((Activity)context, venues, R.style.InfoDialog);
     	if (acl.equals("A"))
     	{
     		idialog=new InfoDialog((Activity)context, venues, R.style.InfoDialogGreen);

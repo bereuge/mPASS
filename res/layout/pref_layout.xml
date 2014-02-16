@@ -18,6 +18,6 @@
         android:layout_marginTop="10dp"
         android:text="@string/btn_savepref"
         android:layout_centerHorizontal="true"
-        />
+	    style="@style/customButton"/>
     
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.example.fstest.foursquare;
 
 import com.example.fstest.R;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 
@@ -50,6 +51,7 @@ public class FoursquareDialog extends Dialog
 	    cookieManager.removeAllCookie();
     }
 	
+	@SuppressLint("SetJavaScriptEnabled")
 	private void setUpWebView() 
 	{
 		WebView webView=(WebView)findViewById(R.id.webview);

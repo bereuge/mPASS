@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/item_all"
+        android:title="Visualizza tutte le segnalazioni." 
+        android:showAsAction="always">
+    </item>
+    
+    <item
+        android:id="@+id/item_limit"
+        android:title="Visualizza solo le segnalazioni vicini alla tua locazione." 
+        android:showAsAction="always">
+    </item>
+    
+</menu>

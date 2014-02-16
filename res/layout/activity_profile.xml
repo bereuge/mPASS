@@ -50,7 +50,8 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="@string/btn_gaps" />
+            android:text="@string/btn_gaps" 
+            style="@style/customButton"/>
 
         <Button
             android:id="@+id/btn_cross"
@@ -59,7 +60,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
-            android:text="@string/btn_cross" />
+            android:text="@string/btn_cross" 
+            style="@style/customButton"/>
 
         <Button
             android:id="@+id/btn_obstruction"
@@ -68,7 +70,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
-            android:text="@string/btn_obstruction" />
+            android:text="@string/btn_obstruction" 
+            style="@style/customButton"/>
     </LinearLayout>
 
     <LinearLayout
@@ -87,7 +90,8 @@
             android:layout_height="60dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:text="@string/btn_parking" />
+            android:text="@string/btn_parking" 
+            style="@style/customButton"/>
 
         <Button
             android:id="@+id/btn_surface"
@@ -96,7 +100,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
-            android:text="@string/btn_surface" />
+            android:text="@string/btn_surface" 
+            style="@style/customButton"/>
 
         <Button
             android:id="@+id/btn_pathway"
@@ -105,7 +110,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
-            android:text="@string/btn_pathway" />
+            android:text="@string/btn_pathway" 
+            style="@style/customButton"/>
     </LinearLayout>
 
     <TextView

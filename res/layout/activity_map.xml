@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- <android.support.v4.widget.DrawerLayout
-   xmlns:android="http://schemas.android.com/apk/res/android"
-   android:id="@+id/drawer_layout_map"
-   android:layout_width="match_parent"
-   android:layout_height="match_parent" >-->
-
 <LinearLayout 
    	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent" 
@@ -12,7 +6,8 @@
 	android:id="@+id/mapView"
 	android:name="com.example.fstest.MapActivity"
 	android:weightSum="4"
-	android:orientation="vertical">
+	android:orientation="vertical"
+	android:nextFocusDown="@+id/btn_quiz">
 
 	<fragment
 	    android:id="@+id/map"
@@ -25,6 +20,21 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="fill_parent"
 	    android:layout_weight="3" >
+
+		<Button
+		    android:id="@+id/btn_notification"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentLeft="true"
+		    android:layout_marginLeft="10dp"
+		    android:layout_marginTop="5dp"
+		    android:visibility="invisible"
+		    android:text="Quiz" 
+		    android:maxWidth="200dp"
+		    style="@style/customButton"
+		    android:contentDescription="Compila una segnalazione riguardo al luogo più vicino alla tua locazione"
+		    android:focusable="true"
+		    android:nextFocusRight="@+id/btn_quiz"/>
 	    
 		<ImageButton
 		    android:id="@+id/btn_quiz"
@@ -33,58 +43,11 @@
 		    android:src="@drawable/ic_quiz" 
 		    android:scaleType="fitXY"
 		    android:background="@null"
-		    android:layout_centerInParent="true"/>
-		
-	    <!-- <TextView
-		    android:id="@+id/tv_btn"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_below="@+id/btn_quiz"
-		    android:layout_centerHorizontal="true"
-		    android:text="Fai una segnalazione"
-		    android:textAppearance="?android:attr/textAppearanceLarge" /> -->
-
-		<Button
-		    android:id="@+id/btn_notification"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_alignBottom="@+id/btn_quiz"
-		    android:layout_alignParentLeft="true"
-		    android:layout_marginBottom="21dp"
-		    android:layout_marginLeft="33dp"
-		    android:visibility="invisible"
-		    android:text="Quiz" />
-
-		<TextView
-		    android:id="@+id/tv_notification"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_above="@+id/button1"
-		    android:layout_alignLeft="@+id/button1"
-		    android:text=""
-		    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-	    <Button
-	        android:id="@+id/btn_list"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:layout_centerVertical="true"
-	        android:layout_marginRight="56dp"
-	        android:text="Lista test" />
+		    android:layout_centerInParent="true"
+		    android:contentDescription="Crea una segnalazione riguardo ad un luogo"
+		    android:nextFocusLeft="@id/btn_notification"
+		    android:focusable="true"/>
 		
 	</RelativeLayout>
 
 </LinearLayout>
-<!-- 
-<ListView
-       android:id="@+id/drawer_map"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="end"
-        android:choiceMode="singleChoice"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:background="#111"></ListView>
-
-</android.support.v4.widget.DrawerLayout> -->
