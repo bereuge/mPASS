@@ -38,6 +38,9 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//testo cambiato
+
+
 public class MapActivity extends Activity
 {
 
