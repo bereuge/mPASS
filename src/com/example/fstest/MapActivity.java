@@ -38,9 +38,6 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-//prova 12345678910
-
-
 public class MapActivity extends Activity
 {
 
@@ -110,6 +107,12 @@ public class MapActivity extends Activity
         setUpMapIfNeeded();
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(),gps.getLongitude()) , 14.0f));
         mMap.setMyLocationEnabled(true);
+	  
+	   //caricamento Mappa Osm
+
+
+
+
 
         //Questo codice permette di far vedere sulla mappa solo i luoghi vicini presenti nella fusion table
         lat=String.valueOf(gps.getLatitude());
